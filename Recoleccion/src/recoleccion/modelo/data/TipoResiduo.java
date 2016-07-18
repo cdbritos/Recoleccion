@@ -1,5 +1,9 @@
 package recoleccion.modelo.data;
 
-public class TipoResiduo {
+public enum TipoResiduo {
+	
+	GRAN_VOLUMEN,
+	PODA,
+	ESCOMBROS;
 
 }

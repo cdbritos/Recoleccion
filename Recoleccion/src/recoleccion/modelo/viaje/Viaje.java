@@ -1,6 +1,6 @@
 package recoleccion.modelo.viaje;
 
-import java.util.Set;
+import java.util.List;
 
 import recoleccion.modelo.domicilios.Domicilio;
 import recoleccion.modelo.vehiculos.Vehiculo;
@@ -9,7 +9,7 @@ public class Viaje {
 	
 	private Vehiculo vehiculo;
 	
-	private Set<Domicilio> domicilios;
+	private List<Domicilio> domicilios;
 
 	public Vehiculo getVehiculo() {
 		return vehiculo;
@@ -19,11 +19,11 @@ public class Viaje {
 		this.vehiculo = vehiculo;
 	}
 
-	public Set<Domicilio> getDomicilios() {
+	public List<Domicilio> getDomicilios() {
 		return domicilios;
 	}
 
-	public void setDomicilios(Set<Domicilio> domicilios) {
+	public void setDomicilios(List<Domicilio> domicilios) {
 		this.domicilios = domicilios;
 	}
 	

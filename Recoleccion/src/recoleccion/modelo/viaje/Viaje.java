@@ -11,6 +11,11 @@ public class Viaje {
 	
 	private List<Domicilio> domicilios;
 
+	public Viaje(int[] dataViaje) {
+		//dataViaje[0] - idVehiculo
+		//dataViaje[1]....[length] - domicilios
+	}
+
 	public Vehiculo getVehiculo() {
 		return vehiculo;
 	}

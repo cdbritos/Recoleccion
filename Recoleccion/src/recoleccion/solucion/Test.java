@@ -16,7 +16,7 @@ public class Test {
 		r.genome = genome;
 		
 		Solucion s = new Solucion(r);
-		System.out.println(s);
+		s.imprimir();
 		
 		
 	}

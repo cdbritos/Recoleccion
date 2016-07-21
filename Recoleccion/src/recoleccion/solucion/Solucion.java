@@ -2,6 +2,7 @@ package recoleccion.solucion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import ec.vector.IntegerVectorIndividual;
@@ -22,16 +23,30 @@ public class Solucion {
 
 	public Solucion(RecoleccionIntegerVectorIndividual ind) {
 		
-		viajes = new ArrayList<Viaje>();
+		this.viajes = new ArrayList<Viaje>();
 		int[][] viajesInd = ind.getViajesIndividuo();
 		for (int i = 0; i < viajesInd.length; i++) {
 			Viaje v = new Viaje(viajesInd[i]);
-			viajes.add(v);	
-		}
-		
-		
+			this.viajes.add(v);	
+		}		
 	}
 
+	public double fitness(){
+		double fitness = 0;
+		if (viajes != null){
+			for (Viaje viaje : viajes) {
+				fitness += viaje.fitness();
+			}
+		}
+		return fitness;
+	}
 	
+	public void imprimir(){
+		if (viajes != null){
+			for (Viaje viaje : viajes) {
+				viaje.imprimir();
+			}
+		}
+	}
 	
 }

@@ -61,6 +61,21 @@ public abstract class Vehiculo extends Coordenable {
 	public void setTiposResiduos(Set<TipoResiduo> tiposResiduos) {
 		this.tiposResiduos = tiposResiduos;
 	}
+
+	public void imprimir() {
+		
+		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador);
+		
+	}
 	
+	public Vehiculo(){
+		
+	}
+	
+	public Vehiculo(int id){
+		this.identificador = String.valueOf(id);
+	}
+	
+	protected abstract TipoVehiculo getTipo();
 	
 }

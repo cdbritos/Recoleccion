@@ -10,6 +10,12 @@ public class Domicilio extends Coordenable {
 	
 	private List<Pedido> pedidos;
 
+	public Domicilio() {};
+	
+	public Domicilio(int id) {
+		this.identificador = String.valueOf(id);
+	}
+
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
@@ -26,4 +32,35 @@ public class Domicilio extends Coordenable {
 		this.identificador = identificador;
 	}
 
+	public void imprimir() {
+		System.out.println("Domicilio: " + this.identificador);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((identificador == null) ? 0 : identificador.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Domicilio other = (Domicilio) obj;
+		if (identificador == null) {
+			if (other.identificador != null)
+				return false;
+		} else if (!identificador.equals(other.identificador))
+			return false;
+		return true;
+	}
+
+	
 }

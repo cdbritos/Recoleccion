@@ -1,12 +1,8 @@
 package recoleccion.solucion;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import ec.vector.IntegerVectorIndividual;
-import ec.vector.VectorIndividual;
 import recoleccion.modelo.viaje.Viaje;
 
 public class Solucion {
@@ -31,6 +27,7 @@ public class Solucion {
 		}		
 	}
 
+	// viajes sin domicilio se dejan en la solucion tiene fitness 0
 	public double fitness(){
 		double fitness = 0;
 		if (viajes != null){

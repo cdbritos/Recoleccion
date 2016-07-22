@@ -62,5 +62,15 @@ public class Domicilio extends Coordenable {
 		return true;
 	}
 
-	
+	public boolean tieneBasura(){
+		
+		if (pedidos != null){
+			for (Pedido pedido : pedidos) {
+				if (pedido.getCantidad() > 0)
+					return true;
+			}
+		}
+		
+		return false;
+	}
 }

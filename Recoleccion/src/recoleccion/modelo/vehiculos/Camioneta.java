@@ -11,4 +11,11 @@ public class Camioneta extends Vehiculo {
 		return TipoVehiculo.CAMIONETA;
 	}
 
+	@Override
+	protected void inicializar() {
+		this.setCapacidad(800L);
+		this.setRendimiento(11L);
+		this.setVelocidad(70L);
+	}
+	
 }

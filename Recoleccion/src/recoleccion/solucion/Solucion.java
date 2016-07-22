@@ -3,6 +3,8 @@ package recoleccion.solucion;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 import recoleccion.modelo.viaje.Viaje;
 
@@ -35,7 +37,7 @@ public class Solucion {
 	// viajes sin domicilio se dejan en la solucion tiene fitness 0
 	public double fitness(){
 		double fitness = 0;
-		if (viajes != null){
+		if (CollectionUtils.isNotEmpty(viajes)){
 			for (Viaje viaje : viajes) {
 				fitness += viaje.fitness();
 			}
@@ -44,7 +46,7 @@ public class Solucion {
 	}
 	
 	public void imprimir(){
-		if (viajes != null){
+		if (CollectionUtils.isNotEmpty(viajes)){
 			for (Viaje viaje : viajes) {
 				viaje.imprimir();
 			}

@@ -3,6 +3,8 @@ package recoleccion.modelo.viaje;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import recoleccion.modelo.domicilios.Domicilio;
 import recoleccion.modelo.domicilios.DomiciliosHandler;
 import recoleccion.modelo.vehiculos.Vehiculo;
@@ -55,7 +57,7 @@ public class Viaje {
 
 	public void imprimir() {
 		vehiculo.imprimir();
-		if (domicilios != null){
+		if (CollectionUtils.isNotEmpty(domicilios)){
 			for (Domicilio domicilio : domicilios) {
 				domicilio.imprimir();
 			}
@@ -65,7 +67,7 @@ public class Viaje {
 
 	public double fitness() {
 		double fitness = 0;
-		if (domicilios != null && domicilios.size() > 0)
+		if (CollectionUtils.isNotEmpty(domicilios))
 			fitness = 1; //Aca calcular fitness posta
 		return fitness;
 	}

@@ -69,12 +69,15 @@ public abstract class Vehiculo extends Coordenable {
 	}
 	
 	public Vehiculo(){
-		
+		inicializar();
 	}
 	
 	public Vehiculo(int id){
+		this();
 		this.identificador = String.valueOf(id);
 	}
+	
+	protected abstract void inicializar();
 	
 	protected abstract TipoVehiculo getTipo();
 	

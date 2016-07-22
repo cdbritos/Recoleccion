@@ -2,6 +2,8 @@ package recoleccion.modelo.domicilios;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import recoleccion.modelo.data.Coordenable;
 
 public class Domicilio extends Coordenable {
@@ -64,7 +66,7 @@ public class Domicilio extends Coordenable {
 
 	public boolean tieneBasura(){
 		
-		if (pedidos != null){
+		if (CollectionUtils.isNotEmpty(pedidos)){
 			for (Pedido pedido : pedidos) {
 				if (pedido.getCantidad() > 0)
 					return true;

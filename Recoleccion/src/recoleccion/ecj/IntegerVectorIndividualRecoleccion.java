@@ -31,6 +31,11 @@ import ec.vector.IntegerVectorIndividual;
  */
 public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7478676840715483431L;
+	
 	public static final String DEPOSITOS_IN = "in_depositos";
     public static final String DOM_JOR_IN = "in_domicilios_jornada";
     public static final String VERTEDEROS_IN = "in_vertederos";
@@ -102,11 +107,11 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                     String tipoResiduo=cadena[cantPedidos];
                     TipoResiduo tr = null;
                     if (tipoResiduo.equals("Poda")){
-                            tr=tr.PODA;
+                            tr=TipoResiduo.PODA;
                     }else if(tipoResiduo.equals("Escombro")){
-                            tr=tr.ESCOMBROS;
+                            tr=TipoResiduo.ESCOMBROS;
                     }else{
-                            tr=tr.GRAN_VOLUMEN;
+                            tr=TipoResiduo.GRAN_VOLUMEN;
                     }
                     pedido.setResiduo(tr);
                     cantPedidos++;
@@ -159,9 +164,6 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                                     if (cadena[1].equals("CAMIONES")){
                                             Camion camion=new Camion(idVehiculo);
                                             camion.setCoordenadas(coord);
-                                            camion.setCapacidad(calcularCapacidad(cadena[1]));
-                                            camion.setRendimiento(calcularRendimiento(cadena[1]));
-                                            camion.setVelocidad(calcularVelocidad(cadena[1]));
                                             camion.setTiposResiduos(calcularTipoResiduo(linea));
                                             vehiculos.add(camion);
 
@@ -169,10 +171,6 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                                     else{
                                             Camioneta camiononeta=new Camioneta(idVehiculo);
                                             camiononeta.setCoordenadas(coord);
-                                            camiononeta.setIdentificador(Integer.toString(idVehiculo));
-                                            camiononeta.setCapacidad(calcularCapacidad(cadena[1]));
-                                            camiononeta.setRendimiento(calcularRendimiento(cadena[1]));
-                                            camiononeta.setVelocidad(calcularVelocidad(cadena[1]));
                                             camiononeta.setTiposResiduos(calcularTipoResiduo(linea));
                                             vehiculos.add(camiononeta); 
                                     }
@@ -387,38 +385,9 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
         
    }*/
    
-   public Long calcularCapacidad(String tipoVehiculo){
-	   Long capacidad;
-	   if (tipoVehiculo.equals("CAMION")){
-		   capacidad=(long) 2000;
-	   }else{
-		   capacidad=(long) 800;
-	   }
-		   return capacidad;
-	   
-   }
+  
    
-   public Long calcularRendimiento(String tipoVehiculo){
-	   Long rendimiento;
-	   if (tipoVehiculo.equals("CAMION")){
-		   rendimiento=(long) 8;
-	   }else{
-		   rendimiento=(long) 11;
-	   }
-		   return rendimiento;
-	   
-   }
    
-   public Long calcularVelocidad(String tipoVehiculo){
-	   Long velocidad;
-	   if (tipoVehiculo.equals("CAMION")){
-		   velocidad=(long) 40;
-	   }else{
-		   velocidad=(long) 70;
-	   }
-		   return velocidad;
-	   
-   }
    
    public Set<TipoResiduo> calcularTipoResiduo(String linea){
 	   Set<TipoResiduo> tiposResiduos=new HashSet<TipoResiduo>();
@@ -427,19 +396,23 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	   while (contTipos<cadena.length){
 		   TipoResiduo tr = null;
 		   if (cadena[contTipos].equals("GRAN_VOLUMEN")){
-			   tr=tr.GRAN_VOLUMEN;
+			   tr=TipoResiduo.GRAN_VOLUMEN;
 		   }else if (cadena[contTipos].equals("PODA")){
-			   tr=tr.PODA;
+			   tr=TipoResiduo.PODA;
 		   }else{
-			   tr=tr.ESCOMBROS;
+			   tr=TipoResiduo.ESCOMBROS;
 		   }
 		   tiposResiduos.add(tr);
-                   contTipos++;
+           contTipos++;
 	   }
 	   return tiposResiduos;
 	   
    }
-
+   
+   /* ****************************************************
+    * COMIENZO MERGE  
+    * ****************************************************/
+   
 	public int getCantViajes(){
 		int cantidadViajes = 0;
 		
@@ -474,19 +447,16 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	}
 
 	private void split(int[] points, int[][] pieces) {
-		 {
-		        int point0, point1;
-		        point0 = 0; point1 = points[0];
-		        for(int x=0;x<pieces.length;x++)
-		            {
-		            pieces[x] = new int[point1-point0];
-		            System.arraycopy(genome,point0,pieces[x],0,point1-point0);
-		            point0 = point1;
-		            if (x >=pieces.length-2)
-		                point1 = genome.length;
-		            else point1 = points[x+1];
-		            }
-		        }
-		    
+	    int point0, point1;
+	    point0 = 0; point1 = points[0];
+	    for(int x=0;x<pieces.length;x++){
+	    	pieces[x] = new int[point1-point0];
+	    	System.arraycopy(genome,point0,pieces[x],0,point1-point0);
+	    	point0 = point1;
+	    	if (x >=pieces.length-2)
+	    		point1 = genome.length;
+	    	else point1 = points[x+1];
+        }
 	}
+		    
 }

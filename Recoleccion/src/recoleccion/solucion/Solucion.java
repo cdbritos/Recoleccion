@@ -3,6 +3,7 @@ package recoleccion.solucion;
 import java.util.ArrayList;
 import java.util.List;
 
+import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 import recoleccion.modelo.viaje.Viaje;
 
 public class Solucion {
@@ -17,7 +18,7 @@ public class Solucion {
 		this.viajes = viajes;
 	}
 
-	public Solucion(RecoleccionIntegerVectorIndividual ind) {
+	public Solucion(IntegerVectorIndividualRecoleccion ind) {
 		
 		this.viajes = new ArrayList<Viaje>();
 		int[][] viajesInd = ind.getViajesIndividuo();
@@ -25,6 +26,10 @@ public class Solucion {
 			Viaje v = new Viaje(viajesInd[i]);
 			this.viajes.add(v);	
 		}		
+	}
+	
+	public Solucion(){
+		
 	}
 
 	// viajes sin domicilio se dejan en la solucion tiene fitness 0

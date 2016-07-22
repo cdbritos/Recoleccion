@@ -1,5 +1,7 @@
 package recoleccion.solucion;
 
+import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
+
 
 public class Test {
 	
@@ -12,7 +14,7 @@ public class Test {
 						-3,1,2,3,4,5,6,
 						-1,4,5,67,3,23};
 		
-		RecoleccionIntegerVectorIndividual r = new RecoleccionIntegerVectorIndividual();
+		IntegerVectorIndividualRecoleccion r = new IntegerVectorIndividualRecoleccion();
 		r.genome = genome;
 		
 		Solucion s = new Solucion(r);

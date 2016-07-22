@@ -1,0 +1,86 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+#parent.0 = /home/cdbritos/cursoAE/ecj/ec/simple/simple.params
+#parent.0 = /home/cbritos/Escritorio/ae/ecj/ec/simple/simple.params
+#parent.0 = C:/Users/Gonzalo/Desktop/FACULTAD/AE/ecj/ec/simple/simple.params
+parent.0 = C:\\Documents and Settings\\ggutierrez\\Escritorio\\FACULTAD\\AE\\ecj\\ec\\simple\\simple.params
+
+
+# N ESTA CLASE SE ENCUENTRA LA FUNCION DE FITNESS EN EL METODO EVALUATE
+eval.problem = recoleccion.ecj.Recoleccion
+
+stat.file				$solucion.out
+stat.do-final=			true
+stat.do-generation=		false
+stat.do-message=		false
+stat.do-description=	true
+
+# ARCHIVOS DE ENTRADA Y SALIDA DEL PROGRAMA
+#eval.problem.in_depositos = depositos
+#eval.problem.in_domicilios_jornada = domicilios_jornada
+#eval.problem.in_vertederos = vertederos
+
+vector.int-vect-ind.in_depositos = depositos
+vector.int-vect-ind.in_domicilios_jornada = domicilios_jornada
+vector.int-vect-ind.in_vertederos = vertederos
+
+
+# ESTOS VIENEN POR DEFECTO
+state = 				ec.simple.SimpleEvolutionState
+init = 					ec.simple.SimpleInitializer
+finish = 	        	ec.simple.SimpleFinisher
+exch = 					ec.simple.SimpleExchanger
+eval =					ec.simple.SimpleEvaluator
+stat =					ec.simple.SimpleStatistics
+breed = 				ec.simple.SimpleBreeder
+
+# CANTIDAD DE GENERACIONES
+generations =				100
+
+# PARAR SI ENCUENTRA LA SOLUCION OPTIMA
+quit-on-run-complete =				true
+
+# ESTOS VALORES TAMPOCO SE MUY BIEN PARA QUE SON
+pop = 					ec.Population
+pop.subpops =				1
+pop.subpop.0 = 				ec.Subpopulation
+pop.subpop.0.duplicate-retries =	0
+pop.subpop.0.species =                  ec.vector.IntegerVectorSpecies
+
+# TIPO DE MUTACION Y LA PROBABILIDAD
+pop.subpop.0.species.mutation-type= reset
+pop.subpop.0.species.mutation-prob = 	0.01
+
+# ESTO NO SE MUY BIEN PARA QUE SON CADA COSA
+pop.subpop.0.species.pipe = 		ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.likelihood = 1.0
+pop.subpop.0.species.pipe.source.0 =             ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.likelihood = 0.75
+pop.subpop.0.species.pipe.source.0.source.0 =	ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1 = 	same
+pop.subpop.0.species.pipe.source.0.source.1.size = 1
+select.tournament.size = 2
+
+# numero de iniciacion, time empieza con la fecha actual
+seed.0 = time
+
+# la funcion de fitness a usar
+pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
+
+# tipo de cruzamiento y la probabilidad
+pop.subpop.0.species.crossover-type = one
+pop.subpop.0.species.crossover-prob =	1
+
+# el tipo de vector a utilizar y los maximos y minimos que puede tener
+pop.subpop.0.species.ind =		recoleccion.ecj.IntegerVectorIndividualRecoleccion
+
+
+# tamaño del genoma
+pop.subpop.0.species.genome-size =      200
+pop.subpop.0.species.max-gene=1000
+pop.subpop.0.species.min-gene=-1000
+
+# tamaño de la poblacion
+pop.subpop.0.size =			20

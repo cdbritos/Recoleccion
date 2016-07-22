@@ -95,6 +95,7 @@ public class GeneradorRecoleccion {
             boolean hayTipo=false;
             for (int i=0;i<domiciliosGenerador.size();i++){
                 esc=domiciliosGenerador.get(i);
+                contador=0;
                 while (contador<tipoResiduos.length){
                     if (rnd.nextBoolean()){
                         m3Residuos=rnd.nextInt(m3Tope);
@@ -105,7 +106,10 @@ public class GeneradorRecoleccion {
                         //tipoResiduosPos=rnd.nextInt(tipoResiduos.length-1);
                         esc+=","+Integer.toString(m3Residuos)+","+tipoResiduos[contador];
                     }
-                    
+                    /*
+                     * AVECES AGREGA DOMICILIOS SIN NADA 
+                     * 
+                     * */
                     contador++;
                 }
                 if (!hayTipo){

@@ -50,112 +50,98 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
     public void reset(EvolutionState state, int thread) {
         //super.reset(state, thread); //To change body of generated methods, choose Tools | Templates.
 	              
-           
-           //CARGANDO LA SOLUCION RANDOMICA
-           Solucion sol = new Solucion();
-           Viaje viaje = new Viaje();
-           
-           List<Domicilio> domiciliosCompletos=new ArrayList<>();
-           List<Domicilio> domiciliosViajes=new ArrayList<>();
-           List<Viaje> viajes=new ArrayList<>();
-           domiciliosCompletos=jornada.getDomicilios();
-           
-           Random rand=new Random();
-           //List<Vehiculo> vehiculos=new ArrayList<>();
-           while(!domiciliosCompletos.isEmpty()){
-               System.out.println("DOMICILIO: "+domiciliosCompletos);
-                int randDeposito=rand.nextInt(jornada.getDepositos().size()-1);
-                Deposito depActual=jornada.getDepositos().get(randDeposito);
-                int randVehiculo=rand.nextInt(depActual.getFlota().size()-1);
-                Vehiculo vehiculoActual=depActual.getFlota().get(randVehiculo);
-                viaje.setVehiculo(vehiculoActual);
-                //int randDomicilio=rand.nextInt(domiciliosCompletos.size()-1);
-                 
-                int i=0;
-                Domicilio dom=new Domicilio();
-                boolean valido=false;
-                while (i<domicilios.size() && !valido && vehiculoActual.getCapacidad()>0){
-                    System.out.println("VEHICULO: "+vehiculoActual);
-                    //randDomicilio=rand.nextInt(domiciliosCompletos.size()-1);
-                    valido=false;
-                    
-                    dom=domicilios.get(i);
-                    Iterator iter = vehiculoActual.getTiposResiduos().iterator();
-                    Pedido pedido=null;
-                    while (iter.hasNext() && !valido) {
-                        TipoResiduo tr=(TipoResiduo)iter.next();
-                        if (dom.tieneBasura(tr)){
-                            System.out.println("CONTIENE PEDIDO: "+dom);
-                            int j=0;
-                            TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
-                            while (trPedido!=tr){
-                                j++;
-                                trPedido=dom.getPedidos().get(j).getResiduo();
-                            }
-                            //if (v.getCapacidad()>=0){
-                                valido=true;
-                                Long capacidadActual=vehiculoActual.getCapacidad()-dom.getPedidos().get(j).getCantidad();
-                                vehiculoActual.setCapacidad(capacidadActual);
-                                dom.getPedidos().remove(dom.getPedidos().get(j));
-                                domiciliosViajes.add(dom);
-                                if (dom.getPedidos().isEmpty()){
-                                    System.out.println("REMOVI: "+dom);
-                                    domicilios.remove(dom);
-                                }
-                            //}             
-                        }
-                    }
-                   i++;
-                    
-                    
-                    
-                    
-                    /*Domicilio domActual=domicilioValido(vehiculoActual,domiciliosCompletos,valido);
-                    domiciliosViajes.add(domActual);*/
-                    System.out.println("CANT DOM: "+domiciliosCompletos.size());
-                    
-                   
-                }               
-                viaje.setDomicilios(domiciliosViajes);  
-                viajes.add(viaje);
-           }
-           sol.setViajes(viajes);
-           
-           for (int i=0;i<sol.getViajes().size();i++){
-               System.out.println("SOLUCION: "+sol.getViajes().size());
-           }
-           
-           
-
-       } catch (Exception ex) {
-           System.out.println("Mensaje: " + ex.getMessage());
-           ex.printStackTrace();
-	   } finally {
-	           // Cerramos el fichero tanto si la lectura ha sido correcta o no
-	           try {
-	                   if (s != null)
-	                           s.close();
-	           } catch (Exception ex2) {
-	                   System.out.println("Mensaje 2: " + ex2.getMessage());
-	           }
-	   }
+//           
+//           //CARGANDO LA SOLUCION RANDOMICA
+//           Solucion sol = new Solucion();
+//           Viaje viaje = new Viaje();
+//           
+//           List<Domicilio> domiciliosCompletos=new ArrayList<>();
+//           List<Domicilio> domiciliosViajes=new ArrayList<>();
+//           List<Viaje> viajes=new ArrayList<>();
+//           domiciliosCompletos=jornada.getDomicilios();
+//           
+//           Random rand=new Random();
+//           //List<Vehiculo> vehiculos=new ArrayList<>();
+//           while(!domiciliosCompletos.isEmpty()){
+//               System.out.println("DOMICILIO: "+domiciliosCompletos);
+//                int randDeposito=rand.nextInt(jornada.getDepositos().size()-1);
+//                Deposito depActual=jornada.getDepositos().get(randDeposito);
+//                int randVehiculo=rand.nextInt(depActual.getFlota().size()-1);
+//                Vehiculo vehiculoActual=depActual.getFlota().get(randVehiculo);
+//                viaje.setVehiculo(vehiculoActual);
+//                //int randDomicilio=rand.nextInt(domiciliosCompletos.size()-1);
+//                 
+//                int i=0;
+//                Domicilio dom=new Domicilio();
+//                boolean valido=false;
+//                while (i<domicilios.size() && !valido && vehiculoActual.getCapacidad()>0){
+//                    System.out.println("VEHICULO: "+vehiculoActual);
+//                    //randDomicilio=rand.nextInt(domiciliosCompletos.size()-1);
+//                    valido=false;
+//                    
+//                    dom=domicilios.get(i);
+//                    Iterator iter = vehiculoActual.getTiposResiduos().iterator();
+//                    Pedido pedido=null;
+//                    while (iter.hasNext() && !valido) {
+//                        TipoResiduo tr=(TipoResiduo)iter.next();
+//                        if (dom.tieneBasura(tr)){
+//                            System.out.println("CONTIENE PEDIDO: "+dom);
+//                            int j=0;
+//                            TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
+//                            while (trPedido!=tr){
+//                                j++;
+//                                trPedido=dom.getPedidos().get(j).getResiduo();
+//                            }
+//                            //if (v.getCapacidad()>=0){
+//                                valido=true;
+//                                Long capacidadActual=vehiculoActual.getCapacidad()-dom.getPedidos().get(j).getCantidad();
+//                                vehiculoActual.setCapacidad(capacidadActual);
+//                                dom.getPedidos().remove(dom.getPedidos().get(j));
+//                                domiciliosViajes.add(dom);
+//                                if (dom.getPedidos().isEmpty()){
+//                                    System.out.println("REMOVI: "+dom);
+//                                    domicilios.remove(dom);
+//                                }
+//                            //}             
+//                        }
+//                    }
+//                   i++;
+//                    
+//                    
+//                    
+//                    
+//                    /*Domicilio domActual=domicilioValido(vehiculoActual,domiciliosCompletos,valido);
+//                    domiciliosViajes.add(domActual);*/
+//                    System.out.println("CANT DOM: "+domiciliosCompletos.size());
+//                    
+//                   
+//                }               
+//                viaje.setDomicilios(domiciliosViajes);  
+//                viajes.add(viaje);
+//           }
+//           sol.setViajes(viajes);
+//           
+//           for (int i=0;i<sol.getViajes().size();i++){
+//               System.out.println("SOLUCION: "+sol.getViajes().size());
+//           }
+//           
+//           
+//
+//       } catch (Exception ex) {
+//           System.out.println("Mensaje: " + ex.getMessage());
+//           ex.printStackTrace();
+//	   } finally {
+//	           // Cerramos el fichero tanto si la lectura ha sido correcta o no
+//	           try {
+//	                   if (s != null)
+//	                           s.close();
+//	           } catch (Exception ex2) {
+//	                   System.out.println("Mensaje 2: " + ex2.getMessage());
+//	           }
+//	   }
 	   
 	   
 	   
-        /*for(int i=0;i<(genome.length-1);i++){
-                numeros.add(i, i+1);
-        }
-        
-        genome[0]=0;
-        int k=numeros.size();
-        int n=k;
-        for(int i=1;i<=k;i++){
-            res=rnd.nextInt(n);            
-            genome[i]=(Integer)numeros.get(res);
-            numeros.remove(res);
-            n--;
-        }*/
-        
     }
    
    

@@ -39,12 +39,25 @@ public class Jornada extends Problem implements SimpleProblemForm {
     public File in_domicilios_jornada;
     public File in_vertederos;   
     
+    private static Jornada instancia = null;
+    
+    public Jornada(){
+    	
+    }
 	
-	private List<Deposito> depositos;
+    public static final Jornada getInstance(){
+    	
+    	if (instancia == null)
+    		instancia = new Jornada();
+    	
+    	return instancia;
+    }
+    
+	public List<Deposito> depositos;
 	
-	private List<Domicilio> domicilios;
+	public List<Domicilio> domicilios;
 	
-	private Vertedero vertedero;
+	public Vertedero vertedero;
 
 	public List<Deposito> getDepositos() {
 		return depositos;
@@ -88,7 +101,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	
 	@Override
 	public void setup(EvolutionState state, Parameter base) {
-	   super.setup(state, base);
+	   //super.setup(state, base);
 		
 	   in_depositos = state.parameters.getFile(base.push(DEPOSITOS_IN), null);
        in_domicilios_jornada = state.parameters.getFile(base.push(DOM_JOR_IN), null);
@@ -106,7 +119,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 
     	   imprimir();
       } catch (Exception e) {
-    	  
+    	  System.out.println("ERROR CARGANDO PARAMETROS DE ENTRADA");
       }
 	}
 	
@@ -134,7 +147,6 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	       Deposito deposito=null;
 	       List<Vehiculo> vehiculos=null;
 	       String linea = s.nextLine(); 
-	       System.out.println("DEPOSITO: "+linea);
 	       String [] cadena=linea.split(",");
 	       
 	       while (s.hasNextLine()) {
@@ -197,7 +209,6 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		   List<Domicilio> domicilios = new ArrayList<Domicilio>();
 		   while (s.hasNextLine()) {
 	            String linea = s.nextLine(); 
-	            System.out.println("DOMICILIO: "+linea);
 	            String [] cadena=linea.split(",");
 	            
 	            double latitud=Double.parseDouble(cadena[0]);

@@ -64,7 +64,7 @@ public abstract class Vehiculo extends Coordenable {
 
 	public void imprimir() {
 		
-		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador);
+		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador + "," + tiposResiduos);
 		
 	}
 	

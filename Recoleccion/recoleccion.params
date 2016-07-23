@@ -2,14 +2,14 @@
 # Licensed under the Academic Free License version 3.0
 # See the file "LICENSE" for more information
 
-#parent.0 = /home/cdbritos/cursoAE/ecj/ec/simple/simple.params
+parent.0 = /home/cdbritos/cursoAE/ecj/ec/simple/simple.params
 #parent.0 = /home/cbritos/Escritorio/ae/ecj/ec/simple/simple.params
 #parent.0 = C:/Users/Gonzalo/Desktop/FACULTAD/AE/ecj/ec/simple/simple.params
-parent.0 = C:\\Documents and Settings\\ggutierrez\\Escritorio\\FACULTAD\\AE\\ecj\\ec\\simple\\simple.params
+#parent.0 = C:\\Documents and Settings\\ggutierrez\\Escritorio\\FACULTAD\\AE\\ecj\\ec\\simple\\simple.params
 
 
 # N ESTA CLASE SE ENCUENTRA LA FUNCION DE FITNESS EN EL METODO EVALUATE
-eval.problem = recoleccion.ecj.Recoleccion
+eval.problem = recoleccion.modelo.jornada.Jornada
 
 stat.file				$solucion.out
 stat.do-final=			true
@@ -18,13 +18,13 @@ stat.do-message=		false
 stat.do-description=	true
 
 # ARCHIVOS DE ENTRADA Y SALIDA DEL PROGRAMA
-#eval.problem.in_depositos = depositos
-#eval.problem.in_domicilios_jornada = domicilios_jornada
-#eval.problem.in_vertederos = vertederos
+eval.problem.in_depositos = depositos
+eval.problem.in_domicilios_jornada = domicilios_jornada
+eval.problem.in_vertederos = vertederos
 
-vector.int-vect-ind.in_depositos = depositos
-vector.int-vect-ind.in_domicilios_jornada = domicilios_jornada
-vector.int-vect-ind.in_vertederos = vertederos
+#vector.int-vect-ind.in_depositos = depositos
+#vector.int-vect-ind.in_domicilios_jornada = domicilios_jornada
+#vector.int-vect-ind.in_vertederos = vertederos
 
 
 # ESTOS VIENEN POR DEFECTO

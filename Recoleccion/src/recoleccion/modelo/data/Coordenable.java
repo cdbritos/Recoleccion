@@ -15,6 +15,6 @@ public abstract class Coordenable {
 	protected abstract String getTipo();
 		
 	public void imprimir() {
-		System.out.println(getTipo() + ": " + coordenadas.getLatitud() + "," + coordenadas.getLongitud());
+		System.out.println(getTipo() + ": " + (coordenadas == null ? "SIN COORDENADAS" : coordenadas.toString()));
 	}
 }

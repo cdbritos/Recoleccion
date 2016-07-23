@@ -46,8 +46,9 @@ public class Pedido {
 		int result = 1;
 		result = prime * result + ((residuo == null) ? 0 : residuo.hashCode());
 		return result;
+		
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -62,5 +63,7 @@ public class Pedido {
 		return true;
 	} 
 	
-	
+	public void imprimir(){
+		System.out.println(residuo + ": " + cantidad);
+	}
 }

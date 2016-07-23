@@ -43,6 +43,15 @@ public class Domicilio extends Coordenable {
 	public void imprimir() {
 		super.imprimir();
 		System.out.println("	ID: " + this.identificador);
+		System.out.println("	PEDIDOS:");
+		if (CollectionUtils.isNotEmpty(pedidos)){
+			for (Pedido pedido : pedidos) {
+				System.out.print("		");
+				pedido.imprimir();
+			}
+		}else
+			System.out.println("		SIN PEDIDOS");
+		
 	}
 
 	@Override

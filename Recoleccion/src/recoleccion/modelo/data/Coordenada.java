@@ -32,6 +32,9 @@ public class Coordenada {
 		super();
 	}
 
-	
+	@Override
+	public String toString() {
+		return getLatitud() + ":" + getLongitud();
+	}
 	
 }

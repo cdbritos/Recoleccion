@@ -2,6 +2,8 @@ package recoleccion.modelo.jornada;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import recoleccion.modelo.data.Coordenable;
 import recoleccion.modelo.vehiculos.Vehiculo;
 
@@ -22,4 +24,12 @@ public class Deposito extends Coordenable {
 		return "DEPOSITO";
 	}
 	
+	@Override
+	public void imprimir() {
+		super.imprimir();
+		if (CollectionUtils.isNotEmpty(flota))
+			for (Vehiculo vehiculo : flota) {
+				System.out.print("	"); vehiculo.imprimir();
+			}
+	}
 }

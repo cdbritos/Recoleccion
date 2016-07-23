@@ -10,13 +10,6 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import ec.EvolutionState;
-import ec.Individual;
-import ec.Problem;
-import ec.simple.SimpleFitness;
-import ec.simple.SimpleProblemForm;
-import ec.util.Parameter;
-import ec.vector.IntegerVectorIndividual;
 import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
@@ -27,8 +20,16 @@ import recoleccion.modelo.vehiculos.Camioneta;
 import recoleccion.modelo.vehiculos.TipoVehiculo;
 import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.solucion.Solucion;
+import ec.EvolutionState;
+import ec.Individual;
+import ec.Problem;
+import ec.simple.SimpleFitness;
+import ec.simple.SimpleProblemForm;
+import ec.util.Parameter;
 
 public class Jornada extends Problem implements SimpleProblemForm {
+	
+	private static final long serialVersionUID = 1L;
 	
 	public static final String DEPOSITOS_IN = "in_depositos";
     public static final String DOM_JOR_IN = "in_domicilios_jornada";
@@ -257,5 +258,12 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		   return tiposResiduos;
 		   
 	   }
+	   
+	    @Override
+	    public void describe(EvolutionState state, Individual ind,
+	    		int subpopulation, int threadnum, int log) {
+	    	// TODO Auto-generated method stub
+	    	state.output.println( ind.genotypeToStringForHumans(), log );
+	    }
 
 }

@@ -4,6 +4,6 @@ public enum TipoResiduo {
 	
 	GRAN_VOLUMEN,
 	PODA,
-	ESCOMBROS;
+	ESCOMBRO;
 
 }

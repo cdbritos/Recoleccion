@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
+import recoleccion.modelo.data.TipoResiduo;
+
 /**
  *
  * @author ggutierrez
@@ -86,7 +88,7 @@ public class GeneradorRecoleccion {
             fichero_esc=new FileWriter(archivo);
             pw = new PrintWriter(fichero_esc);
             
-            String tipoResiduos[]={"Gran Volumes","Poda","Escombro"};
+            TipoResiduo tipoResiduos[] = TipoResiduo.values();
             
             int tipoResiduosPos;
             int m3Residuos;

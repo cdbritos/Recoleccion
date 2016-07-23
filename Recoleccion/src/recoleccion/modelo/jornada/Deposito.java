@@ -16,4 +16,10 @@ public class Deposito extends Coordenable {
 	public void setFlota(List<Vehiculo> flota) {
 		this.flota = flota;
 	}
+	
+	@Override
+	protected String getTipo() {
+		return "DEPOSITO";
+	}
+	
 }

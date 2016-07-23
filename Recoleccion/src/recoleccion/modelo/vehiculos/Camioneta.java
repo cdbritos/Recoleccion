@@ -7,8 +7,8 @@ public class Camioneta extends Vehiculo {
 	}
 
 	@Override
-	protected TipoVehiculo getTipo() {
-		return TipoVehiculo.CAMIONETA;
+	protected String getTipo() {
+		return TipoVehiculo.CAMIONETA.name();
 	}
 
 	@Override

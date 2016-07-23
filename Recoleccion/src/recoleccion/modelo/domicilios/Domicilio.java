@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 
 import recoleccion.modelo.data.Coordenable;
+import recoleccion.modelo.data.TipoResiduo;
 
 public class Domicilio extends Coordenable {
 
@@ -34,8 +35,14 @@ public class Domicilio extends Coordenable {
 		this.identificador = identificador;
 	}
 
+	@Override
+	protected String getTipo() {
+		return "DOMICILIO";
+	}
+	
 	public void imprimir() {
-		System.out.println("Domicilio: " + this.identificador);
+		super.imprimir();
+		System.out.println("	ID: " + this.identificador);
 	}
 
 	@Override
@@ -65,14 +72,23 @@ public class Domicilio extends Coordenable {
 	}
 
 	public boolean tieneBasura(){
-		
 		if (CollectionUtils.isNotEmpty(pedidos)){
 			for (Pedido pedido : pedidos) {
 				if (pedido.getCantidad() > 0)
 					return true;
 			}
 		}
-		
 		return false;
+	}
+	
+	public boolean tieneBasura(TipoResiduo tr){
+	    int i=0;
+	    while (i<pedidos.size()){
+	    	if (tr.equals(pedidos.get(i).getResiduo())){
+	           return pedidos.get(i).getCantidad() > 0L;
+	        }
+	        i++;
+	    }
+	    return false;
 	}
 }

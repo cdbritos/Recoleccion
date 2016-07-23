@@ -1,6 +1,7 @@
 package recoleccion.ecj;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.Vertedero;
 import recoleccion.modelo.vehiculos.Camion;
 import recoleccion.modelo.vehiculos.Camioneta;
+import recoleccion.modelo.vehiculos.TipoVehiculo;
 import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.modelo.viaje.Viaje;
 import recoleccion.solucion.Solucion;
@@ -42,167 +44,12 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
     
     public File in_depositos;
     public File in_domicilios_jornada;
-    public File in_vertederos;
-
-    ArrayList<Integer> numeros= new ArrayList<Integer>();
-    int res;
-    Random rnd=new Random();
-    //int[] genome1=new int[5];
-    //Parameter base;
-
-    /*@Override
-    public void setup(EvolutionState state, Parameter base) {
-        //super.setup(state, base); //To change body of generated methods, choose Tools | Templates.
-        System.out.println("PARAMETROS: "+base);
-        in_depositos = state.parameters.getFile(base.push(DEPOSITOS_IN), null);
-       in_domicilios_jornada = state.parameters.getFile(base.push(DOM_JOR_IN), null);
-       in_vertederos = state.parameters.getFile(base.push(VERTEDEROS_IN), null);
-       System.out.println("VERTEDEROS: "+in_vertederos);
-    }*/
-    
-   
+    public File in_vertederos;   
     
    @Override
     public void reset(EvolutionState state, int thread) {
         //super.reset(state, thread); //To change body of generated methods, choose Tools | Templates.
-	   Parameter base = defaultBase(); 
-	   in_depositos = state.parameters.getFile(base.push(DEPOSITOS_IN), null);
-       in_domicilios_jornada = state.parameters.getFile(base.push(DOM_JOR_IN), null);
-       in_vertederos = state.parameters.getFile(base.push(VERTEDEROS_IN), null);
-	   
-       System.out.println("PARAMETROS: "+base);
-       
-	   Vertedero vertedero=new Vertedero();
-	   Scanner s = null;
-
-       try {
-    	   s = new Scanner(in_vertederos);
-    	   while (s.hasNextLine()) {
-    		String linea = s.nextLine(); 
-                System.out.println("VERTEDERO: "+linea);
-    		double latitud=Double.parseDouble(linea.split(",")[0]);
-               double longitud=Double.parseDouble(linea.split(",")[1]);
-               Coordenada coord=new Coordenada();
-               coord.setLatitud(latitud);
-               coord.setLongitud(longitud);
-               vertedero.setCoordenadas(coord);
-    	   }
-    	   
-    	   List<Domicilio> domicilios=new ArrayList<>();
-    	   s = new Scanner(in_domicilios_jornada);
-    	   int identificador=0;
-    	   while (s.hasNextLine()) {
-                String linea = s.nextLine(); 
-                System.out.println("DOMICILIO: "+linea);
-                String [] cadena=linea.split(",");
-                double latitud=Double.parseDouble(cadena[0]);
-                double longitud=Double.parseDouble(cadena[1]);
-                int cantPedidos=2;
-                List<Pedido> pedidos=new ArrayList<>();
-                Domicilio domicilio=new Domicilio();
-                while (cantPedidos<cadena.length){
-                    Pedido pedido=new Pedido();
-                    pedido.setCantidad(Long.valueOf(cadena[cantPedidos]));
-                    cantPedidos++;
-                    String tipoResiduo=cadena[cantPedidos];
-                    TipoResiduo tr = null;
-                    if (tipoResiduo.equals("Poda")){
-                            tr=TipoResiduo.PODA;
-                    }else if(tipoResiduo.equals("Escombro")){
-                            tr=TipoResiduo.ESCOMBROS;
-                    }else{
-                            tr=TipoResiduo.GRAN_VOLUMEN;
-                    }
-                    pedido.setResiduo(tr);
-                    cantPedidos++;
-                    pedidos.add(pedido);
-                }
-               
-               Coordenada coord=new Coordenada();
-               coord.setLatitud(latitud);
-               coord.setLongitud(longitud);
-               domicilio.setCoordenadas(coord);
-               domicilio.setPedidos(pedidos);
-               domicilio.setIdentificador(Integer.toString(identificador));
-               identificador++;
-               domicilios.add(domicilio);
-    	   }
-    	   
-            List<Deposito> depositos=new ArrayList<>();
-            s = new Scanner(in_depositos);
-            Coordenada coord=new Coordenada();
-            int idVehiculo=0;
-            Deposito deposito=null;
-            List<Vehiculo> vehiculos=null;
-            String linea = s.nextLine(); 
-            System.out.println("DEPOSITO: "+linea);
-            String [] cadena=linea.split(",");
-            while (s.hasNextLine()) {
-    		   /*String linea = s.nextLine(); 
-                   System.out.println("DEPOSITO: "+linea);
-    		   String [] cadena=linea.split(",");*/
-    		   if (cadena[0].equals("DEPOSITO")){
-                        double latitud=Double.parseDouble(cadena[1]);
-                        double longitud=Double.parseDouble(cadena[2]);
-                        coord=new Coordenada();
-                        coord.setLatitud(latitud);
-                        coord.setLongitud(longitud);
-                        deposito=new Deposito();
-                        deposito.setCoordenadas(coord);
-                        linea = s.nextLine(); 
-                        cadena=linea.split(",");
-                        //deposito.setFlota(vehiculos);
-                        //depositos.add(deposito);
-    		   }else{
-                       boolean salir=false;
-                       vehiculos=new ArrayList<>();
-                       while (!salir && !cadena[0].equals("DEPOSITO")){
-                            int cantVehiculos=Integer.parseInt(cadena[0]);
-                            //List<Vehiculo> vehiculos=new ArrayList<>();
-                            for(int i=0;i<cantVehiculos;i++){
-                                    idVehiculo++;
-                                    if (cadena[1].equals("CAMIONES")){
-                                            Camion camion=new Camion(idVehiculo);
-                                            camion.setCoordenadas(coord);
-                                            camion.setTiposResiduos(calcularTipoResiduo(linea));
-                                            vehiculos.add(camion);
-
-                                    }
-                                    else{
-                                            Camioneta camiononeta=new Camioneta(idVehiculo);
-                                            camiononeta.setCoordenadas(coord);
-                                            camiononeta.setTiposResiduos(calcularTipoResiduo(linea));
-                                            vehiculos.add(camiononeta); 
-                                    }
-                                    //deposito.setFlota(vehiculos);
-                                    //depositos.add(deposito);
-                            }
-                            if (s.hasNextLine()){
-                                linea = s.nextLine(); 
-                                cadena=linea.split(",");
-                            }else{
-                                salir=true;
-                            }
-                            
-                       }
-                         deposito.setFlota(vehiculos);
-                         depositos.add(deposito);
-    		   }
-    		   
-    		   
-    	   }
-    	   
-    	   Jornada jornada=new Jornada();
-    	   jornada.setDepositos(depositos);
-    	   jornada.setDomicilios(domicilios);
-    	   jornada.setVertedero(vertedero);
-           
-           System.out.println("CANT DEPOSITOS: "+jornada.getDepositos().size());
-           System.out.println("CANT VEHICULOS DEP1: "+jornada.getDepositos().get(0).getFlota().size());
-           System.out.println("CANT VEHICULOS DEP2: "+jornada.getDepositos().get(1).getFlota().size());
-           System.out.println("CANT DOMICILIOS: "+jornada.getDomicilios().size());
-           System.out.println("CANT VERTEDEROS: "+jornada.getVertedero());
-           
+	              
            
            //CARGANDO LA SOLUCION RANDOMICA
            Solucion sol = new Solucion();
@@ -237,7 +84,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                     Pedido pedido=null;
                     while (iter.hasNext() && !valido) {
                         TipoResiduo tr=(TipoResiduo)iter.next();
-                        if (contieneResiduos(dom.getPedidos(),tr)){
+                        if (dom.tieneBasura(tr)){
                             System.out.println("CONTIENE PEDIDO: "+dom);
                             int j=0;
                             TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
@@ -310,17 +157,19 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
         }*/
         
     }
+   
+   
    public Domicilio domicilioValido(Vehiculo v,List<Domicilio> domicilios ,boolean valido){
        Domicilio dom=new Domicilio();
        valido=false;
        int i=0;
        while (i<domicilios.size() && !valido){
             dom=domicilios.get(i);
-            Iterator iter = v.getTiposResiduos().iterator();
-            Pedido pedido=null;
+            Iterator<TipoResiduo> iter = v.getTiposResiduos().iterator();
+            
             while (iter.hasNext() && !valido) {
                 TipoResiduo tr=(TipoResiduo)iter.next();
-                if (contieneResiduos(dom.getPedidos(),tr)){
+                if (dom.tieneBasura(tr)){
                     System.out.println("CONTIENE PEDIDO: "+dom);
                     int j=0;
                     TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
@@ -350,64 +199,13 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
         
    } 
     
-   public boolean contieneResiduos(List<Pedido> pedidos, TipoResiduo tr){
-       boolean contiene=false;
-       int i=0;
-       while (i<pedidos.size() && !contiene){
-           TipoResiduo trPedido=pedidos.get(i).getResiduo();
-           if (trPedido==tr){
-               contiene=true;
-           }
-           i++;
-       }
-       return contiene;
-   }
-    
-   /*public Pedido domicilioValido(Vehiculo v,Domicilio dom,boolean valido){
-        Iterator iter = v.getTiposResiduos().iterator();
-        Pedido pedido=null;
-        while (iter.hasNext() && !valido) {
-            TipoResiduo tr=(TipoResiduo)iter.next();
-            if (dom.getPedidos().contains(tr)){
-                
-                int i=0;
-                while (!dom.getPedidos().get(i).equals(tr)){
-                    i++;
-                }
-                if (v.getCapacidad()>=0){
-                    valido=true;
-                    pedido=new Pedido();
-                    pedido=dom.getPedidos().get(i);
-                }             
-            }
-        }
-        return pedido;
-        
-   }*/
    
-  
+       
    
    
    
-   public Set<TipoResiduo> calcularTipoResiduo(String linea){
-	   Set<TipoResiduo> tiposResiduos=new HashSet<TipoResiduo>();
-	   String[] cadena=linea.split(",");
-	   int contTipos=2;
-	   while (contTipos<cadena.length){
-		   TipoResiduo tr = null;
-		   if (cadena[contTipos].equals("GRAN_VOLUMEN")){
-			   tr=TipoResiduo.GRAN_VOLUMEN;
-		   }else if (cadena[contTipos].equals("PODA")){
-			   tr=TipoResiduo.PODA;
-		   }else{
-			   tr=TipoResiduo.ESCOMBROS;
-		   }
-		   tiposResiduos.add(tr);
-           contTipos++;
-	   }
-	   return tiposResiduos;
-	   
-   }
+   
+   
    
    /* ****************************************************
     * COMIENZO MERGE  

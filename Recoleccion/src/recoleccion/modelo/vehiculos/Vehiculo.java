@@ -79,6 +79,6 @@ public abstract class Vehiculo extends Coordenable {
 	
 	protected abstract void inicializar();
 	
-	protected abstract TipoVehiculo getTipo();
+	protected abstract String getTipo();
 	
 }

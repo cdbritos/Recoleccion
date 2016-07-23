@@ -22,4 +22,16 @@ public class Coordenada {
 		this.longitud = longitud;
 	}
 
+	public Coordenada(Double latitud, Double longitud) {
+		super();
+		this.latitud = latitud;
+		this.longitud = longitud;
+	}
+
+	public Coordenada() {
+		super();
+	}
+
+	
+	
 }

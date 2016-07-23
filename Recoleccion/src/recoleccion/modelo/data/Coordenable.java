@@ -12,4 +12,9 @@ public abstract class Coordenable {
 		this.coordenadas = coordenadas;
 	}
 	
+	protected abstract String getTipo();
+		
+	public void imprimir() {
+		System.out.println(getTipo() + ": " + coordenadas.getLatitud() + "," + coordenadas.getLongitud());
+	}
 }

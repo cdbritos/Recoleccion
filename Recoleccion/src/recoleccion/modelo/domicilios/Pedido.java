@@ -8,6 +8,22 @@ public class Pedido {
 	
 	private Long cantidad;
 
+	public Pedido(TipoResiduo tr) {
+		super();
+		residuo = tr;
+		cantidad = 0L;
+	}
+	
+	public Pedido(TipoResiduo residuo, Long cantidad) {
+		super();
+		this.residuo = residuo;
+		this.cantidad = cantidad;
+	}
+	
+	public Pedido(){
+		super();
+	}
+
 	public TipoResiduo getResiduo() {
 		return residuo;
 	}
@@ -22,9 +38,29 @@ public class Pedido {
 
 	public void setCantidad(Long cantidad) {
 		this.cantidad = cantidad;
-	} 
+	}
 
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((residuo == null) ? 0 : residuo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pedido other = (Pedido) obj;
+		if (residuo != other.residuo)
+			return false;
+		return true;
+	} 
 	
 	
 }

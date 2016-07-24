@@ -80,7 +80,7 @@ public class Domicilio extends Coordenable {
 		return true;
 	}
 
-	public boolean tieneBasura(){
+	public boolean tieneResiduo(){
 		if (CollectionUtils.isNotEmpty(pedidos)){
 			for (Pedido pedido : pedidos) {
 				if (pedido.getCantidad() > 0)
@@ -90,14 +90,18 @@ public class Domicilio extends Coordenable {
 		return false;
 	}
 	
-	public boolean tieneBasura(TipoResiduo tr){
+	public long tieneResiduo(TipoResiduo tr){
 	    int i=0;
 	    while (i<pedidos.size()){
 	    	if (tr.equals(pedidos.get(i).getResiduo())){
-	           return pedidos.get(i).getCantidad() > 0L;
+	           return pedidos.get(i).getCantidad();
 	        }
 	        i++;
 	    }
-	    return false;
+	    return 0;
+	}
+
+	public void recolectar(TipoResiduo tr, long cantARecolectar) {
+		this.pedidos.get(this.pedidos.indexOf(new Pedido(tr))).recolectar(cantARecolectar);
 	}
 }

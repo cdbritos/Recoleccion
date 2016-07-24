@@ -38,13 +38,6 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	 */
 	private static final long serialVersionUID = -7478676840715483431L;
 	
-	public static final String DEPOSITOS_IN = "in_depositos";
-    public static final String DOM_JOR_IN = "in_domicilios_jornada";
-    public static final String VERTEDEROS_IN = "in_vertederos";
-    
-    public File in_depositos;
-    public File in_domicilios_jornada;
-    public File in_vertederos;   
     
     @Override
     public void reset(EvolutionState state, int thread) {
@@ -84,12 +77,12 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                 Iterator iter = vehiculoActual.getTiposResiduos().iterator();
                 while (iter.hasNext() && !valido) {
                     TipoResiduo tr=(TipoResiduo)iter.next();
-                    if (dom.tieneBasura(tr)){
+                    if (dom.tieneResiduo(tr) > 0){
                         int j=0;
                         //TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
                         while (j<dom.getPedidos().size()){
                             TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
-                            if (dom.tieneBasura(tr)){
+                            if (dom.tieneResiduo(tr) > 0){
                                 //pedidosABorrar.add(dom.getPedidos().get(j));
                                 Long capacidadActual=vehiculoActual.getCapacidad()-dom.getPedidos().get(j).getCantidad();
                                 //System.out.println("CAPACIDAD ACTUAL: "+capacidadActual+" TIPO RESIDUOS: "+vehiculoActual.getTiposResiduos()+" ID VEHICULO: "+vehiculoActual.getIdentificador());
@@ -157,7 +150,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
             
             while (iter.hasNext() && !valido) {
                 TipoResiduo tr=(TipoResiduo)iter.next();
-                if (dom.tieneBasura(tr)){
+                if (dom.tieneResiduo(tr) > 0){
                     //System.out.println("CONTIENE PEDIDO: "+dom);
                     int j=0;
                     TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();

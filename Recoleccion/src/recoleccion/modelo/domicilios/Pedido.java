@@ -66,4 +66,8 @@ public class Pedido {
 	public void imprimir(){
 		System.out.println(residuo + ": " + cantidad);
 	}
+
+	public void recolectar(long cantARecolectar) {
+		cantidad -= cantARecolectar;
+	}
 }

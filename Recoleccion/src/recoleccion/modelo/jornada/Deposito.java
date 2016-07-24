@@ -1,6 +1,7 @@
 package recoleccion.modelo.jornada;
 
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -32,4 +33,13 @@ public class Deposito extends Coordenable {
 				System.out.print("	"); vehiculo.imprimir();
 			}
 	}
+	
+	public Vehiculo randomVehiculo(){
+		try {
+	        return flota.get((new Random()).nextInt(flota.size()));
+	    }
+	    catch (Throwable e){
+	        return null;
+	    }
+    }
 }

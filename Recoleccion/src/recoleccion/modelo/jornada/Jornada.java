@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -277,4 +278,16 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	state.output.println( ind.genotypeToStringForHumans(), log );
 	    }
 
+	    public Vehiculo randomVehiculo(){
+	    	return randomDeposito().randomVehiculo();
+	    }
+	    
+	    public Deposito randomDeposito(){
+			try {
+		        return depositos.get((new Random()).nextInt(depositos.size()));
+		    }
+		    catch (Throwable e){
+		        return null;
+		    }
+	    }
 }

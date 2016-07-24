@@ -3,54 +3,35 @@ package recoleccion.modelo.vehiculos;
 import java.util.Set;
 
 import recoleccion.modelo.data.Coordenable;
+import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
 import recoleccion.modelo.domicilios.Domicilio;
+import recoleccion.modelo.jornada.Jornada;
+import recoleccion.modelo.jornada.Vertedero;
 
 public abstract class Vehiculo extends Coordenable {
 	
-	private static final double UMBRAL_LLENO = 0.9; 
-
 	//identificador del vehiculo
 	private String identificador;
-	
-	//capacidad en m3 del vehiculo
-	private Long capacidad;
 	
 	//carga en m3 del vehiculo
 	private Long carga;
 
-	//velocidad promedio del vehiculo
-	private Long velocidad;
-		
-	//rendimiento en km por litro
-	private Long rendimiento;
+	//metros recorridos en la jornada
+	private double metrosRecorridos;		
 
 	//tipos residuos que puede recolectar el vehiculo
 	private Set<TipoResiduo> tiposResiduos;
 	
-	public Long getCapacidad() {
-		return capacidad;
-	}
+	public abstract Long getCapacidad();
 
-	public void setCapacidad(Long capacidad) {
-		this.capacidad = capacidad;
-	}
+	public abstract Long getVelocidad();
 
-	public Long getVelocidad() {
-		return velocidad;
-	}
-
-	public void setVelocidad(Long velocidad) {
-		this.velocidad = velocidad;
-	}
-
-	public Long getRendimiento() {
-		return rendimiento;
-	}
-
-	public void setRendimiento(Long rendimiento) {
-		this.rendimiento = rendimiento;
-	}
+	public abstract Long getRendimiento();
+	
+	public abstract Long getPrecioCombustible();
+	
+	public abstract int getEmpleados();
 
 	public String getIdentificador() {
 		return identificador;
@@ -75,16 +56,14 @@ public abstract class Vehiculo extends Coordenable {
 	}
 	
 	public Vehiculo(){
+		metrosRecorridos = 0;
 		carga = 0L;
-		inicializar();
 	}
 	
 	public Vehiculo(int id){
 		this();
 		this.identificador = String.valueOf(id);
 	}
-	
-	protected abstract void inicializar();
 	
 	protected abstract String getTipo();
 
@@ -98,6 +77,9 @@ public abstract class Vehiculo extends Coordenable {
 	
 	//TODO: la estrategia de recoleccion impacta sobre la solucion
 	public void recolectar(Domicilio domicilio){	
+		
+		this.setCoordenadas(domicilio.getCoordenadas());
+		
 		for (TipoResiduo tr : this.tiposResiduos) {
 			long cantResiduo = domicilio.tieneResiduo(tr);
 			if (cantResiduo > 0 ){
@@ -111,12 +93,55 @@ public abstract class Vehiculo extends Coordenable {
 		}
 	}
 
+	public void verter(Vertedero vertedero){
+		this.setCoordenadas(vertedero.getCoordenadas());
+		carga = 0L;	
+	}
+	
 	public boolean isLleno(){
 		return  capacidadActual() == 0;
 	}
 	
 	public long capacidadActual(){
-		return capacidad - carga;
+		return getCapacidad() - carga;
 	}
+
+	public double getMetrosRecorridos() {
+		return metrosRecorridos;
+	}
+
+	public void setMetrosRecorridos(double metrosRecorridos) {
+		this.metrosRecorridos = metrosRecorridos;
+	}
+	
+	@Override
+	public void setCoordenadas(Coordenada coordenadas) {
+		metrosRecorridos += distance(coordenadas);
+		super.setCoordenadas(coordenadas);
+	}
+	
+	// retorna duracion en horas
+	public double getDuracionJornada(){
+		return (metrosRecorridos / 1000) / getVelocidad();
+	}
+	
+	public double getCostoCombustible(){
+		double litrosConsumidos = (metrosRecorridos / 1000) / getRendimiento();
+		return litrosConsumidos * getPrecioCombustible();
+	}
+	
+	public double getCostoJornada(){
+		double costo = 0;
+		if (metrosRecorridos > 0){
+			//costo fijo
+			costo = Jornada.COSTO_JORNAL_POR_EMPLEADO * getEmpleados();
+			if (getDuracionJornada() > Jornada.DURACION_JORNAL_HORAS){
+				long horasExtras = Math.round(Math.ceil(getDuracionJornada() - Jornada.DURACION_JORNAL_HORAS));
+				costo += horasExtras * Jornada.COSTO_HORA_EXTRA;
+			}
+		}
+		return costo;
+	}
+
 	
 }

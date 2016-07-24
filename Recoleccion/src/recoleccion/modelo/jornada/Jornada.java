@@ -32,6 +32,10 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public static final long DURACION_JORNAL_HORAS = 8;
+	public static final long COSTO_JORNAL_POR_EMPLEADO = 3000;
+	public static final long COSTO_HORA_EXTRA = (COSTO_JORNAL_POR_EMPLEADO / DURACION_JORNAL_HORAS) * 3;
+	
 	public static final String DEPOSITOS_IN = "in_depositos";
     public static final String DOM_JOR_IN = "in_domicilios_jornada";
     public static final String VERTEDEROS_IN = "in_vertederos";

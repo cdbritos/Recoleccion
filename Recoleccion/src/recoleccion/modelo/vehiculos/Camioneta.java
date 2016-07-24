@@ -12,10 +12,32 @@ public class Camioneta extends Vehiculo {
 	}
 
 	@Override
-	protected void inicializar() {
-		this.setCapacidad(800L);
-		this.setRendimiento(11L);
-		this.setVelocidad(70L);
+	public Long getCapacidad() {
+		return 800L;
 	}
+
+
+	@Override
+	public Long getVelocidad() {
+		return 70L;
+	}
+
+
+	@Override
+	public Long getRendimiento() {
+		return 14L;
+	}
+
+
+	@Override
+	public Long getPrecioCombustible() {
+		return 40L;
+	}
+
+	@Override
+	public int getEmpleados() {
+		return 2;
+	}
+
 	
 }

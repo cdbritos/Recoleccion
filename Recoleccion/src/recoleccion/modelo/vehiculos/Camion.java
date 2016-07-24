@@ -7,17 +7,38 @@ public class Camion extends Vehiculo {
 		super(id);
 	}
 
-
 	@Override
 	protected String getTipo() {
 		return TipoVehiculo.CAMION.name();
 	}
 
+
 	@Override
-	protected void inicializar() {
-		this.setCapacidad(2000L);
-		this.setRendimiento(5L);
-		this.setVelocidad(40L);
+	public Long getCapacidad() {
+		return 2000L;
+	}
+
+
+	@Override
+	public Long getVelocidad() {
+		return 40L;
+	}
+
+
+	@Override
+	public Long getRendimiento() {
+		return 5L;
+	}
+
+
+	@Override
+	public Long getPrecioCombustible() {
+		return 38L;
+	}
+
+	@Override
+	public int getEmpleados() {
+		return 3;
 	}
 	
 	

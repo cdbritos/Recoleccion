@@ -17,6 +17,7 @@ import recoleccion.modelo.domicilios.Pedido;
 import recoleccion.modelo.jornada.Deposito;
 import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.Vertedero;
+import recoleccion.modelo.jornada.VertederoHandler;
 import recoleccion.modelo.vehiculos.Camion;
 import recoleccion.modelo.vehiculos.Camioneta;
 import recoleccion.modelo.vehiculos.TipoVehiculo;
@@ -45,77 +46,27 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        Solucion sol=new Solucion();
        Viaje viaje=new Viaje();
        List<Domicilio> domicilios = Jornada.getInstance().getDomicilios();
-       //List<Domicilio> domiciliosCompletos=new ArrayList<>();
-      // List<Domicilio> domiciliosViajes=new ArrayList<>();
-       List<Viaje> viajes=new ArrayList<>();
-       //domiciliosCompletos=jornada.getDomicilios();         
-       
+       List<Viaje> viajes=new ArrayList<>();             
        Random rand=new Random();
-       //List<Vehiculo> vehiculos=new ArrayList<>();
        while(!domicilios.isEmpty()){
            List<Domicilio> domiciliosViajes=new ArrayList<>();
            viaje=new Viaje();
-           //System.out.println("DOMICILIO: "+domicilios);
-            int randDeposito=rand.nextInt(Jornada.getInstance().getDepositos().size());
-            Deposito depActual=Jornada.getInstance().getDepositos().get(randDeposito);
-            int randVehiculo=rand.nextInt(depActual.getFlota().size());
-            Vehiculo vehiculoActual=depActual.getFlota().get(randVehiculo);
+            Vehiculo vehiculoActual=Jornada.getInstance().randomVehiculo();
             viaje.setVehiculo(vehiculoActual);
-            //int randDomicilio=rand.nextInt(domiciliosCompletos.size()-1);
-             
-            int i=0;
-            boolean valido=false;
-            while (i<domicilios.size() && vehiculoActual.getCapacidad()>0){
-                //System.out.println("VEHICULO: "+vehiculoActual);
-                //randDomicilio=rand.nextInt(domiciliosCompletos.size()-1);
-                valido=false;
-                
+            int randDomicilio=rand.nextInt(domicilios.size());            
+            while (!vehiculoActual.isLleno()){
+                randDomicilio=rand.nextInt(domicilios.size());             
                 Domicilio dom=new Domicilio();
-                dom.setIdentificador(domicilios.get(i).getIdentificador());
-                dom.setPedidos(domicilios.get(i).getPedidos());
+                dom.setIdentificador(domicilios.get(randDomicilio).getIdentificador());
+                dom.setPedidos(domicilios.get(randDomicilio).getPedidos());
                 //dom=domicilios.get(i);
-                Iterator iter = vehiculoActual.getTiposResiduos().iterator();
-                while (iter.hasNext() && !valido) {
-                    TipoResiduo tr=(TipoResiduo)iter.next();
-                    if (dom.tieneResiduo(tr) > 0){
-                        int j=0;
-                        //TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
-                        while (j<dom.getPedidos().size()){
-                            TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
-                            if (dom.tieneResiduo(tr) > 0){
-                                //pedidosABorrar.add(dom.getPedidos().get(j));
-                                Long capacidadActual=vehiculoActual.getCapacidad()-dom.getPedidos().get(j).getCantidad();
-                                //System.out.println("CAPACIDAD ACTUAL: "+capacidadActual+" TIPO RESIDUOS: "+vehiculoActual.getTiposResiduos()+" ID VEHICULO: "+vehiculoActual.getIdentificador());
-                                vehiculoActual.setCapacidad(capacidadActual);
-                                //dom.getPedidos().remove(dom.getPedidos().get(j));
-                                dom.getPedidos().remove(j);
-                            }
-                            j++;
-                            //trPedido=dom.getPedidos().get(j).getResiduo();
-                        }
-                        //if (v.getCapacidad()>=0){
-                            valido=true;
-                            /*Long capacidadActual=vehiculoActual.getCapacidad()-dom.getPedidos().get(j).getCantidad();
-                            vehiculoActual.setCapacidad(capacidadActual);
-                            dom.getPedidos().remove(dom.getPedidos().get(j));*/
-                            domiciliosViajes.add(dom);
-                            if (dom.getPedidos().isEmpty()){
-                                //System.out.println("REMOVI: "+dom.getIdentificador());
-                                //domicilios.remove(dom);
-                                //domicilios.remove(i);
-                                domicilios.remove(dom);
-                            }
-                        //}             
-                    }
+                domiciliosViajes.add(dom);
+                vehiculoActual.recolectar(dom);
+                if (!dom.tieneResiduo()){
+                	domicilios.remove(dom);
                 }
-               i++;
-                /*Domicilio domActual=domicilioValido(vehiculoActual,domiciliosCompletos,valido);
-                domiciliosViajes.add(domActual);*/
-                //System.out.println("CANT DOM: "+domiciliosCompletos.size());
-                //System.out.println("CANT DOM: "+domicilios.size());
-                
-               
             }        
+            vehiculoActual.verter(VertederoHandler.getInstance().get(vehiculoActual));
             if (domiciliosViajes.size()>0){
                 viaje.setDomicilios(domiciliosViajes);  
                 viajes.add(viaje);
@@ -138,54 +89,6 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        System.out.println();
 	   
     }
-   
-   
-   public Domicilio domicilioValido(Vehiculo v,List<Domicilio> domicilios ,boolean valido){
-	   Domicilio dom=new Domicilio();
-       valido=false;
-       int i=0;
-       while (i<domicilios.size() && !valido){
-            dom=domicilios.get(i);
-            Iterator<TipoResiduo> iter = v.getTiposResiduos().iterator();
-            
-            while (iter.hasNext() && !valido) {
-                TipoResiduo tr=(TipoResiduo)iter.next();
-                if (dom.tieneResiduo(tr) > 0){
-                    //System.out.println("CONTIENE PEDIDO: "+dom);
-                    int j=0;
-                    TipoResiduo trPedido=dom.getPedidos().get(j).getResiduo();
-                    while (trPedido!=tr){
-                        j++;
-                        trPedido=dom.getPedidos().get(j).getResiduo();
-                    }
-                    //if (v.getCapacidad()>=0){
-                        valido=true;
-                        Long capacidadActual=v.getCapacidad()-dom.getPedidos().get(j).getCantidad();
-                        v.setCapacidad(capacidadActual);
-                        dom.getPedidos().remove(dom.getPedidos().get(j));
-                        if (dom.getPedidos().isEmpty()){
-                            //System.out.println("REMOVI: "+dom);
-                            domicilios.remove(dom);
-                        }
-                    //}             
-                }
-            }
-           i++;
-       }
-       if (i==domicilios.size()){
-           valido=true;
-       }
-       
-       return dom;
-              
-   } 
-    
-   
-       
-   
-   
-   
-   
    
    
    /* ****************************************************

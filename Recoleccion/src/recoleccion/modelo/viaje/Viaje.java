@@ -7,6 +7,8 @@ import org.apache.commons.collections.CollectionUtils;
 
 import recoleccion.modelo.domicilios.Domicilio;
 import recoleccion.modelo.domicilios.DomiciliosHandler;
+import recoleccion.modelo.jornada.Vertedero;
+import recoleccion.modelo.jornada.VertederoHandler;
 import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.modelo.vehiculos.VehiculoHandler;
 
@@ -65,11 +67,13 @@ public class Viaje {
 		
 	}
 
-	public double fitness() {
-		double fitness = 0;
-		if (CollectionUtils.isNotEmpty(domicilios))
-			fitness = 1; //Aca calcular fitness posta
-		return fitness;
+	public void doViaje() {
+		if (CollectionUtils.isNotEmpty(domicilios)){
+			for (Domicilio domicilio: domicilios) {
+				vehiculo.recolectar(domicilio);
+			}
+			vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
+		}
 	}
 	
 	

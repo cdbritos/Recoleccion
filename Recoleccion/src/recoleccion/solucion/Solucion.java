@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 
 import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
+import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.modelo.viaje.Viaje;
 
 public class Solucion {
@@ -37,11 +38,19 @@ public class Solucion {
 	// viajes sin domicilio se dejan en la solucion tiene fitness 0
 	public double fitness(){
 		double fitness = 0;
+		List<Vehiculo> vehiculosUtilizados = new ArrayList<Vehiculo>();
+		
 		if (CollectionUtils.isNotEmpty(viajes)){
 			for (Viaje viaje : viajes) {
-				fitness += viaje.fitness();
+				viaje.doViaje();
+				if (!vehiculosUtilizados.contains(viaje.getVehiculo()))
+					vehiculosUtilizados.add(viaje.getVehiculo());
 			}
 		}
+		
+		for (Vehiculo vehiculo : vehiculosUtilizados)
+			fitness += vehiculo.getCostoJornada();
+				
 		return fitness;
 	}
 	

@@ -39,5 +39,10 @@ public class Camioneta extends Vehiculo {
 		return 2;
 	}
 
+	@Override
+	public double getTiempoDescarga() {
+		return 0.1/60; //0,01 minutos demora en descargar una unidad de residuo 
+	}
+
 	
 }

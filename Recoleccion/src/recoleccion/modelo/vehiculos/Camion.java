@@ -41,5 +41,9 @@ public class Camion extends Vehiculo {
 		return 3;
 	}
 	
+	public double getTiempoDescarga(){
+		return 0.01/60;  
+	}
+	
 	
 }

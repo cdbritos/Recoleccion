@@ -1,11 +1,14 @@
 package recoleccion.modelo.vehiculos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import recoleccion.modelo.data.Coordenable;
 import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
 import recoleccion.modelo.domicilios.Domicilio;
+import recoleccion.modelo.domicilios.Pedido;
 import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.Vertedero;
 
@@ -151,7 +154,25 @@ public abstract class Vehiculo extends Coordenable {
 		}
 		return costo;
 	}
+	
+	//Dada la lista de domicilios retorna una lista de Domicilios validos para el vehiculo
+	public List<Domicilio> domiciliosValidos(List<Domicilio> totalDomicilios){
+		List<Domicilio> domValidos=new ArrayList<>();
+		for (int i=0;i<totalDomicilios.size();i++){			
+			Domicilio dom=totalDomicilios.get(i);
+			if (dom.residuosValidos(this.getTiposResiduos())){
+				dom=new Domicilio();
+				dom.setCoordenadas(totalDomicilios.get(i).getCoordenadas());
+				dom.setIdentificador(totalDomicilios.get(i).getIdentificador());
+				dom.setPedidos(totalDomicilios.get(i).getPedidos());
+				domValidos.add(dom);
+			}
+		}
+		return domValidos;
+		
+	}
 
+	
 	
 	@Override
 	public int hashCode() {

@@ -1,6 +1,9 @@
 package recoleccion.modelo.domicilios;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -24,7 +27,11 @@ public class Domicilio extends Coordenable {
 	}
 
 	public void setPedidos(List<Pedido> pedidos) {
-		this.pedidos = pedidos;
+		List<Pedido> lstPedidos=new ArrayList<>();
+		for (int i=0;i<pedidos.size();i++){
+			lstPedidos.add(pedidos.get(i));
+		}
+		this.pedidos = lstPedidos;
 	}
 
 	public String getIdentificador() {
@@ -104,4 +111,19 @@ public class Domicilio extends Coordenable {
 	public void recolectar(TipoResiduo tr, long cantARecolectar) {
 		this.pedidos.get(this.pedidos.indexOf(new Pedido(tr))).recolectar(cantARecolectar);
 	}
+	
+	//Dado un set de residuos verifico si el domicilio tiene alguno de ellos
+	public boolean residuosValidos(Set<TipoResiduo> residuos){
+		boolean valido=false;
+		Iterator<TipoResiduo> iter = residuos.iterator();
+		while (iter.hasNext() && !valido) {
+			TipoResiduo tr=(TipoResiduo) iter.next();
+			if (this.getPedidos().contains(tr)){
+				valido=true;
+			}
+		}
+		return valido;
+
+	}
+		
 }

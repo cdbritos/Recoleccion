@@ -53,15 +53,19 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
            viaje=new Viaje();
             Vehiculo vehiculoActual=Jornada.getInstance().randomVehiculo();
             viaje.setVehiculo(vehiculoActual);
-            int randDomicilio=rand.nextInt(domicilios.size());            
-            while (!vehiculoActual.isLleno()){
-                randDomicilio=rand.nextInt(domicilios.size());             
+            //int randDomicilio=rand.nextInt(domicilios.size());  
+            List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(domicilios);
+            //int randDomicilio=rand.nextInt(domiciliosValidos.size());  
+            while (!vehiculoActual.isLleno() && !domiciliosValidos.isEmpty()){
+                //randDomicilio=rand.nextInt(domicilios.size()); 
+            	int randDomicilio=rand.nextInt(domiciliosValidos.size()); 
                 Domicilio dom=new Domicilio();
-                dom.setIdentificador(domicilios.get(randDomicilio).getIdentificador());
-                dom.setPedidos(domicilios.get(randDomicilio).getPedidos());
-                //dom=domicilios.get(i);
+                dom.setCoordenadas(domiciliosValidos.get(randDomicilio).getCoordenadas());
+                dom.setIdentificador(domiciliosValidos.get(randDomicilio).getIdentificador());
+                dom.setPedidos(domiciliosValidos.get(randDomicilio).getPedidos());
                 domiciliosViajes.add(dom);
                 vehiculoActual.recolectar(dom);
+                domiciliosValidos.remove(dom);
                 if (!dom.tieneResiduo()){
                 	domicilios.remove(dom);
                 }

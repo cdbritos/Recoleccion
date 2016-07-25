@@ -62,4 +62,18 @@ public class Solucion {
 		}
 	}
 	
+	public Solucion corregirSolucion(List<Vehiculo> vehiculosUtilizados){
+		Solucion sol=new Solucion();
+		for (Viaje viaje : viajes) {
+			List<Viaje> viajesCorregidos=new ArrayList<>();
+			viajesCorregidos=viaje.corregir(vehiculosUtilizados);
+			for (Viaje viajeCorregido : viajesCorregidos){
+				viajes.add(viajeCorregido);
+			}
+		}
+		sol.setViajes(viajes);
+		return sol;
+		//this.setViajes(viajes);
+	}
+	
 }

@@ -76,6 +76,26 @@ public class Viaje {
 		}
 	}
 	
+	public List<Viaje> corregir(List<Vehiculo> vehiculosUtilizados){
+		//boolean valido=false;
+		//int i=0;
+		//Long carga=vehiculo.getCarga();
+		//int cantDom=this.getDomicilios().size();
+		List<Viaje> viajesCorregidos=new ArrayList<>();
+		eliminarDomiciliosRepetidos();
+		viajesCorregidos=agregarViajesExcedeCarga(vehiculosUtilizados);
+		return viajesCorregidos;
+		
+	}
+	
+	private void eliminarDomiciliosRepetidos(){
+		
+	}
+	
+	private List<Viaje> agregarViajesExcedeCarga(List<Vehiculo> domicilios){
+		return null;
+	}
+	
 	
 	
 	

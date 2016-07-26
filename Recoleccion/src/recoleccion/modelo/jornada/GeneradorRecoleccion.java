@@ -9,7 +9,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
+import recoleccion.modelo.data.Coordenable;
+import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
+import recoleccion.modelo.domicilios.Domicilio;
 
 /**
  *
@@ -70,10 +73,18 @@ public class GeneradorRecoleccion {
                     }else{
                         latitudCol=Double.parseDouble(domiciliosGenerador.get(j).split(",")[0]);
                         longitudCol=Double.parseDouble(domiciliosGenerador.get(j).split(",")[1]);
+                        Coordenada c1 = new Coordenada(latitudCol, longitudCol);
+                        Domicilio d1 = new Domicilio();
+                        d1.setCoordenadas(c1);
+                        
                         latitudFila=Double.parseDouble(domiciliosGenerador.get(i).split(",")[0]);
                         longitudFila=Double.parseDouble(domiciliosGenerador.get(i).split(",")[1]);
-                        matrizDistancia[i][j]=Math.sqrt(Math.pow(latitudCol-latitudFila,2)+Math.pow(longitudCol-longitudFila,2));
-                        double distancia=Math.sqrt(Math.pow(latitudCol-latitudFila,2)+Math.pow(longitudCol-longitudFila,2));             
+                        Coordenada c2 = new Coordenada(latitudFila, longitudFila);
+                        Domicilio d2 = new Domicilio();
+                        d2.setCoordenadas(c2);
+                        
+                        matrizDistancia[i][j]= d1.distance(d2);
+                        double distancia = d1.distance(d2);             
                         esc=String.valueOf(distancia)+" ";
                     }
                     pw.print(esc);

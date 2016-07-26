@@ -1,10 +1,16 @@
 package recoleccion.modelo.jornada;
 
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+
 import recoleccion.modelo.data.Coordenable;
 
 public class VertederoHandler {
 
 	private static VertederoHandler instance = null;
+	
+	private List<Vertedero> vertederos;
 	
 	private VertederoHandler() {
 		
@@ -19,7 +25,16 @@ public class VertederoHandler {
 	}
 	
 	public Vertedero get(Coordenable vehiculo) {
-		//retorna el vertedero mas cercano al vehiculo
-		return new Vertedero();
+		if (CollectionUtils.isNotEmpty(vertederos))
+			return vertederos.get(0);
+		return null;
+	}
+
+	public List<Vertedero> getVertederos() {
+		return vertederos;
+	}
+
+	public void setVertederos(List<Vertedero> vertederos) {
+		this.vertederos = vertederos;
 	}
 }

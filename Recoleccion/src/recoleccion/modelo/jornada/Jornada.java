@@ -62,7 +62,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	
 	public List<Domicilio> domicilios;
 	
-	public Vertedero vertedero;
+	public VertederoHandler vertederoHandler;
 
 	public List<Deposito> getDepositos() {
 		return depositos;
@@ -80,13 +80,6 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		this.domicilios = domicilios;
 	}
 
-	public Vertedero getVertedero() {
-		return vertedero;
-	}
-
-	public void setVertedero(Vertedero vertedero) {
-		this.vertedero = vertedero;
-	}
 
 	@Override
 	public void evaluate(EvolutionState state, Individual ind, int subpopulation, int threadnum) {
@@ -99,9 +92,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
         
         ((SimpleFitness) ind2.fitness).setFitness(state, fitness*(-1), fitness==0);
         
-        ind.evaluated=true;
-        
-        
+        ind.evaluated=true;      
 	}
 	
 	@Override
@@ -114,7 +105,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	   
        try {
     	   //cargo vertedero
-    	   vertedero = cargarVertedero();
+    	   VertederoHandler.getInstance().setVertederos(cargarVertedero());
     	    	   
     	   //cargo domicilios con sus pedidos
     	   domicilios = cargarDomicilios();
@@ -129,7 +120,9 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	}
 	
 	private void imprimir() {
-		vertedero.imprimir();
+		for (Vertedero vertedero : vertederoHandler.getVertederos()) {
+			vertedero.imprimir();
+		}
 		
 		if (CollectionUtils.isNotEmpty(depositos))
 			for (Deposito deposito : depositos) {
@@ -245,10 +238,11 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		   return domicilios;
 		}
 	   
-	   private Vertedero cargarVertedero() throws FileNotFoundException  {
+	   private List<Vertedero> cargarVertedero() throws FileNotFoundException  {
 		   Scanner s = new Scanner(in_vertederos);
-		   Vertedero vertedero = new Vertedero();
+		   List<Vertedero>	vertederos = new ArrayList<Vertedero>();
 		   while (s.hasNextLine()) {
+			   Vertedero vertedero = new Vertedero();
 			   String linea = s.nextLine();         
 			   double latitud=Double.parseDouble(linea.split(",")[0]);
 			   double longitud=Double.parseDouble(linea.split(",")[1]);
@@ -256,11 +250,12 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	           coord.setLatitud(latitud);
 	           coord.setLongitud(longitud);
 	           vertedero.setCoordenadas(coord);
+	           vertederos.add(vertedero);
 		   }
 		   
 		   s.close();
 		   
-		   return vertedero;
+		   return vertederos;
 	   }
 	   
 	   private Set<TipoResiduo> calcularTipoResiduo(String linea){

@@ -118,7 +118,8 @@ public class Domicilio extends Coordenable {
 		Iterator<TipoResiduo> iter = residuos.iterator();
 		while (iter.hasNext() && !valido) {
 			TipoResiduo tr=(TipoResiduo) iter.next();
-			if (this.getPedidos().contains(tr)){
+			Pedido p = new Pedido(tr);
+			if (this.getPedidos().contains(p)){
 				valido=true;
 			}
 		}

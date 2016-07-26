@@ -23,7 +23,7 @@ public class Viaje {
 			// seteoVehiculo
 			vehiculo = dataViaje[0] < 0 ?
 				VehiculoHandler.getInstance().get(dataViaje[0]) :
-				VehiculoHandler.getInstance().get();
+				VehiculoHandler.getInstance().randomVehiculo();
 			
 			// seteo domicilios
 			// inicializa i dependiendo si vino vehiculo o no

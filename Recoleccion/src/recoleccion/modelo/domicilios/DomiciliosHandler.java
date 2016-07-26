@@ -1,6 +1,9 @@
 package recoleccion.modelo.domicilios;
 
 import java.util.List;
+import java.util.Random;
+
+import recoleccion.modelo.vehiculos.Vehiculo;
 
 
 public class DomiciliosHandler {
@@ -22,7 +25,8 @@ public class DomiciliosHandler {
 	}
 	
 	public Domicilio get(int id){
-		return new Domicilio(id);
+		Domicilio d = new Domicilio(id);
+		return domicilios.get(domicilios.indexOf(d));
 	}
 
 	public List<Domicilio> getDomicilios() {
@@ -32,6 +36,15 @@ public class DomiciliosHandler {
 	public void setDomicilios(List<Domicilio> domicilios) {
 		this.domicilios = domicilios;
 	}
+	
+	public Domicilio randomVehiculo(){
+		try {
+	        return domicilios.get((new Random()).nextInt(domicilios.size()));
+	    }
+	    catch (Throwable e){
+	        return null;
+	    }
+    }
 }
 
 

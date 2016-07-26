@@ -127,7 +127,8 @@ public abstract class Vehiculo extends Coordenable {
 	
 	@Override
 	public void setCoordenadas(Coordenada coordenadas) {
-		metrosRecorridos += distance(coordenadas);
+		if (getCoordenadas() != null)
+			metrosRecorridos += distance(coordenadas);
 		super.setCoordenadas(coordenadas);
 	}
 	

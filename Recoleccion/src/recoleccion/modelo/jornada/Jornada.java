@@ -59,12 +59,6 @@ public class Jornada extends Problem implements SimpleProblemForm {
     	return instancia;
     }
     
-	private VehiculoHandler	vehiculoHandler;
-	
-	private DomiciliosHandler domicilioHandler;
-	
-	private VertederoHandler vertederoHandler;
-
 	@Override
 	public void evaluate(EvolutionState state, Individual ind, int subpopulation, int threadnum) {
 	
@@ -104,7 +98,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	}
 	
 	private void imprimir() {
-		for (Vertedero vertedero : vertederoHandler.getVertederos()) {
+		for (Vertedero vertedero : VertederoHandler.getInstance().getVertederos()) {
 			vertedero.imprimir();
 		}
 		
@@ -267,21 +261,17 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	return VehiculoHandler.getInstance().randomVehiculo();
 	    }
 	    
-	    
-
 		public DomiciliosHandler getDomicilioHandler() {
-			return domicilioHandler;
-		}
-
-		public void setDomicilioHandler(DomiciliosHandler domicilioHandler) {
-			this.domicilioHandler = domicilioHandler;
+			return DomiciliosHandler.getInstance();
 		}
 
 		public VehiculoHandler getVehiculoHandler() {
-			return vehiculoHandler;
+			return VehiculoHandler.getInstance();
+		}
+		
+		public VertederoHandler getVertederoHandler(){
+			return VertederoHandler.getInstance();
 		}
 
-		public void setVehiculoHandler(VehiculoHandler vehiculoHandler) {
-			this.vehiculoHandler = vehiculoHandler;
-		}
+	
 }

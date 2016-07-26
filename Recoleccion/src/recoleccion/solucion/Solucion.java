@@ -29,6 +29,7 @@ public class Solucion {
 			Viaje v = new Viaje(viajesInd[i]);
 			this.viajes.add(v);	
 		}		
+		System.out.println(ind.genotypeToStringForHumans());
 	}
 	
 	public Solucion(){
@@ -48,9 +49,10 @@ public class Solucion {
 			}
 		}
 		
-		for (Vehiculo vehiculo : vehiculosUtilizados)
-			fitness += vehiculo.getCostoJornada();
-				
+		for (Vehiculo vehiculo : vehiculosUtilizados){
+			if (vehiculo != null)
+				fitness += vehiculo.getCostoJornada();
+		}		
 		return fitness;
 	}
 	

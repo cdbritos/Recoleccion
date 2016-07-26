@@ -1,9 +1,10 @@
 package recoleccion.modelo.domicilios;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import recoleccion.modelo.vehiculos.Vehiculo;
+import org.apache.commons.collections.CollectionUtils;
 
 
 public class DomiciliosHandler {
@@ -30,7 +31,14 @@ public class DomiciliosHandler {
 	}
 
 	public List<Domicilio> getDomicilios() {
-		return domicilios;
+		List<Domicilio> result = new ArrayList<Domicilio>();
+		
+		if (CollectionUtils.isNotEmpty(domicilios)){
+			for (Domicilio d : domicilios) {
+				result.add(new Domicilio(d));
+			}
+		}
+		return result;
 	}
 
 	public void setDomicilios(List<Domicilio> domicilios) {

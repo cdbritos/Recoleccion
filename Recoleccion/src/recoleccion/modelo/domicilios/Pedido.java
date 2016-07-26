@@ -24,6 +24,11 @@ public class Pedido {
 		super();
 	}
 
+	public Pedido(Pedido p) {
+		this.residuo = p.getResiduo();
+		this.cantidad = p.cantidad;
+	}
+
 	public TipoResiduo getResiduo() {
 		return residuo;
 	}

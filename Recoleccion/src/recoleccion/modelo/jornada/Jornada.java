@@ -144,7 +144,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	                	  int cantVehiculos=Integer.parseInt(cadena[0]);
 	                       
 	                       for(int i=0;i<cantVehiculos;i++){
-	                               idVehiculo++;
+	                               idVehiculo--;
 	                               if (cadena[1].equals(TipoVehiculo.CAMION.name())){
 	                                       Camion camion=new Camion(idVehiculo);
 	                                       camion.setCoordenadas(coord);

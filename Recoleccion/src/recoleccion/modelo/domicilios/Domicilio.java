@@ -21,6 +21,17 @@ public class Domicilio extends Coordenable {
 	public Domicilio(int id) {
 		this.identificador = String.valueOf(id);
 	}
+	
+	public Domicilio(Domicilio d){
+		this.setCoordenadas(d.getCoordenadas());
+		this.identificador = d.getIdentificador();
+		if (CollectionUtils.isNotEmpty(d.pedidos))
+			this.pedidos = new ArrayList<Pedido>();
+			for (Pedido p : d.getPedidos()) {
+				this.pedidos.add(new Pedido(p));
+			}
+
+	}
 
 	public List<Pedido> getPedidos() {
 		return pedidos;

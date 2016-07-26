@@ -68,7 +68,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
         
         double fitness = new Solucion(ind2).fitness();
         
-        ((SimpleFitness) ind2.fitness).setFitness(state, fitness*(-1), fitness==0);
+        ((SimpleFitness) ind2.fitness).setFitness(state, fitness*(-1), false);
         
         ind.evaluated=true;      
 	}
@@ -183,7 +183,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 
 	   private List<Domicilio> cargarDomicilios() throws FileNotFoundException {
 		   Scanner s = new Scanner(in_domicilios_jornada);
-		   int identificador=0;
+		   int identificador=1;
 		   List<Domicilio> domicilios = new ArrayList<Domicilio>();
 		   while (s.hasNextLine()) {
 	            String linea = s.nextLine(); 
@@ -273,5 +273,8 @@ public class Jornada extends Problem implements SimpleProblemForm {
 			return VertederoHandler.getInstance();
 		}
 
-	
+	/*NOS QUEDA POR CORREGIR:
+	 * BORRAR LOS CEROS DE LOS VECTORES SOLUCION (NO CONSIDERARLOS)
+	 * EL LARGO DEL GENOMA SERIA EL LARGO DEL PEOR CASO
+	 */
 }

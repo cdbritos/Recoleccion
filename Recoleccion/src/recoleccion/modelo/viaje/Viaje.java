@@ -29,9 +29,11 @@ public class Viaje {
 			// inicializa i dependiendo si vino vehiculo o no
 			domicilios = new ArrayList<Domicilio>();
 			for (int i = dataViaje[0] < 0 ? 1 : 0; i<dataViaje.length;i++){
-				Domicilio d = DomiciliosHandler.getInstance().get(dataViaje[i]);
+				if (dataViaje[i]!=0){
+					Domicilio d = DomiciliosHandler.getInstance().get(dataViaje[i]);
 				//if (!domicilios.contains(d))
 					domicilios.add(d);
+				}
 			}
 		}
 	}

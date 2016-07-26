@@ -45,7 +45,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        //CARGANDO LA SOLUCION RANDOMICA
        Solucion sol=new Solucion();
        Viaje viaje=new Viaje();
-       List<Domicilio> domicilios = Jornada.getInstance().getDomicilios();
+       List<Domicilio> domicilios = Jornada.getInstance().getDomicilioHandler().getDomicilios();
        List<Viaje> viajes=new ArrayList<>();             
        Random rand=new Random();
        while(!domicilios.isEmpty()){

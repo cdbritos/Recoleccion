@@ -34,12 +34,4 @@ public class Deposito extends Coordenable {
 			}
 	}
 	
-	public Vehiculo randomVehiculo(){
-		try {
-	        return flota.get((new Random()).nextInt(flota.size()));
-	    }
-	    catch (Throwable e){
-	        return null;
-	    }
-    }
 }

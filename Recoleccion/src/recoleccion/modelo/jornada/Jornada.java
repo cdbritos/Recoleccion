@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -15,11 +14,13 @@ import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
 import recoleccion.modelo.domicilios.Domicilio;
+import recoleccion.modelo.domicilios.DomiciliosHandler;
 import recoleccion.modelo.domicilios.Pedido;
 import recoleccion.modelo.vehiculos.Camion;
 import recoleccion.modelo.vehiculos.Camioneta;
 import recoleccion.modelo.vehiculos.TipoVehiculo;
 import recoleccion.modelo.vehiculos.Vehiculo;
+import recoleccion.modelo.vehiculos.VehiculoHandler;
 import recoleccion.solucion.Solucion;
 import ec.EvolutionState;
 import ec.Individual;
@@ -58,28 +59,11 @@ public class Jornada extends Problem implements SimpleProblemForm {
     	return instancia;
     }
     
-	public List<Deposito> depositos;
+	private VehiculoHandler	vehiculoHandler;
 	
-	public List<Domicilio> domicilios;
+	private DomiciliosHandler domicilioHandler;
 	
-	public VertederoHandler vertederoHandler;
-
-	public List<Deposito> getDepositos() {
-		return depositos;
-	}
-
-	public void setDepositos(List<Deposito> depositos) {
-		this.depositos = depositos;
-	}
-
-	public List<Domicilio> getDomicilios() {
-		return domicilios;
-	}
-
-	public void setDomicilios(List<Domicilio> domicilios) {
-		this.domicilios = domicilios;
-	}
-
+	private VertederoHandler vertederoHandler;
 
 	@Override
 	public void evaluate(EvolutionState state, Individual ind, int subpopulation, int threadnum) {
@@ -108,10 +92,10 @@ public class Jornada extends Problem implements SimpleProblemForm {
     	   VertederoHandler.getInstance().setVertederos(cargarVertedero());
     	    	   
     	   //cargo domicilios con sus pedidos
-    	   domicilios = cargarDomicilios();
+    	   DomiciliosHandler.getInstance().setDomicilios(cargarDomicilios());
     	   
     	   //cargo depositos
-    	   depositos = cargarDepositos();
+    	   VehiculoHandler.getInstance().setVehiculos(cargarDepositos());
 
     	   imprimir();
       } catch (Exception e) {
@@ -124,19 +108,19 @@ public class Jornada extends Problem implements SimpleProblemForm {
 			vertedero.imprimir();
 		}
 		
-		if (CollectionUtils.isNotEmpty(depositos))
-			for (Deposito deposito : depositos) {
-				deposito.imprimir();
+		if (CollectionUtils.isNotEmpty(VehiculoHandler.getInstance().getVehiculos()))
+			for (Vehiculo vehiculo : VehiculoHandler.getInstance().getVehiculos()) {
+				vehiculo.imprimir();
 			}
 		
-		if (CollectionUtils.isNotEmpty(domicilios))
-			for (Domicilio dom : domicilios) {
+		if (CollectionUtils.isNotEmpty(DomiciliosHandler.getInstance().getDomicilios()))
+			for (Domicilio dom : DomiciliosHandler.getInstance().getDomicilios()) {
 				dom.imprimir();
 			}
 
 	}
 
-	private List<Deposito> cargarDepositos() throws FileNotFoundException  {
+	private List<Vehiculo> cargarDepositos() throws FileNotFoundException  {
 		   List<Deposito> depositos =new ArrayList<>();
 		   
 	       Scanner s = new Scanner(in_depositos);
@@ -144,6 +128,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	       int idVehiculo=0;
 	       Deposito deposito=null;
 	       List<Vehiculo> vehiculos=null;
+	       List<Vehiculo> vehiculosJornada= new ArrayList<Vehiculo>();
 	       String linea = s.nextLine(); 
 	       String [] cadena=linea.split(",");
 	       
@@ -193,12 +178,13 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	                  
 	                  deposito.setFlota(vehiculos);
 	                  depositos.add(deposito);
+	                  vehiculosJornada.addAll(vehiculos);
 			   }
 		   }
 	       
 	       s.close();
 	       	
-	       return depositos;
+	       return vehiculosJornada;
 		}
 
 	   private List<Domicilio> cargarDomicilios() throws FileNotFoundException {
@@ -278,15 +264,24 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    }
 
 	    public Vehiculo randomVehiculo(){
-	    	return randomDeposito().randomVehiculo();
+	    	return VehiculoHandler.getInstance().randomVehiculo();
 	    }
 	    
-	    public Deposito randomDeposito(){
-			try {
-		        return depositos.get((new Random()).nextInt(depositos.size()));
-		    }
-		    catch (Throwable e){
-		        return null;
-		    }
-	    }
+	    
+
+		public DomiciliosHandler getDomicilioHandler() {
+			return domicilioHandler;
+		}
+
+		public void setDomicilioHandler(DomiciliosHandler domicilioHandler) {
+			this.domicilioHandler = domicilioHandler;
+		}
+
+		public VehiculoHandler getVehiculoHandler() {
+			return vehiculoHandler;
+		}
+
+		public void setVehiculoHandler(VehiculoHandler vehiculoHandler) {
+			this.vehiculoHandler = vehiculoHandler;
+		}
 }

@@ -1,8 +1,12 @@
 package recoleccion.modelo.vehiculos;
 
+import java.util.List;
+import java.util.Random;
+
 public class VehiculoHandler {
 
 	private static VehiculoHandler instance = null;
+	private List<Vehiculo> vehiculos;
 	
 	private VehiculoHandler() {
 		
@@ -28,4 +32,21 @@ public class VehiculoHandler {
 		
 		return new Camion(Long.valueOf(Math.round(Math.random()*100)).intValue());
 	}
+
+	public List<Vehiculo> getVehiculos() {
+		return vehiculos;
+	}
+
+	public void setVehiculos(List<Vehiculo> vehiculos) {
+		this.vehiculos = vehiculos;
+	}
+
+	public Vehiculo randomVehiculo(){
+		try {
+	        return vehiculos.get((new Random()).nextInt(vehiculos.size()));
+	    }
+	    catch (Throwable e){
+	        return null;
+	    }
+    }
 }

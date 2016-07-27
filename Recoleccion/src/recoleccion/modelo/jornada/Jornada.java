@@ -3,12 +3,10 @@ package recoleccion.modelo.jornada;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.Vector;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -97,6 +95,9 @@ public class Jornada extends Problem implements SimpleProblemForm {
        state.parameters.set(base.push("min-gene"), String.valueOf(getMinGene()));
        state.parameters.set(base.push("max-gene"), String.valueOf(getMaxGene()));
        
+       //TODO las soluciones arrancan con un vehiculo
+       state.parameters.set(base.push("min-gene.0"), String.valueOf(getMinGene()));
+       state.parameters.set(base.push("max-gene.0"), "-1");
        
        try {
     	   //cargo vertedero

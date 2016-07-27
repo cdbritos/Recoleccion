@@ -81,6 +81,12 @@ public class Jornada extends Problem implements SimpleProblemForm {
        in_domicilios_jornada = state.parameters.getFile(base.push(DOM_JOR_IN), null);
        in_vertederos = state.parameters.getFile(base.push(VERTEDEROS_IN), null);
 	   
+       base.param="pop.subpop.0.species";
+       state.parameters.set(base.push("genome-size"), String.valueOf(getGenomeSize()));
+       state.parameters.set(base.push("min-gene"), String.valueOf(getMinGene()));
+       state.parameters.set(base.push("max-gene"), String.valueOf(getMaxGene()));
+       
+       
        try {
     	   //cargo vertedero
     	   VertederoHandler.getInstance().setVertederos(cargarVertedero());
@@ -248,6 +254,18 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		   }
 		   return tiposResiduos;
 		   
+	   }
+	   
+	   private int getMaxGene(){
+		   return 10;
+	   }
+	   
+	   private int getMinGene(){
+		   return -6;
+	   }
+	   
+	   private int getGenomeSize(){
+		   return 1000;
 	   }
 	   
 	    @Override

@@ -7,7 +7,6 @@ import org.apache.commons.collections.CollectionUtils;
 
 import recoleccion.modelo.domicilios.Domicilio;
 import recoleccion.modelo.domicilios.DomiciliosHandler;
-import recoleccion.modelo.jornada.Vertedero;
 import recoleccion.modelo.jornada.VertederoHandler;
 import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.modelo.vehiculos.VehiculoHandler;

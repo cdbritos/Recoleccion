@@ -1,26 +1,12 @@
 package recoleccion.ecj;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
 
-import recoleccion.modelo.data.Coordenada;
-import recoleccion.modelo.data.TipoResiduo;
 import recoleccion.modelo.domicilios.Domicilio;
-import recoleccion.modelo.domicilios.Pedido;
-import recoleccion.modelo.jornada.Deposito;
 import recoleccion.modelo.jornada.Jornada;
-import recoleccion.modelo.jornada.Vertedero;
 import recoleccion.modelo.jornada.VertederoHandler;
-import recoleccion.modelo.vehiculos.Camion;
-import recoleccion.modelo.vehiculos.Camioneta;
-import recoleccion.modelo.vehiculos.TipoVehiculo;
 import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.modelo.viaje.Viaje;
 import recoleccion.solucion.Solucion;
@@ -39,6 +25,11 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	 */
 	private static final long serialVersionUID = -7478676840715483431L;
 	
+	@Override
+	public void setup(EvolutionState state, Parameter base) {
+		// TODO Auto-generated method stub
+		super.setup(state, base);
+	}
     
     @Override
     public void reset(EvolutionState state, int thread) {

@@ -30,7 +30,7 @@ public class Viaje {
 			for (int i = dataViaje[0] < 0 ? 1 : 0; i<dataViaje.length;i++){
 				if (dataViaje[i]!=0){
 					Domicilio d = DomiciliosHandler.getInstance().get(dataViaje[i]);
-				//if (!domicilios.contains(d))
+					//if (!domicilios.contains(d))
 					domicilios.add(d);
 				}
 			}

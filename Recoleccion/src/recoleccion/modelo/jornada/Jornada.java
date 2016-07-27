@@ -3,12 +3,15 @@ package recoleccion.modelo.jornada;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Vector;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 import recoleccion.modelo.data.Coordenada;
@@ -65,7 +68,9 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		if (ind.evaluated) return;
         
         IntegerVectorIndividualRecoleccion ind2 = (IntegerVectorIndividualRecoleccion)ind;
-        
+        System.out.println(ind.genotypeToStringForHumans());
+        limpiarGenome(ind2);
+        System.out.println(ind.genotypeToStringForHumans());
         double fitness = new Solucion(ind2).fitness();
         
         ((SimpleFitness) ind2.fitness).setFitness(state, fitness*(-1), false);
@@ -73,6 +78,12 @@ public class Jornada extends Problem implements SimpleProblemForm {
         ind.evaluated=true;      
 	}
 	
+	private void limpiarGenome(IntegerVectorIndividualRecoleccion ind2) {
+		
+		while (ArrayUtils.contains(ind2.genome,0))		
+			ind2.setGenome(ArrayUtils.removeElement(ind2.genome, 0));
+	}
+
 	@Override
 	public void setup(EvolutionState state, Parameter base) {
 	   //super.setup(state, base);

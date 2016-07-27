@@ -29,7 +29,7 @@ public class Solucion {
 			Viaje v = new Viaje(viajesInd[i]);
 			this.viajes.add(v);	
 		}		
-		System.out.println(ind.genotypeToStringForHumans());
+		//System.out.println(ind.genotypeToStringForHumans());
 	}
 	
 	public Solucion(){

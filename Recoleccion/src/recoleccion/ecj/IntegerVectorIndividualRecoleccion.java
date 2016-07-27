@@ -8,21 +8,20 @@ import recoleccion.modelo.domicilios.Domicilio;
 import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.VertederoHandler;
 import recoleccion.modelo.vehiculos.Vehiculo;
-import recoleccion.modelo.viaje.Viaje;
 import recoleccion.solucion.Solucion;
+import recoleccion.solucion.Solucion.Viaje;
 import ec.EvolutionState;
+import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 import ec.vector.IntegerVectorIndividual;
+import ec.vector.IntegerVectorSpecies;
 
 /**
  *
  * @author ggutierrez
  */
 public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -7478676840715483431L;
 	
 	@Override
@@ -34,14 +33,15 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
     @Override
     public void reset(EvolutionState state, int thread) {
        //CARGANDO LA SOLUCION RANDOMICA
-       Solucion sol=new Solucion();
-       Viaje viaje=new Viaje();
        List<Domicilio> domicilios = Jornada.getInstance().getDomicilioHandler().getDomicilios();
        List<Viaje> viajes=new ArrayList<>();             
        Random rand=new Random();
+       Solucion sol = new Solucion();
+       
        while(!domicilios.isEmpty()){
            List<Domicilio> domiciliosViajes=new ArrayList<>();
-           viaje=new Viaje();
+           
+           Viaje viaje= sol.new Viaje();
             Vehiculo vehiculoActual=Jornada.getInstance().randomVehiculo();
             viaje.setVehiculo(vehiculoActual);
             //int randDomicilio=rand.nextInt(domicilios.size());  
@@ -67,22 +67,17 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                 viajes.add(viaje);
             }
        }
-       sol.setViajes(viajes);
        
-       System.out.print("GENOMA: ");
-       int posGenoma=0;
-       for (int i=0;i<sol.getViajes().size();i++){
-           genome[posGenoma]=Integer.parseInt(sol.getViajes().get(i).getVehiculo().getIdentificador());
-           System.out.print(genome[posGenoma]+"|");
-           for (int j=0;j<sol.getViajes().get(i).getDomicilios().size();j++){
-               posGenoma++;
-               genome[posGenoma]=Integer.parseInt(sol.getViajes().get(i).getDomicilios().get(j).getIdentificador());
-               System.out.print(genome[posGenoma]+"|");
-           }
+       sol.setViajes(viajes);  
        
-       }
-       System.out.println();
-	   
+       int posGenoma=0;  
+       for (int i=0;i<sol.getViajes().size();i++){  
+           genome[posGenoma]=Integer.parseInt(sol.getViajes().get(i).getVehiculo().getIdentificador());  
+           for (int j=0;j<sol.getViajes().get(i).getDomicilios().size();j++){  
+               posGenoma++;  
+               genome[posGenoma]=Integer.parseInt(sol.getViajes().get(i).getDomicilios().get(j).getIdentificador());  
+           }  
+       }  
     }
    
    
@@ -135,5 +130,40 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	    	else point1 = points[x+1];
         }
 	}
-		    
+
+    /** Destructively mutates the individual in some default manner.  The default form
+    simply randomizes genes to a uniform distribution from the min and max of the gene values. */
+	public void defaultMutate(EvolutionState state, int thread)
+    {
+    IntegerVectorSpecies s = (IntegerVectorSpecies) species;
+    for(int x = 0; x < genome.length; x++)
+        if (state.random[thread].nextBoolean(s.mutationProbability(x)))
+            {
+            int old = genome[x];
+            for(int retries = 0; retries < s.duplicateRetries(x) + 1; retries++)
+                {
+                switch(s.mutationType(x))
+                    {
+                    case IntegerVectorSpecies.C_RESET_MUTATION:
+                        genome[x] = randomValueFromClosedInterval(x, state.random[thread]);
+                        break;
+                    default:
+                        state.output.fatal("In IntegerVectorIndividual.defaultMutate, default case occurred when it shouldn't have");
+                        break;
+                    }
+                if (genome[x] != old) break;
+                // else genome[x] = old;  // try again
+                }
+            }
+    }
+
+	private int randomValueFromClosedInterval(int pos, MersenneTwisterFast mersenneTwisterFast) {
+		if (genome[pos] < 0){
+			//retorna un vehiculo aleatorio
+			return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast);
+		}
+		
+		//retorna un domicilio
+		return randomValueFromClosedInterval(1, Jornada.getInstance().getMaxGene(), mersenneTwisterFast);
+	}
 }

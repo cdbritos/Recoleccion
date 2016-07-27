@@ -8,7 +8,6 @@ import recoleccion.modelo.data.Coordenable;
 import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
 import recoleccion.modelo.domicilios.Domicilio;
-import recoleccion.modelo.domicilios.Pedido;
 import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.Vertedero;
 

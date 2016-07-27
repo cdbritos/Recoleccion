@@ -5,7 +5,7 @@ import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 
 public class Test {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		int[] genome = {1,2,3,
 						-1,1,23,343,

@@ -60,18 +60,25 @@ public class Jornada extends Problem implements SimpleProblemForm {
     	return instancia;
     }
     
+    
 	@Override
 	public void evaluate(EvolutionState state, Individual ind, int subpopulation, int threadnum) {
 	
 		if (ind.evaluated) return;
         
         IntegerVectorIndividualRecoleccion ind2 = (IntegerVectorIndividualRecoleccion)ind;
-        System.out.println(ind.genotypeToStringForHumans());
-        limpiarGenome(ind2);
-        System.out.println(ind.genotypeToStringForHumans());
-        double fitness = new Solucion(ind2).fitness();
         
-        ((SimpleFitness) ind2.fitness).setFitness(state, fitness*(-1), false);
+        limpiarGenome(ind2);
+        
+        double fitness = Double.MAX_VALUE;
+		try {
+			fitness = new Solucion(ind2).fitness();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ERROR CALCULANDO FITNESS");
+		}
+        
+        ((SimpleFitness) ind2.fitness).setFitness(state, fitness*(-1), fitness == 0);
         
         ind.evaluated=true;      
 	}
@@ -90,29 +97,30 @@ public class Jornada extends Problem implements SimpleProblemForm {
        in_domicilios_jornada = state.parameters.getFile(base.push(DOM_JOR_IN), null);
        in_vertederos = state.parameters.getFile(base.push(VERTEDEROS_IN), null);
 	   
-       base.param="pop.subpop.0.species";
-       state.parameters.set(base.push("genome-size"), String.valueOf(getGenomeSize()));
-       state.parameters.set(base.push("min-gene"), String.valueOf(getMinGene()));
-       state.parameters.set(base.push("max-gene"), String.valueOf(getMaxGene()));
-       
-       //TODO las soluciones arrancan con un vehiculo
-       state.parameters.set(base.push("min-gene.0"), String.valueOf(getMinGene()));
-       state.parameters.set(base.push("max-gene.0"), "-1");
-       
        try {
     	   //cargo vertedero
     	   VertederoHandler.getInstance().setVertederos(cargarVertedero());
     	    	   
-    	   //cargo domicilios con sus pedidos
-    	   DomiciliosHandler.getInstance().setDomicilios(cargarDomicilios());
-    	   
     	   //cargo depositos
     	   VehiculoHandler.getInstance().setVehiculos(cargarDepositos());
+    	   
+    	   //cargo domicilios con sus pedidos
+    	   DomiciliosHandler.getInstance().setDomicilios(cargarDomicilios());
 
     	   imprimir();
       } catch (Exception e) {
     	  System.out.println("ERROR CARGANDO PARAMETROS DE ENTRADA");
       }
+      
+      base.param="pop.subpop.0.species";
+      state.parameters.set(base.push("genome-size"), String.valueOf(getGenomeSize()));
+      state.parameters.set(base.push("min-gene"), String.valueOf(getMinGene()));
+      state.parameters.set(base.push("max-gene"), String.valueOf(getMaxGene()));
+       
+      //TODO las soluciones arrancan con un vehiculo
+      state.parameters.set(base.push("min-gene.0"), String.valueOf(getMinGene()));
+      state.parameters.set(base.push("max-gene.0"), "-1");
+       
 	}
 	
 	private void imprimir() {
@@ -268,23 +276,28 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		   
 	   }
 	   
-	   private int getMaxGene(){
-		   return 10;
+	   public int getMaxGene(){
+		   return DomiciliosHandler.getInstance().getDomicilios().size();
 	   }
 	   
-	   private int getMinGene(){
-		   return -6;
+	   public int getMinGene(){
+		   return VehiculoHandler.getInstance().getVehiculos().size()*-1;
 	   }
 	   
-	   private int getGenomeSize(){
+	   public int getGenomeSize(){
 		   return 1000;
 	   }
 	   
 	    @Override
-	    public void describe(EvolutionState state, Individual ind,
-	    		int subpopulation, int threadnum, int log) {
-	    	// TODO Auto-generated method stub
-	    	state.output.println( ind.genotypeToStringForHumans(), log );
+	    public void describe(EvolutionState state, Individual ind, int subpopulation, int threadnum, int log) {
+	    	Solucion sol;
+			try {
+				sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
+				sol.imprimir();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    }
 
 	    public Vehiculo randomVehiculo(){

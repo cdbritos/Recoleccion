@@ -26,8 +26,7 @@ public class DomiciliosHandler {
 	}
 	
 	public Domicilio get(int id){
-		Domicilio d = new Domicilio(id);
-		return domicilios.get(domicilios.indexOf(d));
+		return new Domicilio(domicilios.get(domicilios.indexOf(new Domicilio(id))));
 	}
 
 	public List<Domicilio> getDomicilios() {

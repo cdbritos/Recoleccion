@@ -18,14 +18,9 @@ stat.do-message=		false
 stat.do-description=	true
 
 # ARCHIVOS DE ENTRADA Y SALIDA DEL PROGRAMA
-eval.problem.in_depositos = depositos
-eval.problem.in_domicilios_jornada = domicilios_jornada
-eval.problem.in_vertederos = vertederos
-
-#vector.int-vect-ind.in_depositos = depositos
-#vector.int-vect-ind.in_domicilios_jornada = domicilios_jornada
-#vector.int-vect-ind.in_vertederos = vertederos
-
+eval.problem.in_depositos = depositos.txt
+eval.problem.in_domicilios_jornada = domicilios_jornada.txt
+eval.problem.in_vertederos = vertederos.txt
 
 # ESTOS VIENEN POR DEFECTO
 state = 				ec.simple.SimpleEvolutionState
@@ -33,7 +28,7 @@ init = 					ec.simple.SimpleInitializer
 finish = 	        	ec.simple.SimpleFinisher
 exch = 					ec.simple.SimpleExchanger
 eval =					ec.simple.SimpleEvaluator
-stat =					ec.simple.SimpleStatistics
+stat =					recoleccion.modelo.jornada.JornadaStatics
 breed = 				ec.simple.SimpleBreeder
 
 # CANTIDAD DE GENERACIONES
@@ -78,9 +73,9 @@ pop.subpop.0.species.ind =		recoleccion.ecj.IntegerVectorIndividualRecoleccion
 
 
 # tamaño del genoma
-pop.subpop.0.species.genome-size =      200
-pop.subpop.0.species.max-gene=1000
-pop.subpop.0.species.min-gene=-1000
+#pop.subpop.0.species.genome-size =1000
+#pop.subpop.0.species.max-gene=9
+#pop.subpop.0.species.min-gene=-6
 
 # tamaño de la poblacion
 pop.subpop.0.size =			20

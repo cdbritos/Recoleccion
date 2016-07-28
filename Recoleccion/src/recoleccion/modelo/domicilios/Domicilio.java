@@ -137,5 +137,14 @@ public class Domicilio extends Coordenable {
 		return valido;
 
 	}
+
+	public long getFaltante() {
+		long faltante = 0;
+		for (Pedido p : pedidos) {
+			faltante += p.getCantidad();
+			
+		}
+		return faltante;
+	}
 		
 }

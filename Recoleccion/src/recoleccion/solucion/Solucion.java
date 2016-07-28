@@ -67,26 +67,68 @@ public class Solucion {
 	// viajes sin domicilio se dejan en la solucion tiene fitness 0
 	public double fitness(){
 		double fitness = 0;
-		List<Vehiculo> vehiculosUtilizados = new ArrayList<Vehiculo>();
+		
 		
 		if (CollectionUtils.isNotEmpty(viajes)){
 			for (Viaje viaje : viajes) {
 				viaje.doViaje();
-				if (!vehiculosUtilizados.contains(viaje.getVehiculo()))
-					vehiculosUtilizados.add(viaje.getVehiculo());
 			}
 		}
 		
-		for (Vehiculo vehiculo : vehiculosUtilizados){
+		List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
+		while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
+			Vehiculo v = getRandomVehiculoSolucion();
+			List<Domicilio> domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
+			if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
+				Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
+				viaje.doViaje();
+				this.viajes.add(viaje);
+			}
+			
+			domiciliofaltantes = getDomiciliosFaltantes();
+		}
+		
+				
+		for (Vehiculo vehiculo : vehiculosSolucion){
 			fitness += vehiculo.getCostoJornada();
-		}		
+		}
+		
+		// TODO Aca puede ser que no haya recogido todos los domicilios - impactar en fitness
+		long faltaRecoger = getTotalResiduosRestantes();
+		if (faltaRecoger > 0){
+			fitness = fitness * 10 * faltaRecoger;
+		}
+		
 		return fitness;
 	}
 	
+	private List<Domicilio> getDomiciliosFaltantes() {
+		List<Domicilio> faltantes = new ArrayList<Domicilio>();
+		for (Domicilio domicilio : domiciliosSolucion) {
+			if (domicilio.tieneResiduo())
+				faltantes.add(domicilio);
+		}
+		return faltantes;
+	}
+
+	private long getTotalResiduosRestantes() {
+		long faltante = 0;
+		for (Domicilio domicilio : domiciliosSolucion) {
+			faltante += domicilio.getFaltante();
+		}
+		return faltante;
+	}
+
 	public void imprimir(){
 		if (CollectionUtils.isNotEmpty(viajes)){
 			for (Viaje viaje : viajes) {
 				viaje.imprimir();
+			}
+		}
+		System.out.println("------DOMICILIOS FINAL------------------------");
+		if (CollectionUtils.isNotEmpty(domiciliosSolucion)){
+			for (Domicilio d : domiciliosSolucion) {
+				d.imprimir();
 			}
 		}
 	}
@@ -160,6 +202,11 @@ public class Solucion {
 			domicilios = null;
 		}
 		
+		public Viaje(Vehiculo v, List<Domicilio> doms) {
+			this.vehiculo = v;
+			this.domicilios = doms;
+		}
+
 		public Vehiculo getVehiculo() {
 			return vehiculo;
 		}
@@ -217,6 +264,18 @@ public class Solucion {
 		private List<Viaje> agregarViajesExcedeCarga(List<Vehiculo> domicilios){
 			return null;
 		}
+	}
+
+	public void setGenoma(IntegerVectorIndividualRecoleccion ind) {
+		int posGenoma=0;  
+       for (int i=0;i<this.getViajes().size();i++){
+           ind.genome[posGenoma]=Integer.parseInt(this.getViajes().get(i).getVehiculo().getIdentificador());  
+           for (int j=0;j<this.getViajes().get(i).getDomicilios().size();j++){  
+               posGenoma++;  
+               ind.genome[posGenoma]=Integer.parseInt(this.getViajes().get(i).getDomicilios().get(j).getIdentificador());  
+           }
+           posGenoma++;
+       }    
 	}
 
 	

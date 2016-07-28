@@ -70,14 +70,8 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        
        sol.setViajes(viajes);  
        
-       int posGenoma=0;  
-       for (int i=0;i<sol.getViajes().size();i++){  
-           genome[posGenoma]=Integer.parseInt(sol.getViajes().get(i).getVehiculo().getIdentificador());  
-           for (int j=0;j<sol.getViajes().get(i).getDomicilios().size();j++){  
-               posGenoma++;  
-               genome[posGenoma]=Integer.parseInt(sol.getViajes().get(i).getDomicilios().get(j).getIdentificador());  
-           }  
-       }  
+       sol.setGenoma(this);
+         
     }
    
    

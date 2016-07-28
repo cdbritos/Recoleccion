@@ -161,10 +161,6 @@ public abstract class Vehiculo extends Coordenable {
 		for (int i=0;i<totalDomicilios.size();i++){			
 			Domicilio dom=totalDomicilios.get(i);
 			if (dom.residuosValidos(this.getTiposResiduos())){
-				dom=new Domicilio();
-				dom.setCoordenadas(totalDomicilios.get(i).getCoordenadas());
-				dom.setIdentificador(totalDomicilios.get(i).getIdentificador());
-				dom.setPedidos(totalDomicilios.get(i).getPedidos());
 				domValidos.add(dom);
 			}
 		}
@@ -172,8 +168,6 @@ public abstract class Vehiculo extends Coordenable {
 		
 	}
 
-	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

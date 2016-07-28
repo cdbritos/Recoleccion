@@ -66,7 +66,7 @@ pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
 
 # tipo de cruzamiento y la probabilidad
 pop.subpop.0.species.crossover-type = one
-pop.subpop.0.species.crossover-prob =	1
+pop.subpop.0.species.likelihood =	0.75
 
 # el tipo de vector a utilizar y los maximos y minimos que puede tener
 pop.subpop.0.species.ind =		recoleccion.ecj.IntegerVectorIndividualRecoleccion

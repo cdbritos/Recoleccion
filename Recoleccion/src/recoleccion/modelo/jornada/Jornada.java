@@ -72,7 +72,10 @@ public class Jornada extends Problem implements SimpleProblemForm {
         
         double fitness = Double.MAX_VALUE;
 		try {
-			fitness = new Solucion(ind2).fitness();
+			Solucion sol = new Solucion(ind2); 
+			fitness = sol.fitness();
+			sol.setGenoma(ind2);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ERROR CALCULANDO FITNESS");
@@ -293,6 +296,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	Solucion sol;
 			try {
 				sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
+				sol.fitness();
 				sol.imprimir();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

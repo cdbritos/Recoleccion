@@ -53,7 +53,6 @@ public class Solucion {
 		this();
 		this.individuo = ind;
 		
-		this.viajes = new ArrayList<Viaje>();
 		int[][] viajesInd = ind.getViajesIndividuo();
 		for (int i = 0; i < viajesInd.length; i++) {
 			if (viajesInd[i].length > 0){
@@ -65,7 +64,7 @@ public class Solucion {
 	}
 	
 	public Solucion() {
-		
+		this.viajes = new ArrayList<Viaje>();
 		this.setDomiciliosSolucion(DomiciliosHandler.getInstance().getDomicilios());
 		this.setVehiculosSolucion(VehiculoHandler.getInstance().getVehiculos());
 	}
@@ -103,7 +102,7 @@ public class Solucion {
 		return fitness;
 	}
 	
-	private List<Domicilio> getDomiciliosFaltantes() {
+	public List<Domicilio> getDomiciliosFaltantes() {
 		List<Domicilio> faltantes = new ArrayList<Domicilio>();
 		for (Domicilio domicilio : domiciliosSolucion) {
 			if (domicilio.tieneResiduo())
@@ -127,8 +126,8 @@ public class Solucion {
 			}
 		}
 		System.out.println("------DOMICILIOS FINAL------------------------");
-		if (CollectionUtils.isNotEmpty(domiciliosSolucion)){
-			for (Domicilio d : domiciliosSolucion) {
+		if (CollectionUtils.isNotEmpty(DomiciliosHandler.getInstance().getDomicilios())){
+			for (Domicilio d : DomiciliosHandler.getInstance().getDomicilios()) {
 				d.imprimir();
 			}
 		}
@@ -155,7 +154,7 @@ public class Solucion {
 		
 	}
 	
-	private Vehiculo getRandomVehiculoSolucion() {
+	public Vehiculo getRandomVehiculoSolucion() {
 		try {
 	        return vehiculosSolucion.get((new Random()).nextInt(vehiculosSolucion.size()));
 	    }
@@ -249,9 +248,11 @@ public class Solucion {
 		public void doViaje() {
 			if (CollectionUtils.isNotEmpty(domicilios)){
 				for (Domicilio domicilio: domicilios) {
-					vehiculo.recolectar(domicilio);
+					if (vehiculo.puedeRecolectar(domicilio))
+						vehiculo.recolectar(domicilio);
 				}
-				vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
+				if (vehiculo.getCarga() > 0)
+					vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
 			}
 		}
 		

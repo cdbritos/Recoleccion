@@ -7,6 +7,10 @@ public class Camion extends Vehiculo {
 		super(id);
 	}
 
+	public Camion(Vehiculo v) {
+		super(v);
+	}
+
 	@Override
 	protected String getTipo() {
 		return TipoVehiculo.CAMION.name();
@@ -43,6 +47,11 @@ public class Camion extends Vehiculo {
 	
 	public double getTiempoDescarga(){
 		return 0.01/60;  
+	}
+
+	@Override
+	protected TipoVehiculo getTipoVehiculo() {
+		return TipoVehiculo.CAMION;
 	}
 	
 	

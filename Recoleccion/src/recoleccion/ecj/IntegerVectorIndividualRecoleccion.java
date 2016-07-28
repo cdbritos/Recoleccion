@@ -30,7 +30,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 		super.setup(state, base);
 	}
     
-    @Override
+    
     public void reset(EvolutionState state, int thread) {
        //CARGANDO LA SOLUCION RANDOMICA
        List<Domicilio> domicilios = Jornada.getInstance().getDomicilioHandler().getDomicilios();
@@ -71,6 +71,9 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        sol.setViajes(viajes);  
        
        sol.setGenoma(this);
+       System.out.println(this.genotypeToStringForHumans());
+       
+       
          
     }
    

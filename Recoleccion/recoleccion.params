@@ -32,7 +32,7 @@ stat =					recoleccion.modelo.jornada.JornadaStatics
 breed = 				ec.simple.SimpleBreeder
 
 # CANTIDAD DE GENERACIONES
-generations =				100
+generations =				1000
 
 # PARAR SI ENCUENTRA LA SOLUCION OPTIMA
 quit-on-run-complete =				true
@@ -65,7 +65,7 @@ seed.0 = time
 pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
 
 # tipo de cruzamiento y la probabilidad
-pop.subpop.0.species.crossover-type = one
+pop.subpop.0.species.crossover-type = two
 pop.subpop.0.species.likelihood =	0.75
 
 # el tipo de vector a utilizar y los maximos y minimos que puede tener
@@ -78,4 +78,4 @@ pop.subpop.0.species.ind =		recoleccion.ecj.IntegerVectorIndividualRecoleccion
 #pop.subpop.0.species.min-gene=-6
 
 # tamaño de la poblacion
-pop.subpop.0.size =			20
+pop.subpop.0.size =	100

@@ -65,12 +65,12 @@ public abstract class Vehiculo extends Coordenable {
 
 	public void imprimir() {
 		
-		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador + "," + tiposResiduos);
+		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador + "," + tiposResiduos + " --> KM: " + (metrosRecorridos/1000));
 		
 	}
 	
 	public Vehiculo(){
-		metrosRecorridos = 0;
+		metrosRecorridos = 0L;
 		carga = 0L;
 		tiempoRecolectando = 0L;
 		tiempoVertiendo = 0L;
@@ -81,8 +81,14 @@ public abstract class Vehiculo extends Coordenable {
 		this.identificador = String.valueOf(id);
 	}
 	
+	public Vehiculo(Vehiculo v){
+		this(Integer.valueOf(v.identificador).intValue());
+		this.tiposResiduos = v.getTiposResiduos();
+	}
+	
 	protected abstract String getTipo();
-
+	protected abstract TipoVehiculo getTipoVehiculo();
+	
 	public Long getCarga() {
 		return carga;
 	}
@@ -97,14 +103,16 @@ public abstract class Vehiculo extends Coordenable {
 		this.setCoordenadas(domicilio.getCoordenadas());
 		
 		for (TipoResiduo tr : this.tiposResiduos) {
+			if (isLleno())
+				break;
+			
 			long cantResiduo = domicilio.tieneResiduo(tr);
 			if (cantResiduo > 0 ){
 				long cantARecolectar = capacidadActual() > cantResiduo ? cantResiduo : capacidadActual();
 				domicilio.recolectar(tr,cantARecolectar);
 				tiempoRecolectando += cantARecolectar * getTiempoCarga();
 				carga += cantARecolectar;
-				if (isLleno())
-					break;
+				
 			}
 			
 		}
@@ -192,6 +200,16 @@ public abstract class Vehiculo extends Coordenable {
 		} else if (!identificador.equals(other.identificador))
 			return false;
 		return true;
+	}
+
+	public boolean puedeRecolectar(Domicilio domicilio) {
+		boolean puede = false;
+		for (TipoResiduo tr : tiposResiduos) {
+			if (domicilio.tieneResiduo(tr) > 0)
+				return true;
+		}
+		
+		return puede;
 	}
 
 	

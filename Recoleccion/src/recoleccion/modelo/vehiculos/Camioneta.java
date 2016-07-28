@@ -6,6 +6,10 @@ public class Camioneta extends Vehiculo {
 		super(id);
 	}
 
+	public Camioneta(Vehiculo v) {
+		super(v);
+	}
+
 	@Override
 	protected String getTipo() {
 		return TipoVehiculo.CAMIONETA.name();
@@ -42,6 +46,11 @@ public class Camioneta extends Vehiculo {
 	@Override
 	public double getTiempoDescarga() {
 		return 0.1/60; //0,01 minutos demora en descargar una unidad de residuo 
+	}
+
+	@Override
+	protected TipoVehiculo getTipoVehiculo() {
+		return TipoVehiculo.CAMIONETA;
 	}
 
 	

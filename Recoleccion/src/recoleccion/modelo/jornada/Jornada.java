@@ -74,8 +74,6 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		try {
 			Solucion sol = new Solucion(ind2); 
 			fitness = sol.fitness();
-			sol.setGenoma(ind2);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ERROR CALCULANDO FITNESS");

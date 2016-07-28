@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 import recoleccion.modelo.domicilios.Domicilio;
 import recoleccion.modelo.domicilios.DomiciliosHandler;
+import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.VertederoHandler;
 import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.modelo.vehiculos.VehiculoHandler;
@@ -20,6 +22,8 @@ public class Solucion {
 	private List<Domicilio> domiciliosSolucion;
 	
 	private List<Vehiculo> vehiculosSolucion;
+	
+	private IntegerVectorIndividualRecoleccion individuo;
 	
 	public List<Viaje> getViajes() {
 		return viajes;
@@ -47,6 +51,7 @@ public class Solucion {
 	
 	public Solucion(IntegerVectorIndividualRecoleccion ind) throws Exception {
 		this();
+		this.individuo = ind;
 		
 		this.viajes = new ArrayList<Viaje>();
 		int[][] viajesInd = ind.getViajesIndividuo();
@@ -60,6 +65,7 @@ public class Solucion {
 	}
 	
 	public Solucion() {
+		
 		this.setDomiciliosSolucion(DomiciliosHandler.getInstance().getDomicilios());
 		this.setVehiculosSolucion(VehiculoHandler.getInstance().getVehiculos());
 	}
@@ -83,6 +89,7 @@ public class Solucion {
 				Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
 				viaje.doViaje();
 				this.viajes.add(viaje);
+				individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
 			}
 			
 			domiciliofaltantes = getDomiciliosFaltantes();
@@ -91,12 +98,6 @@ public class Solucion {
 				
 		for (Vehiculo vehiculo : vehiculosSolucion){
 			fitness += vehiculo.getCostoJornada();
-		}
-		
-		// TODO Aca puede ser que no haya recogido todos los domicilios - impactar en fitness
-		long faltaRecoger = getTotalResiduosRestantes();
-		if (faltaRecoger > 0){
-			fitness = fitness * 10 * faltaRecoger;
 		}
 		
 		return fitness;
@@ -223,6 +224,15 @@ public class Solucion {
 			this.domicilios = domicilios;
 		}
 
+		public int[] getGenomaViaje(){
+			int[] genomaViaje = new int[domicilios.size()+1];
+			genomaViaje[0] = Integer.valueOf(vehiculo.getIdentificador()).intValue();
+			for (int i = 1; i <= domicilios.size(); i++)
+				genomaViaje[i] = Integer.valueOf(domicilios.get(i-1).getIdentificador()).intValue();
+			
+			return genomaViaje;
+		}
+		
 		public void imprimir() {
 			if (vehiculo != null)
 				vehiculo.imprimir();
@@ -268,14 +278,15 @@ public class Solucion {
 
 	public void setGenoma(IntegerVectorIndividualRecoleccion ind) {
 		int posGenoma=0;  
-       for (int i=0;i<this.getViajes().size();i++){
+		ind.genome = new int[Jornada.getInstance().getGenomeSize()];
+		for (int i=0;i<this.getViajes().size();i++){
            ind.genome[posGenoma]=Integer.parseInt(this.getViajes().get(i).getVehiculo().getIdentificador());  
            for (int j=0;j<this.getViajes().get(i).getDomicilios().size();j++){  
                posGenoma++;  
                ind.genome[posGenoma]=Integer.parseInt(this.getViajes().get(i).getDomicilios().get(j).getIdentificador());  
            }
            posGenoma++;
-       }    
+       }   
 	}
 
 	

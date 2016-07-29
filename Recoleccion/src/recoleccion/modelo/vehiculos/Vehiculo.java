@@ -41,11 +41,9 @@ public abstract class Vehiculo extends Coordenable {
 	
 	public abstract int getEmpleados();
 
-	public abstract double getTiempoDescarga();
+	public abstract double getTiempoDescarga(); //en segundos
 	
-	protected double getTiempoCarga(){
-		return 0.1/60; // 0,1 minuto demora en cargar una unidad de residuo
-	}
+	protected abstract double getTiempoCarga(); // en segundos
 	
 	public String getIdentificador() {
 		return identificador;
@@ -65,7 +63,8 @@ public abstract class Vehiculo extends Coordenable {
 
 	public void imprimir() {
 		
-		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador + "," + tiposResiduos + " --> KM: " + (metrosRecorridos/1000));
+		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador + "," + tiposResiduos + " --> KM: " + (metrosRecorridos/1000) 
+				+ " -- Tiempo Recolectando: " + tiempoRecolectando + " seg -- Tiempo Vertiendo: " + tiempoVertiendo + " seg");
 		
 	}
 	
@@ -141,7 +140,7 @@ public abstract class Vehiculo extends Coordenable {
 	
 	// retorna duracion en horas
 	private double getDuracionJornada(){
-		return (metrosRecorridos / 1000) / getVelocidad() + tiempoRecolectando + tiempoVertiendo;
+		return (metrosRecorridos / 1000) / getVelocidad() + tiempoRecolectando/3600 + tiempoVertiendo/3600;
 	}
 	
 	private double getCostoCombustible(){

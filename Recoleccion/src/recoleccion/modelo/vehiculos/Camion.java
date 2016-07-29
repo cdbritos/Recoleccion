@@ -1,58 +1,26 @@
 package recoleccion.modelo.vehiculos;
 
 public class Camion extends Vehiculo {
-
 	
-	public Camion(int id) {
-		super(id);
-	}
+	public Camion(int id) {	super(id);}
+	public Camion(Vehiculo v) {	super(v);}
 
-	public Camion(Vehiculo v) {
-		super(v);
-	}
+	protected String getTipo() {return TipoVehiculo.CAMION.name();	}
 
-	@Override
-	protected String getTipo() {
-		return TipoVehiculo.CAMION.name();
-	}
+	public Long getCapacidad() {return 2000L;}
 
+	public Long getVelocidad() {return 40L;}
 
-	@Override
-	public Long getCapacidad() {
-		return 2000L;
-	}
+	public Long getRendimiento() {return 5L;}
 
+	public Long getPrecioCombustible() {return 38L;}
 
-	@Override
-	public Long getVelocidad() {
-		return 40L;
-	}
-
-
-	@Override
-	public Long getRendimiento() {
-		return 5L;
-	}
-
-
-	@Override
-	public Long getPrecioCombustible() {
-		return 38L;
-	}
-
-	@Override
-	public int getEmpleados() {
-		return 3;
-	}
+	public int getEmpleados() {return 3;}
 	
-	public double getTiempoDescarga(){
-		return 0.01/60;  
-	}
+	public double getTiempoDescarga(){return 0.1;}
+	
+	protected double getTiempoCarga() {return 1;}
 
-	@Override
-	protected TipoVehiculo getTipoVehiculo() {
-		return TipoVehiculo.CAMION;
-	}
-	
-	
+	protected TipoVehiculo getTipoVehiculo() {return TipoVehiculo.CAMION;}
+		
 }

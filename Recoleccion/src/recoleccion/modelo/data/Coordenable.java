@@ -1,5 +1,10 @@
 package recoleccion.modelo.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+
 public abstract class Coordenable {
 
 	private Coordenada coordenadas;
@@ -17,6 +22,8 @@ public abstract class Coordenable {
 	public void imprimir() {
 		System.out.println(getTipo() + ": " + (coordenadas == null ? "SIN COORDENADAS" : coordenadas.toString()));
 	}
+	
+	
 	
 	/* http://www.geodatasource.com/developers/java */
 	
@@ -55,4 +62,28 @@ public abstract class Coordenable {
 		return (rad * 180 / Math.PI);
 	}
 	
+	public static List<?> sortFromOrigen(List<?> puntosCoordenables, Coordenable origen ){
+		List<Coordenable> result = new ArrayList<>();
+		Coordenable coordActual = origen;
+		
+		while (CollectionUtils.isNotEmpty(puntosCoordenables)){
+			Coordenable next = null;
+			double distance_next = Double.MAX_VALUE;
+			
+			for (Object o : puntosCoordenables) {
+				Coordenable punto = (Coordenable) o;
+				double distance = punto.distance(coordActual);
+				if (distance < distance_next){
+					distance_next = distance;
+					next = punto;
+				}
+			}
+			
+			result.add(next);
+			coordActual = next;
+			puntosCoordenables.remove(next);
+		}
+		
+		return result;
+	}
 }

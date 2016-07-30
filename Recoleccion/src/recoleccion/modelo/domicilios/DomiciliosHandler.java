@@ -52,6 +52,14 @@ public class DomiciliosHandler {
 	        return null;
 	    }
     }
+
+	public long getTotalPedidos() {
+		long totalPedidos = 0;
+		for (Domicilio d: domicilios)	 {
+			totalPedidos += d.getFaltante();
+		}
+		return totalPedidos;
+	}
 }
 
 

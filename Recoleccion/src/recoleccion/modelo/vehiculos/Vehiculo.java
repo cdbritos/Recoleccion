@@ -64,8 +64,8 @@ public abstract class Vehiculo extends Coordenable {
 	public void imprimir() {
 		
 		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador + "," + tiposResiduos + " --> KM: " + (metrosRecorridos/1000) 
-				+ " -- Tiempo Recolectando: " + tiempoRecolectando + " seg -- Tiempo Vertiendo: " + tiempoVertiendo + " seg");
-		
+				+ " -- Duracion Jornada " + getDuracionJornada() + " -- Costo Jornada " + getCostoJornada() + "-- CC: " + getCostoCombustible());
+		super.imprimir();
 	}
 	
 	public Vehiculo(){
@@ -82,6 +82,7 @@ public abstract class Vehiculo extends Coordenable {
 	
 	public Vehiculo(Vehiculo v){
 		this(Integer.valueOf(v.identificador).intValue());
+		this.setCoordenadas(v.getCoordenadas());
 		this.tiposResiduos = v.getTiposResiduos();
 	}
 	
@@ -162,17 +163,26 @@ public abstract class Vehiculo extends Coordenable {
 		return costo;
 	}
 	
-	//Dada la lista de domicilios retorna una lista de Domicilios validos para el vehiculo
+	//Dada la lista de domicilios retorna una lista de 
+	//Domicilios validos para el vehiculo, es decir que el vehiculo puede ir a recolectar algo
+	//ordenada por distancia
 	public List<Domicilio> domiciliosValidos(List<Domicilio> totalDomicilios){
+		//Busca domicilios que vehiculo tenga algo para recolectar
 		List<Domicilio> domValidos=new ArrayList<>();
 		for (int i=0;i<totalDomicilios.size();i++){			
 			Domicilio dom=totalDomicilios.get(i);
-			if (dom.residuosValidos(this.getTiposResiduos())){
+			if (this.puedeRecolectar(dom)){
 				domValidos.add(dom);
 			}
 		}
-		return domValidos;
+		//los ordena de forma de hacer el viaje mas corto
+//		List<Domicilio> domValidosOrdenados = new ArrayList<>();
+//		for (Object o : Coordenable.sortFromOrigen(domValidos, this)) {
+//			Domicilio d = (Domicilio) o;
+//			domValidosOrdenados.add(d);
+//		}
 		
+		return domValidos;
 	}
 
 	@Override

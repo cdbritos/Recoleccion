@@ -63,4 +63,14 @@ public class VehiculoHandler {
 	        return null;
 	    }
     }
+
+	public long getCapacidadMinima() {
+		long capacidadMinima = Long.MAX_VALUE;
+		for (Vehiculo v : vehiculos) {
+			if (v.getCapacidad() < capacidadMinima)
+				capacidadMinima = v.getCapacidad();
+		}
+		
+		return capacidadMinima;
+	}
 }

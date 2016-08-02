@@ -77,8 +77,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        sol.setGenoma(this);
        System.out.println(this.genotypeToStringForHumans());
        
-       
-         
+               
     }
    
    

@@ -73,10 +73,12 @@ public class Solucion {
 	public double fitness(){
 		double fitness = 0;
 		
+		individuo.genome = new int[0];
 		
 		if (CollectionUtils.isNotEmpty(viajes)){
 			for (Viaje viaje : viajes) {
 				viaje.doViaje();
+				individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
 			}
 		}
 		
@@ -247,12 +249,21 @@ public class Solucion {
 
 		public void doViaje() {
 			if (CollectionUtils.isNotEmpty(domicilios)){
+				List<Domicilio> domiciliosRecolectados = new ArrayList<Domicilio>();
 				for (Domicilio domicilio: domicilios) {
-					if (vehiculo.puedeRecolectar(domicilio))
+					if (vehiculo.isLleno())
+						break;
+					
+					if (vehiculo.puedeRecolectar(domicilio)){
 						vehiculo.recolectar(domicilio);
+						domiciliosRecolectados.add(domicilio);
+					}
 				}
+				
 				if (vehiculo.getCarga() > 0)
 					vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
+				
+				this.setDomicilios(domiciliosRecolectados);
 			}
 		}
 		

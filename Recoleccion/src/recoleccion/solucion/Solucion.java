@@ -89,8 +89,11 @@ public class Solucion {
 			if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
 				Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
 				viaje.doViaje();
-				this.viajes.add(viaje);
-				individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
+				
+				if (CollectionUtils.isNotEmpty(viaje.domicilios)){
+					this.viajes.add(viaje);
+					individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
+				}
 			}
 			
 			domiciliofaltantes = getDomiciliosFaltantes();
@@ -226,6 +229,9 @@ public class Solucion {
 		}
 
 		public int[] getGenomaViaje(){
+			if (domicilios.size() == 0)
+				return new int[0];
+			
 			int[] genomaViaje = new int[domicilios.size()+1];
 			genomaViaje[0] = Integer.valueOf(vehiculo.getIdentificador()).intValue();
 			for (int i = 1; i <= domicilios.size(); i++)

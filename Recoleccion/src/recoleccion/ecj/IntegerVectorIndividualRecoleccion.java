@@ -160,8 +160,8 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	private int randomValueFromClosedInterval(int pos, MersenneTwisterFast mersenneTwisterFast) {
 		if (genome[pos] < 0){
 			//retorna un vehiculo aleatorio
-			return genome[pos];
-			//return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast);
+			//return genome[pos];
+			return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast);
 		}
 		
 		//retorna un domicilio

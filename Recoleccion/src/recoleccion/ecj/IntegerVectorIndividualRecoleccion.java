@@ -41,7 +41,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        while(!domicilios.isEmpty()){
            List<Domicilio> domiciliosViajes=new ArrayList<>();
            
-           Viaje viaje= sol.new Viaje();
+            Viaje viaje= sol.new Viaje();
             Vehiculo vehiculoActual=Jornada.getInstance().randomVehiculo();
             viaje.setVehiculo(vehiculoActual);
             //int randDomicilio=rand.nextInt(domicilios.size());  
@@ -50,18 +50,25 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
             while (!vehiculoActual.isLleno() && !domiciliosValidos.isEmpty()){
                 //randDomicilio=rand.nextInt(domicilios.size()); 
             	int randDomicilio=rand.nextInt(domiciliosValidos.size()); 
-                Domicilio dom=new Domicilio();
-                dom.setCoordenadas(domiciliosValidos.get(randDomicilio).getCoordenadas());
-                dom.setIdentificador(domiciliosValidos.get(randDomicilio).getIdentificador());
-                dom.setPedidos(domiciliosValidos.get(randDomicilio).getPedidos());
-                domiciliosViajes.add(dom);
-                vehiculoActual.recolectar(dom);
+                Domicilio dom=domiciliosValidos.get(randDomicilio);
+//                dom.setCoordenadas(domiciliosValidos.get(randDomicilio).getCoordenadas());
+  //              dom.setIdentificador(domiciliosValidos.get(randDomicilio).getIdentificador());
+    //            dom.setPedidos(domiciliosValidos.get(randDomicilio).getPedidos());
+                
+                if (vehiculoActual.puedeRecolectar(dom)){
+                	domiciliosViajes.add(dom);
+                	vehiculoActual.recolectar(dom);
+                }
+                
                 domiciliosValidos.remove(dom);
+                
                 if (!dom.tieneResiduo()){
                 	domicilios.remove(dom);
                 }
             }        
+            
             vehiculoActual.verter(VertederoHandler.getInstance().get(vehiculoActual));
+            
             if (domiciliosViajes.size()>0){
                 viaje.setDomicilios(domiciliosViajes);  
                 viajes.add(viaje);
@@ -69,6 +76,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        }
        
        sol.setViajes(viajes);  
+       sol.imprimir();
        
        sol.setGenoma(this);
        System.out.println(this.genotypeToStringForHumans());
@@ -157,10 +165,11 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	private int randomValueFromClosedInterval(int pos, MersenneTwisterFast mersenneTwisterFast) {
 		if (genome[pos] < 0){
 			//retorna un vehiculo aleatorio
-			return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast);
+			return genome[pos];
+			//return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast);
 		}
 		
 		//retorna un domicilio
-		return randomValueFromClosedInterval(1, Jornada.getInstance().getMaxGene(), mersenneTwisterFast);
+		return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), Jornada.getInstance().getMaxGene(), mersenneTwisterFast);
 	}
 }

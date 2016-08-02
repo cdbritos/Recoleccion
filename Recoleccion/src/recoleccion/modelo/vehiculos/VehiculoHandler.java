@@ -24,9 +24,8 @@ public class VehiculoHandler {
 	}
 	
 	public Vehiculo get(int id){
-		int idVehiculo = Math.abs(id);
 		for (Vehiculo vehiculo : vehiculos) {
-			if (vehiculo.getIdentificador().equals(String.valueOf(idVehiculo)))
+			if (vehiculo.getIdentificador().equals(String.valueOf(id)))
 				return vehiculo;
 		}
 		

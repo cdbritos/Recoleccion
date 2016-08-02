@@ -1,6 +1,15 @@
 package recoleccion.modelo.jornada;
 
-import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
+
 import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
 import recoleccion.modelo.domicilios.Domicilio;
@@ -13,18 +22,6 @@ import recoleccion.modelo.vehiculos.Vehiculo;
 import recoleccion.modelo.vehiculos.VehiculoHandler;
 import recoleccion.solucion.Solucion;
 import recoleccion.solucion.Solucion.Viaje;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.omg.CORBA.portable.ValueInputStream;
 
 public class GeneradorGreedy {
 	
@@ -59,9 +56,13 @@ public class GeneradorGreedy {
     		   while (!vehiculoActual.isLleno() && !domiciliosValidos.isEmpty()){
     			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
     			   domViajes.add(domCercano);
-    			   vehiculoActual.recolectar(domCercano);
+    			   if (vehiculoActual.puedeRecolectar(domCercano))
+    				   vehiculoActual.recolectar(domCercano);
+    			  
     			   domiciliosValidos.remove(domCercano);
-    			   domicilios.remove(domCercano);
+    			   
+    			   if (domCercano.tieneResiduo())
+    				   domicilios.remove(domCercano);
     			   
     		   }
     		   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));
@@ -69,6 +70,14 @@ public class GeneradorGreedy {
     		   viajes.add(viaje);   		   
     	   }
     	   
+    	   List<Vehiculo> vehiculos = VehiculoHandler.getInstance().getVehiculos();
+    	   double costo = 0;
+    	   for (Vehiculo vehiculo : vehiculos) {
+			costo += VehiculoHandler.getInstance().get(Integer.valueOf(vehiculo.getIdentificador()).intValue()).getCostoJornada();
+    	   }
+    	   
+    	   System.out.println("COSTO JORNADA: " + costo);
+
       } catch (Exception e) {
     	  System.out.println("ERROR CARGANDO PARAMETROS DE ENTRADA");
       }

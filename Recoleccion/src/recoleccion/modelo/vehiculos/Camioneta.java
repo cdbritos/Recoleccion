@@ -11,7 +11,7 @@ public class Camioneta extends Vehiculo {
 	public Long getCapacidad() {return 800L;}
 
 	public Long getVelocidad() {return 70L;}
-
+		
 	public Long getRendimiento() {return 14L;}
 
 	public Long getPrecioCombustible() {return 40L;}

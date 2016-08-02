@@ -286,7 +286,13 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	   }
 	   
 	   public int getGenomeSize(){
-		   return 1000;
+		   long vehiculoMinimo = VehiculoHandler.getInstance().getCapacidadMinima();
+		   List<Domicilio> doms = DomiciliosHandler.getInstance().getDomicilios();
+		   int size = 0;
+		   for (Domicilio domicilio : doms) {
+			   size += Math.ceil((domicilio.getFaltante() / vehiculoMinimo))+1;
+		   }
+		   return size*2;
 	   }
 	   
 	    @Override
@@ -296,7 +302,10 @@ public class Jornada extends Problem implements SimpleProblemForm {
 				System.out.println(ind.genotypeToStringForHumans());
 				sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
 				sol.fitness();
-				sol.imprimir();
+				for (Vehiculo v : sol.getVehiculosSolucion()) {	
+					if (v.getCostoJornada() > 0)
+						v.imprimir();
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -290,7 +290,9 @@ public class Jornada extends Problem implements SimpleProblemForm {
 		   List<Domicilio> doms = DomiciliosHandler.getInstance().getDomicilios();
 		   int size = 0;
 		   for (Domicilio domicilio : doms) {
-			   size += Math.ceil((domicilio.getFaltante() / vehiculoMinimo))+1;
+			   for (Pedido p : domicilio.getPedidos()) {
+				   size += Math.ceil((p.getCantidad() / vehiculoMinimo))+1;
+			   }
 		   }
 		   return size*2;
 	   }

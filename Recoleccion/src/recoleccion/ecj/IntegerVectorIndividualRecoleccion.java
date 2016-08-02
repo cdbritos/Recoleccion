@@ -48,12 +48,9 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
             List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(domicilios);
             //int randDomicilio=rand.nextInt(domiciliosValidos.size());  
             while (!vehiculoActual.isLleno() && !domiciliosValidos.isEmpty()){
-                //randDomicilio=rand.nextInt(domicilios.size()); 
+
             	int randDomicilio=rand.nextInt(domiciliosValidos.size()); 
                 Domicilio dom=domiciliosValidos.get(randDomicilio);
-//                dom.setCoordenadas(domiciliosValidos.get(randDomicilio).getCoordenadas());
-  //              dom.setIdentificador(domiciliosValidos.get(randDomicilio).getIdentificador());
-    //            dom.setPedidos(domiciliosValidos.get(randDomicilio).getPedidos());
                 
                 if (vehiculoActual.puedeRecolectar(dom)){
                 	domiciliosViajes.add(dom);
@@ -76,7 +73,6 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
        }
        
        sol.setViajes(viajes);  
-       sol.imprimir();
        
        sol.setGenoma(this);
        System.out.println(this.genotypeToStringForHumans());

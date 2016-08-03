@@ -31,7 +31,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	}
     
     
-    public void reset(EvolutionState state, int thread) {
+    public void rese22t(EvolutionState state, int thread) {
        //CARGANDO LA SOLUCION RANDOMICA
        List<Domicilio> domicilios = Jornada.getInstance().getDomicilioHandler().getDomicilios();
        List<Viaje> viajes=new ArrayList<>();             

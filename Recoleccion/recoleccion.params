@@ -13,8 +13,8 @@ eval.problem = recoleccion.modelo.jornada.Jornada
 
 stat.file				$solucion.out
 stat.do-final=			true
-stat.do-generation=		false
-stat.do-message=		false
+stat.do-generation=		true
+stat.do-message=		true
 stat.do-description=	true
 
 # ARCHIVOS DE ENTRADA Y SALIDA DEL PROGRAMA
@@ -23,7 +23,7 @@ eval.problem.in_domicilios_jornada = domicilios_jornada.txt
 eval.problem.in_vertederos = vertederos.txt
 
 # ESTOS VIENEN POR DEFECTO
-state = 				ec.simple.SimpleEvolutionState
+state = 				recoleccion.modelo.jornada.JornadaEvolutionState
 init = 					ec.simple.SimpleInitializer
 finish = 	        	ec.simple.SimpleFinisher
 exch = 					ec.simple.SimpleExchanger

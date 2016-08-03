@@ -36,8 +36,14 @@ public class JornadaEvolutionState extends SimpleEvolutionState {
     	((JornadaStatics) statistics).best_of_run[0] = mejor_generacion;
     
     tabuList.add(mejor_generacion);
+    
     if (tabuList.size() > TABU_SIZE)
     	tabuList.remove(0);
+    
+    for (IntegerVectorIndividualRecoleccion i : tabuList) {
+    	System.out.println(i.genotypeToStringForHumans());
+		
+	}
     
     // SHOULD WE QUIT?
     if (evaluator.runComplete(this) && quitOnRunComplete)
@@ -104,8 +110,9 @@ public class JornadaEvolutionState extends SimpleEvolutionState {
 
 	private boolean esTabu(IntegerVectorIndividualRecoleccion candidato) {
 		for (IntegerVectorIndividualRecoleccion ind : tabuList) {
-			if (candidato.fitness.equivalentTo(ind.fitness))
+			if (candidato.fitness.equivalentTo(ind.fitness)){
 				return true;
+			}
 		}
 		return false;
 	}

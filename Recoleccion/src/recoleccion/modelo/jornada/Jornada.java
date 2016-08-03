@@ -301,8 +301,8 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    public void describe(EvolutionState state, Individual ind, int subpopulation, int threadnum, int log) {
 	    	Solucion sol;
 			try {
-				System.out.println(ind.genotypeToStringForHumans());
 				sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
+				sol.imprimir();
 				sol.fitness();
 				System.out.println(ind.fitness.fitnessToStringForHumans());
 				for (Vehiculo v : sol.getVehiculosSolucion()) {	

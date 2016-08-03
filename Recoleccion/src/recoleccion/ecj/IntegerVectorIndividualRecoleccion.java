@@ -31,7 +31,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	}
     
     
-    public void rese22t(EvolutionState state, int thread) {
+    public void reset(EvolutionState state, int thread) {
        //CARGANDO LA SOLUCION RANDOMICA
        List<Domicilio> domicilios = Jornada.getInstance().getDomicilioHandler().getDomicilios();
        List<Viaje> viajes=new ArrayList<>();             
@@ -42,7 +42,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
            List<Domicilio> domiciliosViajes=new ArrayList<>();
            
             Viaje viaje= sol.new Viaje();
-            Vehiculo vehiculoActual=Jornada.getInstance().randomVehiculo();
+            Vehiculo vehiculoActual=sol.getRandomVehiculoSolucion();
             viaje.setVehiculo(vehiculoActual);
             //int randDomicilio=rand.nextInt(domicilios.size());  
             List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(domicilios);
@@ -63,8 +63,8 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                 	domicilios.remove(dom);
                 }
             }        
-            
-            vehiculoActual.verter(VertederoHandler.getInstance().get(vehiculoActual));
+            if (vehiculoActual.getCarga() > 0)
+            	vehiculoActual.verter(VertederoHandler.getInstance().get(vehiculoActual));
             
             if (domiciliosViajes.size()>0){
                 viaje.setDomicilios(domiciliosViajes);  

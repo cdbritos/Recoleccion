@@ -1,6 +1,7 @@
 package recoleccion.solucion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -74,6 +75,7 @@ public class Solucion {
 		double fitness = 0;
 		
 		individuo.genome = new int[0];
+		//Collections.shuffle(viajes);
 		
 		if (CollectionUtils.isNotEmpty(viajes)){
 			for (Viaje viaje : viajes) {

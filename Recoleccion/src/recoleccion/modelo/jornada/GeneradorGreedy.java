@@ -48,34 +48,41 @@ public class GeneradorGreedy {
     	   Solucion sol=new Solucion();
     	   
     	   List<Viaje> viajes=new ArrayList<>();
-    	   List<Domicilio> domicilios=DomiciliosHandler.getInstance().getDomicilios();
+    	   List<Domicilio> domicilios=sol.getDomiciliosSolucion();
     	   while (!domicilios.isEmpty()){
-    		   Vehiculo vehiculoActual=VehiculoHandler.getInstance().randomVehiculo();
+    		   Vehiculo vehiculoActual=sol.getRandomVehiculoSolucion();
     		   List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(domicilios);
     		   List<Domicilio> domViajes=new ArrayList<>();
-    		   while (!vehiculoActual.isLleno() && !domiciliosValidos.isEmpty()){
+    		   while (!domiciliosValidos.isEmpty()){
     			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
     			   domViajes.add(domCercano);
+    			   
     			   if (vehiculoActual.puedeRecolectar(domCercano))
     				   vehiculoActual.recolectar(domCercano);
-    			  
-    			   domiciliosValidos.remove(domCercano);
+    			   else if (!vehiculoActual.isLleno())
+    				   domiciliosValidos.remove(domCercano);
+ 			      			   
+    			   if (vehiculoActual.isLleno()){
+    				   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));
+    			   }
     			   
-    			   if (domCercano.tieneResiduo())
+    			   if (!domCercano.tieneResiduo()){
     				   domicilios.remove(domCercano);
-    			   
+    			   }
     		   }
-    		   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));
+    		   
     		   Viaje viaje=sol.new Viaje(vehiculoActual,domViajes);
     		   viajes.add(viaje);   		   
     	   }
     	   
-    	   List<Vehiculo> vehiculos = VehiculoHandler.getInstance().getVehiculos();
+    	   List<Vehiculo> vehiculos = sol.getVehiculosSolucion();
     	   double costo = 0;
     	   for (Vehiculo vehiculo : vehiculos) {
-			costo += VehiculoHandler.getInstance().get(Integer.valueOf(vehiculo.getIdentificador()).intValue()).getCostoJornada();
+    		   vehiculo.imprimir();
+    		   costo += vehiculo.getCostoJornada();
     	   }
-    	   
+
+
     	   System.out.println("COSTO JORNADA: " + costo);
 
       } catch (Exception e) {

@@ -302,8 +302,8 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	Solucion sol;
 			try {
 				sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
-				sol.imprimir();
 				sol.fitness();
+				System.out.println(ind.genotypeToStringForHumans());
 				System.out.println(ind.fitness.fitnessToStringForHumans());
 				for (Vehiculo v : sol.getVehiculosSolucion()) {	
 					if (v.getCostoJornada() > 0)

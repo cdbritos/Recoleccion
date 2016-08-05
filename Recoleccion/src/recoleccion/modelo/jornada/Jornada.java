@@ -141,7 +141,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 
 	}
 
-	private List<Vehiculo> cargarDepositos() throws FileNotFoundException  {
+	public List<Vehiculo> cargarDepositos() throws FileNotFoundException  {
 		   List<Deposito> depositos =new ArrayList<>();
 		   
 	       Scanner s = new Scanner(in_depositos);
@@ -216,10 +216,10 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	            String linea = s.nextLine(); 
 	            String [] cadena=linea.split(",");
 	            
-	            double latitud=Double.parseDouble(cadena[0]);
-	            double longitud=Double.parseDouble(cadena[1]);
+	            double latitud=Double.parseDouble(cadena[1]);
+	            double longitud=Double.parseDouble(cadena[2]);
 	            
-	            int cantPedidos = 2;
+	            int cantPedidos = 3;
 	            List<Pedido> pedidos=new ArrayList<>();
 	                        
 	            while (cantPedidos<cadena.length){
@@ -234,6 +234,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	           
 	            Coordenada coord = new Coordenada(latitud,longitud);
 	            Domicilio domicilio = new Domicilio(identificador++);
+	            domicilio.setMunicipio(cadena[0]);
 	            domicilio.setCoordenadas(coord);
 	            domicilio.setPedidos(pedidos);
 	            

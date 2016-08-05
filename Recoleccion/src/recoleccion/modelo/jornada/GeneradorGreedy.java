@@ -195,10 +195,10 @@ public class GeneradorGreedy {
 	            String linea = s.nextLine(); 
 	            String [] cadena=linea.split(",");
 	            
-	            double latitud=Double.parseDouble(cadena[0]);
-	            double longitud=Double.parseDouble(cadena[1]);
+	            double latitud=Double.parseDouble(cadena[1]);
+	            double longitud=Double.parseDouble(cadena[2]);
 	            
-	            int cantPedidos = 2;
+	            int cantPedidos = 3;
 	            List<Pedido> pedidos=new ArrayList<>();
 	                        
 	            while (cantPedidos<cadena.length){

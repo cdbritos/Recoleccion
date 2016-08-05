@@ -75,4 +75,8 @@ public class Pedido {
 	public void recolectar(long cantARecolectar) {
 		cantidad -= cantARecolectar;
 	}
+
+	public String toStringGenerador() {
+		return "," + cantidad + "," + residuo;
+	}
 }

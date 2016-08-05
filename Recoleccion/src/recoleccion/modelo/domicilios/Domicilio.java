@@ -8,10 +8,13 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 
 import recoleccion.modelo.data.Coordenable;
+import recoleccion.modelo.data.Coordenada;
 import recoleccion.modelo.data.TipoResiduo;
 
 public class Domicilio extends Coordenable {
 
+	private String municipio;
+	
 	private String identificador;
 	
 	private List<Pedido> pedidos;
@@ -22,6 +25,11 @@ public class Domicilio extends Coordenable {
 		this.identificador = String.valueOf(id);
 	}
 	
+	public Domicilio(String municipio, Coordenada coord) {
+		super(coord);
+		this.municipio = municipio;
+	}
+
 	public Domicilio(Domicilio d){
 		this.setCoordenadas(d.getCoordenadas());
 		this.identificador = d.getIdentificador();
@@ -146,5 +154,27 @@ public class Domicilio extends Coordenable {
 		}
 		return faltante;
 	}
+
+	public String getMunicipio() {
+		return municipio;
+	}
+
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
+	}
+
+	public String toStringGenerador() {
+		StringBuilder sb = new StringBuilder(municipio + "," 
+						   + getCoordenadas().getLatitud().doubleValue() + ","
+						   + getCoordenadas().getLongitud().doubleValue());
 		
+		if (CollectionUtils.isNotEmpty(pedidos)){
+			for (Pedido p : pedidos) {
+				sb.append(p.toStringGenerador());
+			}
+		}
+		
+		return sb.toString();
+	}
+
 }

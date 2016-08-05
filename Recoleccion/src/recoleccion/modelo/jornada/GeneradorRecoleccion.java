@@ -53,7 +53,7 @@ public class GeneradorRecoleccion {
                 }
                 mapeo.add(res);
                 domiciliosGenerador.add(i,domicilios.get(res));               
-            }
+            }	
             double latitudCol;
             double longitudCol;
             double latitudFila;

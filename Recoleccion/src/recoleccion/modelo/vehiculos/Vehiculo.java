@@ -2,6 +2,7 @@ package recoleccion.modelo.vehiculos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import recoleccion.modelo.data.Coordenable;
@@ -136,6 +137,7 @@ public abstract class Vehiculo extends Coordenable {
 	public void setCoordenadas(Coordenada coordenadas) {
 		if (getCoordenadas() != null)
 			metrosRecorridos += distance(coordenadas);
+				
 		super.setCoordenadas(coordenadas);
 	}
 	
@@ -219,6 +221,19 @@ public abstract class Vehiculo extends Coordenable {
 		}
 		
 		return puede;
+	}
+
+	public static Vehiculo getVehiculoByTipo(TipoVehiculo tv){
+		if (TipoVehiculo.CAMION.equals(tv))
+			return new Camion(0);
+		else
+			return new Camioneta(0); 
+	}
+	
+	public static int getRandomCapacidadTope() {
+		int tv = (new Random().nextInt(TipoVehiculo.values().length));
+		Vehiculo v = getVehiculoByTipo(TipoVehiculo.values()[tv]);
+		return  v.getCapacidad().intValue() / TipoResiduo.values().length;
 	}
 
 	

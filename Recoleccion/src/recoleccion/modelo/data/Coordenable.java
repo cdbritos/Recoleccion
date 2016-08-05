@@ -8,6 +8,14 @@ import org.apache.commons.collections.CollectionUtils;
 public abstract class Coordenable {
 
 	private Coordenada coordenadas;
+	
+	public Coordenable() {
+	}
+	
+	public Coordenable(Coordenada coordenadas) {
+		super();
+		this.coordenadas = coordenadas;
+	}
 
 	public Coordenada getCoordenadas() {
 		return coordenadas;
@@ -22,8 +30,6 @@ public abstract class Coordenable {
 	public void imprimir() {
 		System.out.println(getTipo() + ": " + (coordenadas == null ? "SIN COORDENADAS" : coordenadas.toString()));
 	}
-	
-	
 	
 	/* http://www.geodatasource.com/developers/java */
 	

@@ -154,17 +154,21 @@ public abstract class Vehiculo extends Coordenable {
 	public double getCostoJornada(){
 		double costo = 0;
 		if (metrosRecorridos > 0){
-			//costo fijo
-			costo += Jornada.COSTO_JORNAL_POR_EMPLEADO * getEmpleados();
-			costo += getCostoCombustible(); 
+			costo += getCostoCombustible();
+			costo += getCostoFijo() * getDuracionJornada();
+			
 			if (getDuracionJornada() > Jornada.DURACION_JORNAL_HORAS){
 				long horasExtras = Math.round(Math.ceil(getDuracionJornada() - Jornada.DURACION_JORNAL_HORAS));
 				costo += horasExtras * Jornada.COSTO_HORA_EXTRA * getEmpleados();
-			}
+				costo += Jornada.DURACION_JORNAL_HORAS * Jornada.COSTO_HORA_POR_EMPLEADO * getEmpleados();
+			}else
+				costo += this.getDuracionJornada() * Jornada.COSTO_HORA_POR_EMPLEADO * getEmpleados();
 		}
 		return costo;
 	}
 	
+	protected abstract double getCostoFijo();
+
 	//Dada la lista de domicilios retorna una lista de 
 	//Domicilios validos para el vehiculo, es decir que el vehiculo puede ir a recolectar algo
 	//ordenada por distancia
@@ -233,7 +237,7 @@ public abstract class Vehiculo extends Coordenable {
 	public static int getRandomCapacidadTope() {
 		int tv = (new Random().nextInt(TipoVehiculo.values().length));
 		Vehiculo v = getVehiculoByTipo(TipoVehiculo.values()[tv]);
-		return  v.getCapacidad().intValue() / TipoResiduo.values().length;
+		return  v.getCapacidad().intValue();
 	}
 
 	

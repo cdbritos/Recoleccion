@@ -7,6 +7,7 @@ parent.0 = /home/cdbritos/cursoAE/ecj/ec/simple/simple.params
 #parent.0 = C:/Users/Gonzalo/Desktop/FACULTAD/AE/ecj/ec/simple/simple.params
 #parent.0 = C:\\Documents and Settings\\ggutierrez\\Escritorio\\FACULTAD\\AE\\ecj\\ec\\simple\\simple.params
 
+jobs=1
 
 # N ESTA CLASE SE ENCUENTRA LA FUNCION DE FITNESS EN EL METODO EVALUATE
 eval.problem = recoleccion.modelo.jornada.Jornada
@@ -14,7 +15,7 @@ eval.problem = recoleccion.modelo.jornada.Jornada
 stat.file				$solucion.out
 stat.do-final=			true
 stat.do-generation=		true
-stat.do-message=		true
+stat.do-message=		false
 stat.do-description=	true
 
 # ARCHIVOS DE ENTRADA Y SALIDA DEL PROGRAMA
@@ -24,6 +25,7 @@ eval.problem.in_vertederos = vertederos.txt
 
 # ESTOS VIENEN POR DEFECTO
 state = 				recoleccion.modelo.jornada.JornadaEvolutionState
+#state = 				ec.simple.SimpleEvolutionState
 init = 					ec.simple.SimpleInitializer
 finish = 	        	ec.simple.SimpleFinisher
 exch = 					ec.simple.SimpleExchanger
@@ -32,7 +34,7 @@ stat =					recoleccion.modelo.jornada.JornadaStatics
 breed = 				ec.simple.SimpleBreeder
 
 # CANTIDAD DE GENERACIONES
-generations =				1000
+#generations =				10
 
 # PARAR SI ENCUENTRA LA SOLUCION OPTIMA
 quit-on-run-complete =				true
@@ -46,7 +48,7 @@ pop.subpop.0.species =                  ec.vector.IntegerVectorSpecies
 
 # TIPO DE MUTACION Y LA PROBABILIDAD
 pop.subpop.0.species.mutation-type= reset
-pop.subpop.0.species.mutation-prob = 	0.01
+#pop.subpop.0.species.mutation-prob = 	0.01
 
 # ESTO NO SE MUY BIEN PARA QUE SON CADA COSA
 pop.subpop.0.species.pipe = 		ec.vector.breed.VectorMutationPipeline
@@ -56,7 +58,7 @@ pop.subpop.0.species.pipe.source.0.likelihood = 0.75
 pop.subpop.0.species.pipe.source.0.source.0 =	ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.1 = 	same
 pop.subpop.0.species.pipe.source.0.source.1.size = 1
-select.tournament.size = 2
+#select.tournament.size = 2
 
 # numero de iniciacion, time empieza con la fecha actual
 seed.0 = time
@@ -66,16 +68,10 @@ pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
 
 # tipo de cruzamiento y la probabilidad
 pop.subpop.0.species.crossover-type = two
-pop.subpop.0.species.likelihood =	0.75
+#pop.subpop.0.species.crossover-prob =	0.75
 
 # el tipo de vector a utilizar y los maximos y minimos que puede tener
 pop.subpop.0.species.ind =		recoleccion.ecj.IntegerVectorIndividualRecoleccion
-
-
-# tamaño del genoma
-#pop.subpop.0.species.genome-size =1000
-#pop.subpop.0.species.max-gene=9
-#pop.subpop.0.species.min-gene=-6
 
 # tamaño de la poblacion
 pop.subpop.0.size =	100

@@ -24,5 +24,11 @@ public class Camioneta extends Vehiculo {
 	
 	protected TipoVehiculo getTipoVehiculo() {return TipoVehiculo.CAMIONETA;}
 
+	@Override
+	protected double getCostoFijo() {
+	
+		return 2000;
+	}
+
 	
 }

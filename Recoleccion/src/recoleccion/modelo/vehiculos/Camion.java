@@ -22,5 +22,10 @@ public class Camion extends Vehiculo {
 	protected double getTiempoCarga() {return 1;}
 
 	protected TipoVehiculo getTipoVehiculo() {return TipoVehiculo.CAMION;}
+	
+	@Override
+	protected double getCostoFijo() {
+		return 3000;
+	}
 		
 }

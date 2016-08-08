@@ -35,8 +35,8 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	private static final long serialVersionUID = 1L;
 	
 	public static final long DURACION_JORNAL_HORAS = 8;
-	public static final long COSTO_JORNAL_POR_EMPLEADO = 3000;
-	public static final long COSTO_HORA_EXTRA = (COSTO_JORNAL_POR_EMPLEADO / DURACION_JORNAL_HORAS) * 3;
+	public static final long COSTO_HORA_POR_EMPLEADO = 300;	
+	public static final long COSTO_HORA_EXTRA = COSTO_HORA_POR_EMPLEADO * 3;
 	
 	public static final String DEPOSITOS_IN = "in_depositos";
     public static final String DOM_JOR_IN = "in_domicilios_jornada";
@@ -52,6 +52,8 @@ public class Jornada extends Problem implements SimpleProblemForm {
     	
     }
 	
+    
+    
     public static final Jornada getInstance(){
     	
     	if (instancia == null)
@@ -300,7 +302,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	   
 	    @Override
 	    public void describe(EvolutionState state, Individual ind, int subpopulation, int threadnum, int log) {
-	    	Solucion sol;
+	    	/*Solucion sol;
 			try {
 				sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
 				sol.fitness();
@@ -313,7 +315,30 @@ public class Jornada extends Problem implements SimpleProblemForm {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}*/
+	    	state.output.println("FITNESS: " + ind.fitness.fitness() , log);
+	    	state.output.println("GENERATIONS: " + state.numGenerations , log);
+	    	state.output.println("MUTATION-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.mutation-prob"),null) , log);
+	    	state.output.println("CROSSOVER-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.crossover-prob"),null), log);
+	    	state.output.println("TOURNAMENT-SIZE: " + state.parameters.getString(new ec.util.Parameter("select.tournament.size"),null), log);
+	    	state.output.println( ind.genotypeToStringForHumans(), log );
+	    	Solucion sol;
+			try {
+			
+				
+					sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
+					sol.fitness();
+		    		for (Vehiculo v : sol.getVehiculosSolucion()) {	
+		    			if (v.getCostoJornada() > 0)
+		    				v.imprimir();
+		    		}
+		    	
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+	    	
 	    }
 
 	    public Vehiculo randomVehiculo(){

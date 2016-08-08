@@ -84,7 +84,7 @@ public class Solucion {
 			}
 		}
 		
-		List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
+		/*List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
 		while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
 			Vehiculo v = getRandomVehiculoSolucion();
 			List<Domicilio> domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
@@ -99,7 +99,52 @@ public class Solucion {
 			}
 			
 			domiciliofaltantes = getDomiciliosFaltantes();
+		}*/
+		
+		//COMIENZO - AGREGUE ESTO PARA CORREGIR LOS VEHICULOS
+		List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
+		if (CollectionUtils.isNotEmpty(domiciliofaltantes)){
+			List<Domicilio> domiciliosValidosVehiculo=new ArrayList<>();
+			for (Viaje viaje : this.viajes){
+				Vehiculo vActual=viaje.getVehiculo();
+				int j=0;
+				while (j<domiciliofaltantes.size()){
+					Domicilio domActual=domiciliofaltantes.get(j);
+					if (!vActual.isLleno() &&  vActual.puedeRecolectar(domActual)){
+							domiciliosValidosVehiculo.add(domActual);
+							domiciliofaltantes.remove(domActual);
+					}
+					j++;
+				}
+				//viaje.setDomicilios((List<Domicilio>) ListUtils.union(domiciliosValidosVehiculo,viaje.getDomicilios()));
+				if (!domiciliosValidosVehiculo.isEmpty()){
+					List<Domicilio> domiciliosTotal=new ArrayList<>();
+					domiciliosTotal.addAll(domiciliosValidosVehiculo);
+					domiciliosTotal.addAll(viaje.getDomicilios());
+					viaje.setDomicilios(domiciliosTotal);
+					viaje.doViaje();
+					individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
+				}
+			}
+			
+			
+			while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
+				Vehiculo v = getRandomVehiculoSolucion();
+				domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
+				if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
+					Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
+					viaje.doViaje();
+					
+					if (CollectionUtils.isNotEmpty(viaje.domicilios)){
+						this.viajes.add(viaje);
+						individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
+					}
+				}
+				
+				domiciliofaltantes = getDomiciliosFaltantes();
+			}
 		}
+		//FIN - AGREGUE ESTO PARA CORREGIR LOS VEHICULOS
 		
 				
 		for (Vehiculo vehiculo : vehiculosSolucion){

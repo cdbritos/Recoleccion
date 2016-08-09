@@ -155,7 +155,7 @@ public abstract class Vehiculo extends Coordenable {
 		double costo = 0;
 		if (metrosRecorridos > 0){
 			costo += getCostoCombustible();
-			costo += getCostoFijo() * getDuracionJornada();
+			costo += getCostoFijo(); //* getDuracionJornada();
 			
 			if (getDuracionJornada() > Jornada.DURACION_JORNAL_HORAS){
 				long horasExtras = Math.round(Math.ceil(getDuracionJornada() - Jornada.DURACION_JORNAL_HORAS));

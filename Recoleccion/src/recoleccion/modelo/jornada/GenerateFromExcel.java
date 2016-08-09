@@ -39,7 +39,7 @@ public class GenerateFromExcel {
 			
 	public static void main(String[] args) throws Exception{
 		
-		int tamano_muestra = args.length > 0 ? Integer.valueOf(args[0]).intValue() : 300;
+		int tamano_muestra = args.length > 0 ? Integer.valueOf(args[0]).intValue() : 350;
 		
 		if (tamano_muestra > 400)
 			throw new Exception("TAMANO MUESTRA INCORRECTO");

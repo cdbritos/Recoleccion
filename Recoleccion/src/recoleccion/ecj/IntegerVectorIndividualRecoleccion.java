@@ -16,6 +16,7 @@ import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 import ec.vector.IntegerVectorIndividual;
 import ec.vector.IntegerVectorSpecies;
+import ec.vector.VectorIndividual;
 
 /**
  *
@@ -30,7 +31,6 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 		// TODO Auto-generated method stub
 		super.setup(state, base);
 	}
-    
     
     public void reset(EvolutionState state, int thread) {
        //CARGANDO LA SOLUCION RANDOMICA           
@@ -165,8 +165,8 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	private int randomValueFromClosedInterval(int pos, MersenneTwisterFast mersenneTwisterFast) {
 		if (genome[pos] < 0){
 			//retorna un vehiculo aleatorio
-			//return genome[pos];
-			return VehiculoHandler.doMutate(genome[pos],randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast));
+			return genome[pos];
+			//return VehiculoHandler.doMutate(genome[pos],randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast));
 		}
 		
 		//retorna un domicilio

@@ -89,20 +89,33 @@ public class Solucion {
 		  }
 		  
 		  List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
+		  int i = 0;
 		  while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
-		   Vehiculo v = getRandomVehiculoSolucion();
-		   List<Domicilio> domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
-		   if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
-		    Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
-		    viaje.doViaje();
+			  Vehiculo v = null;
+			  if (i < 1000)
+				  v = getRandomVehiculoSolucionUtilizados(); 
+			  else{ 
+				  v = getRandomVehiculoSolucion();
+				  i=0;
+			  }
+			  
+			  List<Domicilio> domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
+			  
+			  if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
+				  Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
+				  List<Viaje> viajesFaltantes = viaje.doViaje();
 		    
-		    if (CollectionUtils.isNotEmpty(viaje.domicilios)){
-		     this.viajes.add(viaje);
-		     individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
-		    }
-		   }
-		   
-		   domiciliofaltantes = getDomiciliosFaltantes();
+				  if (CollectionUtils.isNotEmpty(viajesFaltantes)){
+					  for (Viaje viajeFaltante : viajesFaltantes) {
+						  	this.viajes.add(viajeFaltante);
+				    		individuo.genome = ArrayUtils.addAll(individuo.genome, viajeFaltante.getGenomaViaje());
+					  }
+				  }
+			  }	   
+			  
+			  domiciliofaltantes = getDomiciliosFaltantes();
+			  i++; 
+		  
 		  }
 		      
 		  for (Vehiculo vehiculo : vehiculosSolucion){

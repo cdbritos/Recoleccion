@@ -8,6 +8,7 @@ import recoleccion.modelo.domicilios.Domicilio;
 import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.VertederoHandler;
 import recoleccion.modelo.vehiculos.Vehiculo;
+import recoleccion.modelo.vehiculos.VehiculoHandler;
 import recoleccion.solucion.Solucion;
 import recoleccion.solucion.Solucion.Viaje;
 import ec.EvolutionState;
@@ -32,47 +33,39 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
     
     
     public void reset(EvolutionState state, int thread) {
-       //CARGANDO LA SOLUCION RANDOMICA
-       List<Domicilio> domicilios = Jornada.getInstance().getDomicilioHandler().getDomicilios();
-       List<Viaje> viajes=new ArrayList<>();             
-       Random rand=new Random();
-       Solucion sol = new Solucion();
-       
-       while(!domicilios.isEmpty()){
-           List<Domicilio> domiciliosViajes=new ArrayList<>();
-           
-            Viaje viaje= sol.new Viaje();
-            Vehiculo vehiculoActual=sol.getRandomVehiculoSolucion();
-            viaje.setVehiculo(vehiculoActual);
-            //int randDomicilio=rand.nextInt(domicilios.size());  
-            List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(domicilios);
-            //int randDomicilio=rand.nextInt(domiciliosValidos.size());  
-            while (!vehiculoActual.isLleno() && !domiciliosValidos.isEmpty()){
-
-            	int randDomicilio=rand.nextInt(domiciliosValidos.size()); 
-                Domicilio dom=domiciliosValidos.get(randDomicilio);
-                
-                if (vehiculoActual.puedeRecolectar(dom)){
-                	domiciliosViajes.add(dom);
-                	vehiculoActual.recolectar(dom);
-                }
-                
-                domiciliosValidos.remove(dom);
-                
-                if (!dom.tieneResiduo()){
-                	domicilios.remove(dom);
-                }
-            }        
-            if (vehiculoActual.getCarga() > 0)
-            	vehiculoActual.verter(VertederoHandler.getInstance().get(vehiculoActual));
-            
-            if (domiciliosViajes.size()>0){
-                viaje.setDomicilios(domiciliosViajes);  
-                viajes.add(viaje);
-            }
-       }
-       
-       sol.setViajes(viajes);  
+       //CARGANDO LA SOLUCION RANDOMICA           
+       Solucion sol=new Solucion();
+	   
+	   List<Viaje> viajes=new ArrayList<>();
+	   List<Domicilio> domicilios=sol.getDomiciliosSolucion();
+	   
+	   while (!domicilios.isEmpty()){
+		   Vehiculo vehiculoActual=sol.getRandomVehiculoSolucion();
+		   List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(domicilios);
+		   List<Domicilio> domViajes=new ArrayList<>();
+		   while (!domiciliosValidos.isEmpty()){
+			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
+			   
+			   if (vehiculoActual.puedeRecolectar(domCercano)){
+				   vehiculoActual.recolectar(domCercano);
+				   domViajes.add(domCercano);
+			   }else if (!vehiculoActual.isLleno())
+				   domiciliosValidos.remove(domCercano);
+			      			   
+			   if (vehiculoActual.isLleno()){
+				   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));
+			   }
+			   
+			   if (!domCercano.tieneResiduo()){
+				   domicilios.remove(domCercano);
+			   }
+		   }
+		   
+		   Viaje viaje=sol.new Viaje(vehiculoActual,domViajes);
+		   viajes.add(viaje);   		   
+	   }
+	   
+	   sol.setViajes(viajes);
        
        sol.setGenoma(this);
        System.out.println(this.genotypeToStringForHumans());
@@ -80,6 +73,18 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
                
     }
    
+	private static Domicilio domicilioMasCerca(Vehiculo v,List<Domicilio> domiciliosARecorrer){
+		double distanciaMenor=Double.MAX_VALUE;
+		Domicilio domCerca=null;
+		for (int i=0;i<domiciliosARecorrer.size();i++){		
+			double distancia=v.distance(domiciliosARecorrer.get(i).getCoordenadas());
+			if (distancia<=distanciaMenor){
+				distanciaMenor=distancia;
+				domCerca=domiciliosARecorrer.get(i);
+			}			
+		}
+		return domCerca;
+	}
    
    /* ****************************************************
     * COMIENZO MERGE  
@@ -161,10 +166,10 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 		if (genome[pos] < 0){
 			//retorna un vehiculo aleatorio
 			//return genome[pos];
-			return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast);
+			return VehiculoHandler.doMutate(genome[pos],randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast));
 		}
 		
 		//retorna un domicilio
-		return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), Jornada.getInstance().getMaxGene(), mersenneTwisterFast);
+		return randomValueFromClosedInterval(1, Jornada.getInstance().getMaxGene(), mersenneTwisterFast);
 	}
 }

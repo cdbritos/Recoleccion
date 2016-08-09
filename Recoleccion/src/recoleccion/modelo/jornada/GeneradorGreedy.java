@@ -55,11 +55,12 @@ public class GeneradorGreedy {
     		   List<Domicilio> domViajes=new ArrayList<>();
     		   while (!domiciliosValidos.isEmpty()){
     			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
-    			   domViajes.add(domCercano);
     			   
-    			   if (vehiculoActual.puedeRecolectar(domCercano))
+    			   
+    			   if (vehiculoActual.puedeRecolectar(domCercano)){
     				   vehiculoActual.recolectar(domCercano);
-    			   else if (!vehiculoActual.isLleno())
+    				   domViajes.add(domCercano);
+    			   }else if (!vehiculoActual.isLleno())
     				   domiciliosValidos.remove(domCercano);
  			      			   
     			   if (vehiculoActual.isLleno()){
@@ -74,6 +75,8 @@ public class GeneradorGreedy {
     		   Viaje viaje=sol.new Viaje(vehiculoActual,domViajes);
     		   viajes.add(viaje);   		   
     	   }
+    	   
+    	   sol.setViajes(viajes);
     	   
     	   List<Vehiculo> vehiculos = sol.getVehiculosSolucion();
     	   double costo = 0;

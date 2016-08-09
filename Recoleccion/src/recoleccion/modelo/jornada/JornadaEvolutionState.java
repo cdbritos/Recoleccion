@@ -6,7 +6,7 @@ public class JornadaEvolutionState extends SimpleEvolutionState {
 
 	private static final long serialVersionUID = 2988336103730866041L;
 	
-	public static final int[] GENERATIONS = {100, 2, 3};
+	public static final int[] GENERATIONS = {1000, 2, 3};
 	public static final double[] MUTATION_PROBS = {0.01, 0.05, 0.1};
 	public static final double[] CROSSOVER_PROBS = {0.75, 0.75, 0.9};
 	public static final int[] TOURNAMENT_SIZE = {2, 3, 7};

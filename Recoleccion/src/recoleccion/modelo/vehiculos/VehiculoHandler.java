@@ -72,4 +72,18 @@ public class VehiculoHandler {
 		
 		return capacidadMinima;
 	}
+
+	public static int doMutate(int id1, int id2) {
+		
+		Vehiculo vehiculo1= VehiculoHandler.getInstance().get(id1);
+		Vehiculo vehiculo2= VehiculoHandler.getInstance().get(id2);
+		
+		if (vehiculo2.esMejor(vehiculo1))
+			return id2;
+		
+		if (!vehiculo1.getTipoVehiculo().equals(vehiculo2.getTipoVehiculo()) && vehiculo1.recolectaLoMismo(vehiculo2))
+				return id2;
+		
+		return id1;
+	}
 }

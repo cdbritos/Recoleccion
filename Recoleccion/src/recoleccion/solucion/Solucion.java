@@ -291,7 +291,16 @@ public class Solucion {
 			List<Domicilio> domiciliosRecolectados = new ArrayList<Domicilio>();
 			
 			if (CollectionUtils.isNotEmpty(domicilios)){
-				for (Domicilio domicilio: domicilios) {		
+				for (Domicilio domicilio: domicilios) {	
+					//CORRRECION DE VIAJES PASADOS DE TIEMPOS
+					if (vehiculo.llegueDuracionMaxima()){
+						vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
+						viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
+						domiciliosRecolectados = new ArrayList<Domicilio>();
+						//vehiculosSolucion.remove(vehiculo);
+						return viajes;
+					}
+					//CORRRECION DE VIAJES PASADOS DE TIEMPOS
 					if (vehiculo.puedeRecolectar(domicilio)){
 						vehiculo.recolectar(domicilio);
 						domiciliosRecolectados.add(domicilio);

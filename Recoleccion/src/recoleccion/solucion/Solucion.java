@@ -128,7 +128,7 @@ public class Solucion {
 	private Vehiculo getRandomVehiculoSolucionUtilizados() {
 		List<Vehiculo> vehiculosUtilizados = new ArrayList<Vehiculo>();
 		for (Vehiculo vehiculo : vehiculosSolucion) {
-			if (vehiculo.getCostoJornada() > 0)
+			if (vehiculo.getCostoJornada() > 0 && !vehiculo.llegueDuracionMaxima())
 				vehiculosUtilizados.add(vehiculo);
 		}
 		try {

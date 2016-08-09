@@ -1,7 +1,6 @@
 package recoleccion.solucion;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -72,88 +71,62 @@ public class Solucion {
 
 	// viajes sin domicilio se dejan en la solucion tiene fitness 0
 	public double fitness(){
-		double fitness = 0;
-		
-		individuo.genome = new int[0];
-		//Collections.shuffle(viajes);
-		
-		if (CollectionUtils.isNotEmpty(viajes)){
-			for (Viaje viaje : viajes) {
-				viaje.doViaje();
-				individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
-			}
-		}
-		
-		/*List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
-		while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
-			Vehiculo v = getRandomVehiculoSolucion();
-			List<Domicilio> domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
-			if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
-				Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
-				viaje.doViaje();
-				
-				if (CollectionUtils.isNotEmpty(viaje.domicilios)){
-					this.viajes.add(viaje);
-					individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
+		  double fitness = 0;
+		  
+		  individuo.genome = new int[0];
+		  //Collections.shuffle(viajes);
+		  
+		  if (CollectionUtils.isNotEmpty(viajes)){
+		   for (Viaje viaje : viajes) {
+		    List<Viaje> viajesVehiculo = viaje.doViaje();
+		    
+		    if (CollectionUtils.isNotEmpty(viajesVehiculo)){
+		    	for (Viaje viaje2 : viajesVehiculo) {
+		    		individuo.genome = ArrayUtils.addAll(individuo.genome, viaje2.getGenomaViaje());
 				}
-			}
-			
-			domiciliofaltantes = getDomiciliosFaltantes();
-		}*/
-		
-		//COMIENZO - AGREGUE ESTO PARA CORREGIR LOS VEHICULOS
-		List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
-		if (CollectionUtils.isNotEmpty(domiciliofaltantes)){
-			List<Domicilio> domiciliosValidosVehiculo=new ArrayList<>();
-			for (Viaje viaje : this.viajes){
-				Vehiculo vActual=viaje.getVehiculo();
-				int j=0;
-				while (j<domiciliofaltantes.size()){
-					Domicilio domActual=domiciliofaltantes.get(j);
-					if (!vActual.isLleno() &&  vActual.puedeRecolectar(domActual)){
-							domiciliosValidosVehiculo.add(domActual);
-							domiciliofaltantes.remove(domActual);
-					}
-					j++;
-				}
-				//viaje.setDomicilios((List<Domicilio>) ListUtils.union(domiciliosValidosVehiculo,viaje.getDomicilios()));
-				if (!domiciliosValidosVehiculo.isEmpty()){
-					List<Domicilio> domiciliosTotal=new ArrayList<>();
-					domiciliosTotal.addAll(domiciliosValidosVehiculo);
-					domiciliosTotal.addAll(viaje.getDomicilios());
-					viaje.setDomicilios(domiciliosTotal);
-					viaje.doViaje();
-					individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
-				}
-			}
-			
-			
-			while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
-				Vehiculo v = getRandomVehiculoSolucion();
-				domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
-				if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
-					Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
-					viaje.doViaje();
-					
-					if (CollectionUtils.isNotEmpty(viaje.domicilios)){
-						this.viajes.add(viaje);
-						individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
-					}
-				}
-				
-				domiciliofaltantes = getDomiciliosFaltantes();
-			}
-		}
-		//FIN - AGREGUE ESTO PARA CORREGIR LOS VEHICULOS
-		
-				
-		for (Vehiculo vehiculo : vehiculosSolucion){
-			fitness += vehiculo.getCostoJornada();
-		}
-		
-		return fitness;
-	}
+		    }
+		   }
+		  }
+		  
+		  List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
+		  while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
+		   Vehiculo v = getRandomVehiculoSolucion();
+		   List<Domicilio> domiciliosValidosVehiculo = v.domiciliosValidos(domiciliofaltantes);
+		   if (CollectionUtils.isNotEmpty(domiciliosValidosVehiculo)){
+		    Viaje viaje = this.new Viaje(v,domiciliosValidosVehiculo);
+		    viaje.doViaje();
+		    
+		    if (CollectionUtils.isNotEmpty(viaje.domicilios)){
+		     this.viajes.add(viaje);
+		     individuo.genome = ArrayUtils.addAll(individuo.genome, viaje.getGenomaViaje());
+		    }
+		   }
+		   
+		   domiciliofaltantes = getDomiciliosFaltantes();
+		  }
+		      
+		  for (Vehiculo vehiculo : vehiculosSolucion){
+		   fitness += vehiculo.getCostoJornada();
+		  }
+		  
+		  return fitness;
+		 }
 	
+	private Vehiculo getRandomVehiculoSolucionUtilizados() {
+		List<Vehiculo> vehiculosUtilizados = new ArrayList<Vehiculo>();
+		for (Vehiculo vehiculo : vehiculosSolucion) {
+			if (vehiculo.getCostoJornada() > 0)
+				vehiculosUtilizados.add(vehiculo);
+		}
+		try {
+	        return vehiculosUtilizados.get((new Random()).nextInt(vehiculosUtilizados.size()));
+	    }
+	    catch (Throwable e){
+	        return null;
+	    }
+		
+	}
+
 	public List<Domicilio> getDomiciliosFaltantes() {
 		List<Domicilio> faltantes = new ArrayList<Domicilio>();
 		for (Domicilio domicilio : domiciliosSolucion) {
@@ -300,24 +273,25 @@ public class Solucion {
 			
 		}
 
-		public void doViaje() {
+		public List<Viaje> doViaje() {
+			List<Viaje> viajes = new ArrayList<Viaje>();
+			List<Domicilio> domiciliosRecolectados = new ArrayList<Domicilio>();
+			
 			if (CollectionUtils.isNotEmpty(domicilios)){
-				List<Domicilio> domiciliosRecolectados = new ArrayList<Domicilio>();
-				for (Domicilio domicilio: domicilios) {
-					if (vehiculo.isLleno())
-						break;
-					
+				for (Domicilio domicilio: domicilios) {		
 					if (vehiculo.puedeRecolectar(domicilio)){
 						vehiculo.recolectar(domicilio);
 						domiciliosRecolectados.add(domicilio);
 					}
+					if (vehiculo.isLleno()){
+						vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
+						viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
+						domiciliosRecolectados = new ArrayList<Domicilio>();
+					}
 				}
-				
-				if (vehiculo.getCarga() > 0)
-					vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
-				
-				this.setDomicilios(domiciliosRecolectados);
 			}
+			
+			return viajes;
 		}
 		
 		public List<Viaje> corregir(List<Vehiculo> vehiculosUtilizados){

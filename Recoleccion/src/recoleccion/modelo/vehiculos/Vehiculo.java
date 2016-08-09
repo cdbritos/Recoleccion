@@ -155,7 +155,7 @@ public abstract class Vehiculo extends Coordenable {
 		double costo = 0;
 		if (metrosRecorridos > 0){
 			costo += getCostoCombustible();
-			costo += getCostoFijo(); //* getDuracionJornada();
+			costo += getCostoFijo();
 			
 			if (getDuracionJornada() > Jornada.DURACION_JORNAL_HORAS){
 				long horasExtras = Math.round(Math.ceil(getDuracionJornada() - Jornada.DURACION_JORNAL_HORAS));
@@ -238,6 +238,23 @@ public abstract class Vehiculo extends Coordenable {
 		int tv = (new Random().nextInt(TipoVehiculo.values().length));
 		Vehiculo v = getVehiculoByTipo(TipoVehiculo.values()[tv]);
 		return  v.getCapacidad().intValue();
+	}
+
+	public boolean recolectaLoMismo(Vehiculo otro) {
+		
+		if (this.tiposResiduos.size() != otro.tiposResiduos.size())
+			return false;
+		
+		for (TipoResiduo tr : this.tiposResiduos) {
+			if (!otro.tiposResiduos.contains(tr))
+				return false;
+		}
+		
+		return true;
+	}
+
+	public boolean esMejor(Vehiculo otro) {
+		return this.recolectaLoMismo(otro) && this.tiposResiduos.size() > otro.tiposResiduos.size();
 	}
 
 	

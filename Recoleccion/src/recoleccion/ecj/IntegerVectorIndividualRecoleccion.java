@@ -46,6 +46,13 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 		   while (!domiciliosValidos.isEmpty()){
 			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
 			   
+			   //CORREGIR DURACION DE VIAJE
+			   if (vehiculoActual.llegueDuracionMaxima()){
+				   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));				   
+				   sol.getVehiculosSolucion().remove(vehiculoActual);
+				   break;
+			   }
+			   //CORREGIR DURACION DE VIAJE
 			   if (vehiculoActual.puedeRecolectar(domCercano)){
 				   vehiculoActual.recolectar(domCercano);
 				   domViajes.add(domCercano);

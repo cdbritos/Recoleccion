@@ -39,7 +39,7 @@ public class GenerateFromExcel {
 			
 	public static void main(String[] args) throws Exception{
 		
-		int tamano_muestra = args.length > 0 ? Integer.valueOf(args[0]).intValue() : 350;
+		int tamano_muestra = args.length > 0 ? Integer.valueOf(args[0]).intValue() : 150;
 		
 		if (tamano_muestra > 400)
 			throw new Exception("TAMANO MUESTRA INCORRECTO");
@@ -62,8 +62,7 @@ public class GenerateFromExcel {
 		/* 
 		 * Aca ya tengo los domicilio de la instancia de tamano_muestra creados
 		 * en forma proporcional a la cantidad de domicilios por municipio 
-		 */
-		
+		 */		
 		int i = 0;
 		while (i < domiciliosInstancia.size()){
 			Domicilio d = domiciliosInstancia.get(i);
@@ -92,9 +91,11 @@ public class GenerateFromExcel {
 
 	private static void agregarDomiciliosInstancia(int cantAgregar, List<Domicilio> domiciliosMunicipio,List<Domicilio> domiciliosInstancia) {
 		for (int i = cantAgregar; i>0; i--){
-			Domicilio d = domiciliosMunicipio.get((new Random()).nextInt(domiciliosMunicipio.size()));
-			domiciliosInstancia.add(d);
-			domiciliosMunicipio.remove(d);
+			int pos = (new Random()).nextInt(domiciliosMunicipio.size());
+			Domicilio d = domiciliosMunicipio.get(pos);	
+			Domicilio domInstancia = new Domicilio(d.getMunicipio(),d.getCoordenadas());
+			domiciliosInstancia.add(domInstancia);
+			domiciliosMunicipio.remove(pos);
 		}
 		
 	}

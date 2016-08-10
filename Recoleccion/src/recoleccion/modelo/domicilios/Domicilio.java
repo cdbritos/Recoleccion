@@ -31,9 +31,10 @@ public class Domicilio extends Coordenable {
 	}
 
 	public Domicilio(Domicilio d){
+		this.setMunicipio(d.getMunicipio());
 		this.setCoordenadas(d.getCoordenadas());
 		this.identificador = d.getIdentificador();
-		if (CollectionUtils.isNotEmpty(d.pedidos))
+		if (CollectionUtils.isNotEmpty(d.getPedidos()))
 			this.pedidos = new ArrayList<Pedido>();
 			for (Pedido p : d.getPedidos()) {
 				this.pedidos.add(new Pedido(p));

@@ -345,8 +345,10 @@ public class Solucion {
 					}
 				}
 				
-				if (CollectionUtils.isNotEmpty(domiciliosRecolectados))
+				if (CollectionUtils.isNotEmpty(domiciliosRecolectados)){
+					vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
 					viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
+				}
 			}
 			
 			return viajes;

@@ -47,9 +47,9 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
 			   
 			   //CORREGIR DURACION DE VIAJE
-			   if (vehiculoActual.llegueDuracionMaxima()){
+			   if (vehiculoActual.getDuracionJornada() > Jornada.DURACION_JORNADA){
 				   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));				   
-				   sol.getVehiculosSolucion().remove(vehiculoActual);
+				   //sol.getVehiculosSolucion().remove(vehiculoActual);
 				   break;
 			   }
 			   //CORREGIR DURACION DE VIAJE
@@ -173,6 +173,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 		if (genome[pos] < 0){
 			//retorna un vehiculo aleatorio
 			return genome[pos];
+			//return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(),-1, mersenneTwisterFast);
 			//return VehiculoHandler.doMutate(genome[pos],randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast));
 		}
 		

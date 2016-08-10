@@ -88,7 +88,7 @@ public abstract class Vehiculo extends Coordenable {
 	}
 	
 	protected abstract String getTipo();
-	protected abstract TipoVehiculo getTipoVehiculo();
+	public abstract TipoVehiculo getTipoVehiculo();
 	
 	public Long getCarga() {
 		return carga;
@@ -146,7 +146,7 @@ public abstract class Vehiculo extends Coordenable {
 	}
 	
 	// retorna duracion en horas
-	private double getDuracionJornada(){
+	public double getDuracionJornada(){
 		return (metrosRecorridos / 1000) / getVelocidad() + tiempoRecolectando/3600 + tiempoVertiendo/3600;
 	}
 	

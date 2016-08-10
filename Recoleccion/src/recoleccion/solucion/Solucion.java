@@ -1,6 +1,7 @@
 package recoleccion.solucion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -72,9 +73,9 @@ public class Solucion {
 	// viajes sin domicilio se dejan en la solucion tiene fitness 0
 	public double fitness(){
 		  double fitness = 0;
-		  
+		  System.out.println("##########");
+		  System.out.println(individuo.genotypeToStringForHumans());
 		  individuo.genome = new int[0];
-		  //Collections.shuffle(viajes);
 		  
 		  if (CollectionUtils.isNotEmpty(viajes)){
 		   for (Viaje viaje : viajes) {
@@ -87,6 +88,8 @@ public class Solucion {
 		    }
 		   }
 		  }
+		  
+		  System.out.println(individuo.genotypeToStringForHumans());
 		  
 		  List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
 		  int i = 0;
@@ -122,6 +125,8 @@ public class Solucion {
 		   fitness += vehiculo.getCostoJornada();
 		  }
 		  
+		  System.out.println(individuo.genotypeToStringForHumans());
+		  
 		  return fitness;
 		 }
 	
@@ -132,14 +137,39 @@ public class Solucion {
 				vehiculosUtilizados.add(vehiculo);
 		}
 		try {
-	        return vehiculosUtilizados.get((new Random()).nextInt(vehiculosUtilizados.size()));
+			if (CollectionUtils.isEmpty(vehiculosUtilizados))
+				return getRandomVehiculoSolucion();
+			else
+				return vehiculosUtilizados.get((new Random()).nextInt(vehiculosUtilizados.size()));
 	    }
 	    catch (Throwable e){
 	        return null;
 	    }
 		
 	}
+	
+	private Vehiculo getVehiculoSolucionSimilar(Vehiculo v) {
+		
+		Vehiculo vecSimilar = null;
+		for (Vehiculo vehiculo : vehiculosSolucion) {
+			
+			if ((vehiculo.esMejor(v) || vehiculo.recolectaLoMismo(v)) && !vehiculo.llegueDuracionMaxima() && vehiculo.getCostoJornada() > 0){
+				if (vecSimilar == null || vehiculo.getCostoJornada() < vecSimilar.getCostoJornada()) 
+					vecSimilar = vehiculo;
+			}
+		}
+		try {
+			if (vecSimilar == null)
+				return getRandomVehiculoSolucionUtilizados();
+			else
+				return vecSimilar;
+	    }
+	    catch (Throwable e){
+	        return null;
+	    }
+	}
 
+	
 	public List<Domicilio> getDomiciliosFaltantes() {
 		List<Domicilio> faltantes = new ArrayList<Domicilio>();
 		for (Domicilio domicilio : domiciliosSolucion) {
@@ -296,21 +326,27 @@ public class Solucion {
 					if (vehiculo.llegueDuracionMaxima()){
 						vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
 						viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
+						
+						// arranco nuevo viaje con otro vehiuculo
 						domiciliosRecolectados = new ArrayList<Domicilio>();
-						//vehiculosSolucion.remove(vehiculo);
-						return viajes;
+						vehiculo = getVehiculoSolucionSimilar(vehiculo);
 					}
+					
 					//CORRRECION DE VIAJES PASADOS DE TIEMPOS
-					if (vehiculo.puedeRecolectar(domicilio)){
+					if (!vehiculo.llegueDuracionMaxima() && vehiculo.puedeRecolectar(domicilio)){
 						vehiculo.recolectar(domicilio);
 						domiciliosRecolectados.add(domicilio);
 					}
 					if (vehiculo.isLleno()){
 						vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
+						
 						viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
 						domiciliosRecolectados = new ArrayList<Domicilio>();
 					}
 				}
+				
+				if (CollectionUtils.isNotEmpty(domiciliosRecolectados))
+					viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
 			}
 			
 			return viajes;

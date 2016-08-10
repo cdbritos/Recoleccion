@@ -22,11 +22,10 @@ public class Camioneta extends Vehiculo {
 	
 	protected double getTiempoCarga() {return 0.5;}
 	
-	protected TipoVehiculo getTipoVehiculo() {return TipoVehiculo.CAMIONETA;}
+	public TipoVehiculo getTipoVehiculo() {return TipoVehiculo.CAMIONETA;}
 
 	@Override
 	protected double getCostoFijo() {
-	
 		return 2000;
 	}
 

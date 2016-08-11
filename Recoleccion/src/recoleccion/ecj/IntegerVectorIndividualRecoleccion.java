@@ -47,7 +47,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
 			   
 			   //CORREGIR DURACION DE VIAJE
-			   if (vehiculoActual.getDuracionJornada() > Jornada.DURACION_JORNADA){
+			   if (vehiculoActual.getDuracionJornada() > vehiculoActual.getTopeTiempoJornada()){
 				   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));				   
 				   //sol.getVehiculosSolucion().remove(vehiculoActual);
 				   break;

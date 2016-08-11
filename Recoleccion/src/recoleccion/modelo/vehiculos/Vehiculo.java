@@ -134,7 +134,7 @@ public abstract class Vehiculo extends Coordenable {
 	}
 	
 	public boolean llegueDuracionMaxima(){
-		return getDuracionJornada()>Jornada.DURACION_JORNADA;
+		return getDuracionJornada() > getTopeTiempoJornada(); 
 	}
 	
 	@Override
@@ -261,6 +261,15 @@ public abstract class Vehiculo extends Coordenable {
 		return this.recolectaLoMismo(otro) && this.tiposResiduos.size() > otro.tiposResiduos.size();
 	}
 
+	private double getCostoFijoJornadaComun(){
+		return getCostoFijo() + Jornada.DURACION_JORNAL_HORAS * getEmpleados() * Jornada.COSTO_HORA_POR_EMPLEADO;
+	}
+	public double getTopeTiempoJornada(){
+		double result = Jornada.DURACION_JORNAL_HORAS + (getCostoFijoJornadaComun() / (getEmpleados() * Jornada.COSTO_HORA_EXTRA));
+		if (getTipoVehiculo().equals(TipoVehiculo.CAMIONETA))
+			System.out.println(result);
+		return result; 
+	}
 	
 }
 

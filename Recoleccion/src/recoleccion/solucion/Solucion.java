@@ -1,7 +1,6 @@
 package recoleccion.solucion;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -73,8 +72,7 @@ public class Solucion {
 	// viajes sin domicilio se dejan en la solucion tiene fitness 0
 	public double fitness(){
 		  double fitness = 0;
-		  System.out.println("##########");
-		  System.out.println(individuo.genotypeToStringForHumans());
+		  
 		  individuo.genome = new int[0];
 		  
 		  if (CollectionUtils.isNotEmpty(viajes)){
@@ -89,9 +87,10 @@ public class Solucion {
 		   }
 		  }
 		  
-		  System.out.println(individuo.genotypeToStringForHumans());
+		  //System.out.println(individuo.genotypeToStringForHumans());
 		  
 		  List<Domicilio> domiciliofaltantes = getDomiciliosFaltantes();
+		  
 		  int i = 0;
 		  while (CollectionUtils.isNotEmpty(domiciliofaltantes)){
 			  Vehiculo v = null;
@@ -125,7 +124,7 @@ public class Solucion {
 		   fitness += vehiculo.getCostoJornada();
 		  }
 		  
-		  System.out.println(individuo.genotypeToStringForHumans());
+		  //System.out.println(individuo.genotypeToStringForHumans());
 		  
 		  return fitness;
 		 }
@@ -199,18 +198,6 @@ public class Solucion {
 				d.imprimir();
 			}
 		}
-	}
-	
-	public void corregir(List<Vehiculo> vehiculosUtilizados){
-	
-		for (Viaje viaje : viajes) {
-			List<Viaje> viajesCorregidos=new ArrayList<>();
-			viajesCorregidos=viaje.corregir(vehiculosUtilizados);
-			for (Viaje viajeCorregido : viajesCorregidos){
-				viajes.add(viajeCorregido);
-			}
-		}
-		setViajes(viajes);
 	}
 	
 	private Vehiculo getVehiculoSolucion(int id) throws Exception{
@@ -324,8 +311,11 @@ public class Solucion {
 				for (Domicilio domicilio: domicilios) {	
 					//CORRRECION DE VIAJES PASADOS DE TIEMPOS
 					if (vehiculo.llegueDuracionMaxima()){
-						vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
-						viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
+						
+						if (CollectionUtils.isNotEmpty(domiciliosRecolectados)){
+							vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
+							viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
+						}
 						
 						// arranco nuevo viaje con otro vehiuculo
 						domiciliosRecolectados = new ArrayList<Domicilio>();
@@ -354,25 +344,6 @@ public class Solucion {
 			return viajes;
 		}
 		
-		public List<Viaje> corregir(List<Vehiculo> vehiculosUtilizados){
-			//boolean valido=false;
-			//int i=0;
-			//Long carga=vehiculo.getCarga();
-			//int cantDom=this.getDomicilios().size();
-			List<Viaje> viajesCorregidos=new ArrayList<>();
-			eliminarDomiciliosRepetidos();
-			viajesCorregidos=agregarViajesExcedeCarga(vehiculosUtilizados);
-			return viajesCorregidos;
-			
-		}
-		
-		private void eliminarDomiciliosRepetidos(){
-			
-		}
-		
-		private List<Viaje> agregarViajesExcedeCarga(List<Vehiculo> domicilios){
-			return null;
-		}
 	}
 
 	public void setGenoma(IntegerVectorIndividualRecoleccion ind) {

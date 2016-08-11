@@ -15,7 +15,7 @@ eval.problem = recoleccion.modelo.jornada.Jornada
 stat.file				$solucion.out
 stat.do-final=			true
 stat.do-generation=		true
-stat.do-message=		false
+stat.do-message=		true
 stat.do-description=	true
 
 # ARCHIVOS DE ENTRADA Y SALIDA DEL PROGRAMA
@@ -32,6 +32,8 @@ exch = 					ec.simple.SimpleExchanger
 eval =					ec.simple.SimpleEvaluator
 stat =					recoleccion.modelo.jornada.JornadaStatics
 breed = 				ec.simple.SimpleBreeder
+
+breed.elite-fraction.0 = 0.25
 
 # CANTIDAD DE GENERACIONES
 #generations =				10

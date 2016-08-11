@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import recoleccion.modelo.domicilios.Domicilio;
+import recoleccion.modelo.domicilios.DomiciliosHandler;
 import recoleccion.modelo.jornada.Jornada;
 import recoleccion.modelo.jornada.VertederoHandler;
 import recoleccion.modelo.vehiculos.Vehiculo;
@@ -47,7 +50,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
 			   
 			   //CORREGIR DURACION DE VIAJE
-			   if (vehiculoActual.getDuracionJornada() > vehiculoActual.getTopeTiempoJornada()){
+			   if (vehiculoActual.getDuracionJornada() > Jornada.DURACION_JORNAL_HORAS){
 				   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));				   
 				   //sol.getVehiculosSolucion().remove(vehiculoActual);
 				   break;
@@ -75,10 +78,51 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
 	   sol.setViajes(viajes);
        
        sol.setGenoma(this);
-       System.out.println(this.genotypeToStringForHumans());
+       Jornada.getInstance().limpiarGenome(this);
        
                
     }
+    
+    public void resetMalo(EvolutionState state, int thread) {
+    	 //CARGANDO LA SOLUCION RANDOMICA           
+        Solucion sol=new Solucion();
+ 	   
+ 	   List<Viaje> viajes=new ArrayList<>();
+ 	   List<Domicilio> domicilios=sol.getDomiciliosSolucion();
+ 	   
+ 	   while (!domicilios.isEmpty()){
+ 		   Vehiculo vehiculoActual=sol.getRandomVehiculoSolucion();
+ 		   List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(domicilios);
+ 		   List<Domicilio> domViajes=new ArrayList<>();
+ 		   while (!domiciliosValidos.isEmpty()){
+ 			   Domicilio domCercano=domicilioMasCerca(vehiculoActual,domiciliosValidos);
+ 			   
+ 			   if (vehiculoActual.puedeRecolectar(domCercano)){
+ 				   vehiculoActual.recolectar(domCercano);
+ 				   domiciliosValidos.remove(domCercano);
+ 				   domViajes.add(domCercano);
+ 			   }
+ 			   
+ 			   if (!domCercano.tieneResiduo()){
+				  domicilios.remove(domCercano);
+			   }
+ 			   
+ 			   if (vehiculoActual.isLleno()){
+ 				   vehiculoActual.verter(VertederoHandler.getInstance().getVertederos().get(0));
+ 				   break;
+ 			   }
+ 			   
+ 		   }
+ 		   
+ 		   Viaje viaje=sol.new Viaje(vehiculoActual,domViajes);
+ 		   viajes.add(viaje);   		   
+ 	   }
+ 	   
+ 	   sol.setViajes(viajes);
+        
+        sol.setGenoma(this);
+    }
+    
    
 	private static Domicilio domicilioMasCerca(Vehiculo v,List<Domicilio> domiciliosARecorrer){
 		double distanciaMenor=Double.MAX_VALUE;
@@ -170,14 +214,92 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
     }
 
 	private int randomValueFromClosedInterval(int pos, MersenneTwisterFast mersenneTwisterFast) {
-		if (genome[pos] < 0){
-			//retorna un vehiculo aleatorio
-			return genome[pos];
-			//return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(),-1, mersenneTwisterFast);
-			//return VehiculoHandler.doMutate(genome[pos],randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast));
+		  if (genome[pos] < 0){
+		   //retorna un vehiculo aleatorio
+		   //return genome[pos];
+		   //return randomValueFromClosedInterval(Jornada.getInstance().getMinGene(),-1, mersenneTwisterFast);
+		   int val = VehiculoHandler.doMutate(genome[pos],randomValueFromClosedInterval(Jornada.getInstance().getMinGene(), -1, mersenneTwisterFast));;
+		   return val;
+		  }
+		  
+		  //retorna un domicilio
+		  //return randomValueFromClosedInterval(1, Jornada.getInstance().getMaxGene(), mersenneTwisterFast);
+		  int posActual=pos;
+		  while (genome[posActual] >=0) {
+		   posActual--;
+		  }
+		  
+		  Vehiculo vehiculoActual = VehiculoHandler.getInstance().get(genome[posActual]);
+
+		  List<Domicilio> domiciliosValidos=vehiculoActual.domiciliosValidos(DomiciliosHandler.getInstance().getDomicilios());
+		  int posicion = (new Random()).nextInt(domiciliosValidos.size());
+		  return Integer.valueOf(domiciliosValidos.get(posicion).getIdentificador());
+		  
 		}
+	
+	
+	public void defaultCrossover(EvolutionState state, int thread, VectorIndividual ind) {
 		
-		//retorna un domicilio
-		return randomValueFromClosedInterval(1, Jornada.getInstance().getMaxGene(), mersenneTwisterFast);
+		// Aplico cruzamiento Partially Mapped Crossover (PMX)
+        IntegerVectorSpecies s = (IntegerVectorSpecies) species;
+        IntegerVectorIndividualRecoleccion ind2=(IntegerVectorIndividualRecoleccion) ind;
+        int point;
+        
+        
+        int len = Math.min(genome.length, ind2.genome.length);
+        if (len != genome.length || len != ind2.genome.length)
+            state.output.warnOnce("Genome lengths are not the same.  Vector crossover will only be done in overlapping region.");
+        
+        //Elijo puntos de corte
+        point = state.random[thread].nextInt((len / s.chunksize));
+        while (point==0){
+            point = state.random[thread].nextInt((len / s.chunksize));
+        }
+        
+        int point0 = state.random[thread].nextInt((len / s.chunksize));
+        while ((point0==point) || (point0==0)){
+            point0 = state.random[thread].nextInt((len / s.chunksize));
+        }
+        if (point0 > point) { int p = point0; point0 = point; point = p; }
+
+        int inicio=point0*s.chunksize;
+        int fin=point*s.chunksize;
+        
+        int posIni1 = this.getInicioCruzamiento(inicio,fin);
+        int posFin1 = this.getFinCruzamiento(inicio, fin);
+        
+        int posIni2 = ind2.getInicioCruzamiento(inicio,fin);
+        int posFin2 = ind2.getFinCruzamiento(inicio, fin);
+        
+        int[] viajes1 = ArrayUtils.subarray(this.genome, posIni1, posFin1);
+        int[] viajes2 = ArrayUtils.subarray(ind2.genome, posIni2, posFin2);
+        
+        ind2.doCrossOver(viajes1,posIni2,posFin2);
+        this.doCrossOver(viajes2,posIni1,posFin1);
+        		
+	}
+	
+	private void doCrossOver(int[] viajes, int posIni, int posFin) {
+
+		int[] resto = ArrayUtils.subarray(genome, posFin, genomeLength());
+        
+        genome = ArrayUtils.subarray(genome, 0, posIni);
+        genome = ArrayUtils.addAll(genome, viajes);
+        genome = ArrayUtils.addAll(genome, resto);
+        
+	}
+
+	private int getInicioCruzamiento(int inicio, int fin){
+		int pos = inicio;
+		while (pos <= fin && genome[pos] > 0 )
+			pos++;
+		return pos;
+	}
+	
+	private int getFinCruzamiento(int inicio, int fin){
+		int pos = fin;
+		while (pos < genome.length && genome[pos] > 0 )
+			pos++;
+		return pos;
 	}
 }

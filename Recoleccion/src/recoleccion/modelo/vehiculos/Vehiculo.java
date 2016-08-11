@@ -65,7 +65,7 @@ public abstract class Vehiculo extends Coordenable {
 	public void imprimir() {
 		
 		System.out.println("Vehiculo: " + getTipo() + " " + this.identificador + "," + tiposResiduos + " --> KM: " + (metrosRecorridos/1000) 
-				+ " -- Duracion Jornada " + getDuracionJornada() + " -- Costo Jornada " + getCostoJornada() + "-- CC: " + getCostoCombustible());
+				+ " -- Duracion Jornada " + getDuracionJornada() + " -- Costo Jornada " + getCostoJornada() + "-- Costo fijo: " + getCostoFijoJornadaComun() + "nafta: " + getCostoCombustible() +" Tope - "+ getTopeTiempoJornada());
 		super.imprimir();
 	}
 	
@@ -264,10 +264,9 @@ public abstract class Vehiculo extends Coordenable {
 	private double getCostoFijoJornadaComun(){
 		return getCostoFijo() + Jornada.DURACION_JORNAL_HORAS * getEmpleados() * Jornada.COSTO_HORA_POR_EMPLEADO;
 	}
+	
 	public double getTopeTiempoJornada(){
 		double result = Jornada.DURACION_JORNAL_HORAS + (getCostoFijoJornadaComun() / (getEmpleados() * Jornada.COSTO_HORA_EXTRA));
-		if (getTipoVehiculo().equals(TipoVehiculo.CAMIONETA))
-			System.out.println(result);
 		return result; 
 	}
 	

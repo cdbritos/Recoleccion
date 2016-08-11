@@ -71,8 +71,6 @@ public class Jornada extends Problem implements SimpleProblemForm {
         
         IntegerVectorIndividualRecoleccion ind2 = (IntegerVectorIndividualRecoleccion)ind;
         
-        limpiarGenome(ind2);
-        
         double fitness = Double.MAX_VALUE;
 		try {
 			Solucion sol = new Solucion(ind2); 
@@ -87,7 +85,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
         ind.evaluated=true;      
 	}
 	
-	private void limpiarGenome(IntegerVectorIndividualRecoleccion ind2) {
+	public void limpiarGenome(IntegerVectorIndividualRecoleccion ind2) {
 		
 		while (ArrayUtils.contains(ind2.genome,0))		
 			ind2.setGenome(ArrayUtils.removeElement(ind2.genome, 0));
@@ -111,7 +109,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
     	   //cargo domicilios con sus pedidos
     	   DomiciliosHandler.getInstance().setDomicilios(cargarDomicilios());
 
-    	   imprimir();
+    	   //imprimir();
       } catch (Exception e) {
     	  System.out.println("ERROR CARGANDO PARAMETROS DE ENTRADA");
       }
@@ -145,7 +143,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	}
 
 	public List<Vehiculo> cargarDepositos() throws FileNotFoundException  {
-		   List<Deposito> depositos =new ArrayList<>();
+		   //List<Deposito> depositos =new ArrayList<>();
 		   
 	       Scanner s = new Scanner(in_depositos);
 	       Coordenada coord=new Coordenada();
@@ -153,58 +151,49 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	       Deposito deposito=null;
 	       List<Vehiculo> vehiculos=null;
 	       List<Vehiculo> vehiculosJornada= new ArrayList<Vehiculo>();
-	       String linea = s.nextLine(); 
-	       String [] cadena=linea.split(",");
+	       String linea = null; 
+	       String [] cadena= null;
 	       
 	       while (s.hasNextLine()) {
-			   
+			   linea = s.nextLine();
+			   cadena=linea.split(",");
 			   if (cadena[0].equals("DEPOSITO")){
 	                   double latitud=Double.parseDouble(cadena[1]);
 	                   double longitud=Double.parseDouble(cadena[2]);
 	                   coord=new Coordenada(latitud,longitud);
 	                   deposito = new Deposito();
 	                   deposito.setCoordenadas(coord);
-	                   linea = s.nextLine(); 
-	                   cadena=linea.split(",");
 	           }else{
-	                  boolean salir=false;
-	                  vehiculos = new ArrayList<>();
-	                  while (!salir && !cadena[0].equals("DEPOSITO")){
-	                       
-	                	  int cantVehiculos=Integer.parseInt(cadena[0]);
-	                       
-	                       for(int i=0;i<cantVehiculos;i++){
-	                               idVehiculo--;
-	                               if (cadena[1].equals(TipoVehiculo.CAMION.name())){
-	                                       Camion camion=new Camion(idVehiculo);
-	                                       camion.setCoordenadas(coord);
-	                                       camion.setTiposResiduos(calcularTipoResiduo(linea));
-	                                       vehiculos.add(camion);
 
-	                               }
-	                               else if (cadena[1].equals(TipoVehiculo.CAMIONETA.name())){
-	                                       Camioneta camiononeta=new Camioneta(idVehiculo);
-	                                       camiononeta.setCoordenadas(coord);
-	                                       camiononeta.setTiposResiduos(calcularTipoResiduo(linea));
-	                                       vehiculos.add(camiononeta); 
-	                               }else
-	                            	   System.out.println("ERROR: TIPO VEHICULO INCORRECTO");
-	                       }
-	                       
-	                       if (s.hasNextLine()){
-	                           linea = s.nextLine(); 
-	                           cadena=linea.split(",");
-	                       }else{
-	                           salir=true;
-	                       }
-	                       
-	                  }
+	        	   int cantVehiculos=Integer.parseInt(cadena[0]);
+                   vehiculos = new ArrayList<Vehiculo>();
+                   
+                   for(int i=0;i<cantVehiculos;i++){
+                       idVehiculo--;
+                       if (cadena[1].equals(TipoVehiculo.CAMION.name())){
+                               Camion camion=new Camion(idVehiculo);
+                               camion.setCoordenadas(coord);
+                               camion.setTiposResiduos(calcularTipoResiduo(linea));
+                               vehiculos.add(camion);
+
+                       }
+                       else if (cadena[1].equals(TipoVehiculo.CAMIONETA.name())){
+                               Camioneta camiononeta=new Camioneta(idVehiculo);
+                               camiononeta.setCoordenadas(coord);
+                               camiononeta.setTiposResiduos(calcularTipoResiduo(linea));
+                               vehiculos.add(camiononeta); 
+                       }else
+                    	   System.out.println("ERROR: TIPO VEHICULO INCORRECTO");
+                   }
+                   
+                   vehiculosJornada.addAll(vehiculos);
+	           	}
 	                  
-	                  deposito.setFlota(vehiculos);
-	                  depositos.add(deposito);
-	                  vehiculosJornada.addAll(vehiculos);
-			   }
-		   }
+                //deposito.setFlota(vehiculos);
+                //depositos.add(deposito);
+                
+	       	}
+		   
 	       
 	       s.close();
 	       	

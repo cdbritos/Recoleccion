@@ -34,7 +34,7 @@ stat =					recoleccion.modelo.jornada.JornadaStatics
 breed = 				ec.simple.SimpleBreeder
 
 # CANTIDAD DE GENERACIONES
-generations = 1
+generations = 200
 
 # PARAR SI ENCUENTRA LA SOLUCION OPTIMA
 quit-on-run-complete =				true

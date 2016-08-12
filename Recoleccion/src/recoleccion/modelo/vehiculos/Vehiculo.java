@@ -133,10 +133,6 @@ public abstract class Vehiculo extends Coordenable {
 		return getCapacidad() - carga;
 	}
 	
-	public boolean llegueDuracionMaxima(){
-		return getDuracionJornada() > getTopeTiempoJornada(); 
-	}
-	
 	@Override
 	public void setCoordenadas(Coordenada coordenadas) {
 		if (getCoordenadas() != null)

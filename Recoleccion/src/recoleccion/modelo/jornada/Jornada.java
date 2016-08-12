@@ -292,27 +292,17 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	   
 	    @Override
 	    public void describe(EvolutionState state, Individual ind, int subpopulation, int threadnum, int log) {
-	    	/*Solucion sol;
-			try {
-				sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
-				sol.fitness();
-				System.out.println(ind.genotypeToStringForHumans());
-				System.out.println(ind.fitness.fitnessToStringForHumans());
-				for (Vehiculo v : sol.getVehiculosSolucion()) {	
-					if (v.getCostoJornada() > 0)
-						v.imprimir();
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
+	   
 	    	state.output.println("FITNESS: " + ind.fitness.fitness() , log);
-	    	state.output.println("GENERATIONS: " + state.numGenerations , log);
+	    	state.output.println("POBLACION: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.size"),null) , log);
 	    	state.output.println("MUTATION-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.mutation-prob"),null) , log);
 	    	state.output.println("CROSSOVER-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.crossover-prob"),null), log);
 	    	state.output.println("TOURNAMENT-SIZE: " + state.parameters.getString(new ec.util.Parameter("select.tournament.size"),null), log);
-	    	state.output.println( ind.genotypeToStringForHumans(), log );
-	    	Solucion sol;
+	    	state.output.println("ELITE-FRACTION: " + state.parameters.getString(new ec.util.Parameter("breed.elite-fraction.0"),null), log);
+	    	
+	    	
+	    	
+	    	/*Solucion sol;
 			try {
 			
 				
@@ -327,7 +317,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			*/
 	    	
 	    }
 

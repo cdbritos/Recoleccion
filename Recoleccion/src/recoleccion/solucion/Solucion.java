@@ -132,7 +132,7 @@ public class Solucion {
 	private Vehiculo getRandomVehiculoSolucionUtilizados() {
 		List<Vehiculo> vehiculosUtilizados = new ArrayList<Vehiculo>();
 		for (Vehiculo vehiculo : vehiculosSolucion) {
-			if (vehiculo.getCostoJornada() > 0 && !vehiculo.llegueDuracionMaxima())
+			if (vehiculo.getCostoJornada() > 0)
 				vehiculosUtilizados.add(vehiculo);
 		}
 		try {
@@ -152,7 +152,7 @@ public class Solucion {
 		Vehiculo vecSimilar = null;
 		for (Vehiculo vehiculo : vehiculosSolucion) {
 			
-			if ((vehiculo.esMejor(v) || vehiculo.recolectaLoMismo(v)) && !vehiculo.llegueDuracionMaxima() && vehiculo.getCostoJornada() > 0){
+			if ((vehiculo.esMejor(v) || vehiculo.recolectaLoMismo(v)) && vehiculo.getCostoJornada() > 0){
 				if (vecSimilar == null || vehiculo.getCostoJornada() < vecSimilar.getCostoJornada()) 
 					vecSimilar = vehiculo;
 			}
@@ -210,7 +210,7 @@ public class Solucion {
 	}
 	
 	public Vehiculo getRandomVehiculoSolucion() {
-		try {
+		try {	
 	        return vehiculosSolucion.get((new Random()).nextInt(vehiculosSolucion.size()));
 	    }
 	    catch (Throwable e){
@@ -309,21 +309,8 @@ public class Solucion {
 			
 			if (CollectionUtils.isNotEmpty(domicilios)){
 				for (Domicilio domicilio: domicilios) {	
-					//CORRRECION DE VIAJES PASADOS DE TIEMPOS
-					if (vehiculo.llegueDuracionMaxima()){
-						
-						if (CollectionUtils.isNotEmpty(domiciliosRecolectados)){
-							vehiculo.verter(VertederoHandler.getInstance().get(vehiculo));
-							viajes.add(new Viaje(vehiculo, domiciliosRecolectados));
-						}
-						
-						// arranco nuevo viaje con otro vehiuculo
-						domiciliosRecolectados = new ArrayList<Domicilio>();
-						vehiculo = getVehiculoSolucionSimilar(vehiculo);
-					}
 					
-					//CORRRECION DE VIAJES PASADOS DE TIEMPOS
-					if (!vehiculo.llegueDuracionMaxima() && vehiculo.puedeRecolectar(domicilio)){
+					if (vehiculo.puedeRecolectar(domicilio)){
 						vehiculo.recolectar(domicilio);
 						domiciliosRecolectados.add(domicilio);
 					}

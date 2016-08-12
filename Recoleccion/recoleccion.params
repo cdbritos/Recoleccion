@@ -7,14 +7,14 @@ parent.0 = /home/cdbritos/cursoAE/ecj/ec/simple/simple.params
 #parent.0 = C:/Users/Gonzalo/Desktop/FACULTAD/AE/ecj/ec/simple/simple.params
 #parent.0 = C:\\Documents and Settings\\ggutierrez\\Escritorio\\FACULTAD\\AE\\ecj\\ec\\simple\\simple.params
 
-jobs=1
+jobs=243
 
 # N ESTA CLASE SE ENCUENTRA LA FUNCION DE FITNESS EN EL METODO EVALUATE
 eval.problem = recoleccion.modelo.jornada.Jornada
 
 stat.file				$solucion.out
 stat.do-final=			true
-stat.do-generation=		true
+stat.do-generation=		false
 stat.do-message=		true
 stat.do-description=	true
 
@@ -33,10 +33,8 @@ eval =					ec.simple.SimpleEvaluator
 stat =					recoleccion.modelo.jornada.JornadaStatics
 breed = 				ec.simple.SimpleBreeder
 
-breed.elite-fraction.0 = 0.25
-
 # CANTIDAD DE GENERACIONES
-#generations =				10
+generations = 1
 
 # PARAR SI ENCUENTRA LA SOLUCION OPTIMA
 quit-on-run-complete =				true
@@ -50,17 +48,14 @@ pop.subpop.0.species =                  ec.vector.IntegerVectorSpecies
 
 # TIPO DE MUTACION Y LA PROBABILIDAD
 pop.subpop.0.species.mutation-type= reset
-#pop.subpop.0.species.mutation-prob = 	0.01
 
 # ESTO NO SE MUY BIEN PARA QUE SON CADA COSA
 pop.subpop.0.species.pipe = 		ec.vector.breed.VectorMutationPipeline
-pop.subpop.0.species.pipe.likelihood = 1.0
+pop.subpop.0.species.pipe.likelihood = 0.9
 pop.subpop.0.species.pipe.source.0 =             ec.vector.breed.VectorCrossoverPipeline
 pop.subpop.0.species.pipe.source.0.likelihood = 0.75
 pop.subpop.0.species.pipe.source.0.source.0 =	ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.1 = 	same
-pop.subpop.0.species.pipe.source.0.source.1.size = 1
-#select.tournament.size = 2
 
 # numero de iniciacion, time empieza con la fecha actual
 seed.0 = time
@@ -70,10 +65,8 @@ pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
 
 # tipo de cruzamiento y la probabilidad
 pop.subpop.0.species.crossover-type = two
-#pop.subpop.0.species.crossover-prob =	0.75
 
 # el tipo de vector a utilizar y los maximos y minimos que puede tener
 pop.subpop.0.species.ind =		recoleccion.ecj.IntegerVectorIndividualRecoleccion
 
 # tamaño de la poblacion
-pop.subpop.0.size =	100

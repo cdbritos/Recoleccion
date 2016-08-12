@@ -1,7 +1,10 @@
 package recoleccion.modelo.jornada;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +13,11 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 import recoleccion.ecj.IntegerVectorIndividualRecoleccion;
 import recoleccion.modelo.data.Coordenada;
@@ -300,7 +308,9 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	state.output.println("TOURNAMENT-SIZE: " + state.parameters.getString(new ec.util.Parameter("select.tournament.size"),null), log);
 	    	state.output.println("ELITE-FRACTION: " + state.parameters.getString(new ec.util.Parameter("breed.elite-fraction.0"),null), log);
 	    	
+	    	int jobNum = ((Integer)(state.job[0])).intValue();
 	    	
+	    	escribirEnExcel(jobNum,0,ind.fitness.fitness());
 	    	
 	    	/*Solucion sol;
 			try {
@@ -321,7 +331,58 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	
 	    }
 
-	    public Vehiculo randomVehiculo(){
+	    
+	    
+	    private void escribirEnExcel(int column, int fila, double fitness) {
+	    	String fileName = "Resultado.xls";
+	    	FileOutputStream fileOut = null;
+	    	FileInputStream fileIn = null;	
+			try {
+				fileIn = new FileInputStream(fileName);
+				HSSFWorkbook workbook = new HSSFWorkbook(fileIn);
+				HSSFSheet sheet = workbook.getSheetAt(0);
+				
+				Row r = sheet.getRow(fila); // 10-1
+				if (r == null) {
+				   // First cell in the row, create
+				   r = sheet.createRow(fila);
+				}
+
+				Cell c = r.getCell(column); // 4-1
+				if (c == null) {
+				    // New cell
+				    c = r.createCell(column, Cell.CELL_TYPE_NUMERIC);
+				}
+				c.setCellValue(fitness);
+								
+				fileOut = new FileOutputStream(fileName);
+				workbook.write(fileOut);
+					
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				try {
+	                fileOut.close();
+	            } catch (Exception ex) {
+	                System.out.println("Error in file processing after close it (Error al procesar el fichero después de cerrarlo): " + ex);
+	            }
+				try {
+	                fileIn.close();
+	            } catch (Exception ex) {
+	                System.out.println("Error in file processing after close it (Error al procesar el fichero después de cerrarlo): " + ex);
+	            }
+			}
+			
+		}
+
+
+
+		public Vehiculo randomVehiculo(){
 	    	return VehiculoHandler.getInstance().randomVehiculo();
 	    }
 	    

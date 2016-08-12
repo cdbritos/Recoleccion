@@ -12,7 +12,7 @@ jobs=243
 # N ESTA CLASE SE ENCUENTRA LA FUNCION DE FITNESS EN EL METODO EVALUATE
 eval.problem = recoleccion.modelo.jornada.Jornada
 
-stat.file				$solucion.out
+stat.file				
 stat.do-final=			true
 stat.do-generation=		false
 stat.do-message=		true

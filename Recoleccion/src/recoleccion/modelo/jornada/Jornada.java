@@ -310,7 +310,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	
 	    	int jobNum = ((Integer)(state.job[0])).intValue();
 	    	
-	    	escribirEnExcel(jobNum,0,ind.fitness.fitness());
+	    	escribirEnExcel(jobNum,Integer.valueOf(state.runtimeArguments[2]).intValue(),ind.fitness.fitness());
 	    	
 	    	/*Solucion sol;
 			try {

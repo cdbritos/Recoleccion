@@ -119,6 +119,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 
     	   //imprimir();
       } catch (Exception e) {
+    	  e.printStackTrace();
     	  System.out.println("ERROR CARGANDO PARAMETROS DE ENTRADA");
       }
       
@@ -313,7 +314,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    	escribirEnExcel(jobNum,Integer.valueOf(state.runtimeArguments[2]).intValue(),ind.fitness.fitness());
 	    	
 	    	/*Solucion sol;
-			try {
+			try {	
 			
 				
 					sol = new Solucion((IntegerVectorIndividualRecoleccion) ind);
@@ -333,7 +334,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 
 	    
 	    
-	    private void escribirEnExcel(int column, int fila, double fitness) {
+	    private synchronized void  escribirEnExcel(int column, int fila, double fitness) {
 	    	String fileName = "Resultado.xls";
 	    	FileOutputStream fileOut = null;
 	    	FileInputStream fileIn = null;	

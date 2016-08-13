@@ -7,7 +7,7 @@ parent.0 = /home/cdbritos/cursoAE/ecj/ec/simple/simple.params
 #parent.0 = C:/Users/Gonzalo/Desktop/FACULTAD/AE/ecj/ec/simple/simple.params
 #parent.0 = C:\\Documents and Settings\\ggutierrez\\Escritorio\\FACULTAD\\AE\\ecj\\ec\\simple\\simple.params
 
-jobs=243
+jobs=27
 
 # N ESTA CLASE SE ENCUENTRA LA FUNCION DE FITNESS EN EL METODO EVALUATE
 eval.problem = recoleccion.modelo.jornada.Jornada
@@ -56,6 +56,8 @@ pop.subpop.0.species.pipe.source.0 =             ec.vector.breed.VectorCrossover
 pop.subpop.0.species.pipe.source.0.likelihood = 0.75
 pop.subpop.0.species.pipe.source.0.source.0 =	ec.select.TournamentSelection
 pop.subpop.0.species.pipe.source.0.source.1 = 	same
+select.tournament.size=2
+breed.elite-fraction.0=0.5
 
 # numero de iniciacion, time empieza con la fecha actual
 seed.0 = time

@@ -302,16 +302,16 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    @Override
 	    public void describe(EvolutionState state, Individual ind, int subpopulation, int threadnum, int log) {
 	   
-	    	state.output.println("FITNESS: " + ind.fitness.fitness() , log);
-	    	state.output.println("POBLACION: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.size"),null) , log);
-	    	state.output.println("MUTATION-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.mutation-prob"),null) , log);
-	    	state.output.println("CROSSOVER-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.crossover-prob"),null), log);
-	    	state.output.println("TOURNAMENT-SIZE: " + state.parameters.getString(new ec.util.Parameter("select.tournament.size"),null), log);
-	    	state.output.println("ELITE-FRACTION: " + state.parameters.getString(new ec.util.Parameter("breed.elite-fraction.0"),null), log);
+	    	//state.output.println("FITNESS: " + ind.fitness.fitness() , log);
+	    	//state.output.println("POBLACION: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.size"),null) , log);
+	    	//state.output.println("MUTATION-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.mutation-prob"),null) , log);
+	    	//state.output.println("CROSSOVER-PROB: " + state.parameters.getString(new ec.util.Parameter("pop.subpop.0.species.crossover-prob"),null), log);
+	    	//state.output.println("TOURNAMENT-SIZE: " + state.parameters.getString(new ec.util.Parameter("select.tournament.size"),null), log);
+	    	//state.output.println("ELITE-FRACTION: " + state.parameters.getString(new ec.util.Parameter("breed.elite-fraction.0"),null), log);
 	    	
-	    	int jobNum = ((Integer)(state.job[0])).intValue();
+	    	//int jobNum = ((Integer)(state.job[0])).intValue();
+	    	//escribirEnExcel(jobNum,Integer.valueOf(state.runtimeArguments[2]).intValue(),ind.fitness.fitness()); 
 	    	
-	    	escribirEnExcel(jobNum,Integer.valueOf(state.runtimeArguments[2]).intValue(),ind.fitness.fitness());
 	    	
 	    	/*Solucion sol;
 			try {	
@@ -335,7 +335,7 @@ public class Jornada extends Problem implements SimpleProblemForm {
 	    
 	    
 	    private synchronized void  escribirEnExcel(int column, int fila, double fitness) {
-	    	String fileName = "Resultado.xls";
+	    	String fileName = "Resultado2.xls";
 	    	FileOutputStream fileOut = null;
 	    	FileInputStream fileIn = null;	
 			try {

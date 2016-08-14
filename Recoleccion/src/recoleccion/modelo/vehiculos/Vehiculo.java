@@ -219,9 +219,14 @@ public abstract class Vehiculo extends Coordenable {
 
 	public boolean puedeRecolectar(Domicilio domicilio) {
 		boolean puede = false;
-		for (TipoResiduo tr : tiposResiduos) {
-			if (domicilio.tieneResiduo(tr) > 0)
-				return true;
+		try {
+			for (TipoResiduo tr : tiposResiduos) {
+				if (domicilio.tieneResiduo(tr) > 0)
+					return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return puede;

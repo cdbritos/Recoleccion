@@ -7,18 +7,20 @@ parent.0 = /home/cdbritos/cursoAE/ecj/ec/simple/simple.params
 #parent.0 = C:/Users/Gonzalo/Desktop/FACULTAD/AE/ecj/ec/simple/simple.params
 #parent.0 = C:\\Documents and Settings\\ggutierrez\\Escritorio\\FACULTAD\\AE\\ecj\\ec\\simple\\simple.params
 
-jobs=1
+jobs=30
 
 # N ESTA CLASE SE ENCUENTRA LA FUNCION DE FITNESS EN EL METODO EVALUATE
 eval.problem = recoleccion.modelo.jornada.Jornada
 
-stat.file				$solucion.out	
-stat.do-final=			true
-stat.do-generation=		true
-stat.do-message=		true
-stat.do-description=	true
-stat.do-per-generation-description= true
-stat.child.0-do-size=			true
+stat.file					
+stat.do-final=			false
+stat.do-generation=		false
+stat.do-message=		false
+stat.do-description=	false
+
+stat.num-children = 1
+stat.child.0 = ec.simple.SimpleShortStatistics
+stat.child.0.file = $out2.stat
 stat.child.0.do-time=			true
 
 # ARCHIVOS DE ENTRADA Y SALIDA DEL PROGRAMA
@@ -37,7 +39,7 @@ stat =					recoleccion.modelo.jornada.JornadaStatics
 breed = 				ec.simple.SimpleBreeder
 
 # CANTIDAD DE GENERACIONES
-generations = 2
+generations = 1000
 
 # PARAR SI ENCUENTRA LA SOLUCION OPTIMA
 quit-on-run-complete =				true

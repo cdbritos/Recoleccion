@@ -1,11 +1,13 @@
 package recoleccion.modelo.jornada;
 
+import java.util.Date;
+
 import ec.simple.SimpleEvolutionState;
 
 public class JornadaEvolutionState extends SimpleEvolutionState {
 
 	private static final long serialVersionUID = 2988336103730866041L;
-	
+	public static Date arranque; 
 	//public static final int[] TAMANO_POBLACION = {50, 100, 200};
 	//public static final double[] MUTATION_PROBS = {0.001, 0.01, 0.1};
 	//public static final double[] CROSSOVER_PROBS = {0.5, 0.75, 1.0};
@@ -15,7 +17,7 @@ public class JornadaEvolutionState extends SimpleEvolutionState {
 	
 	@Override
 	public void startFresh() {
-		
+		arranque = new Date();
 		//int jobNum = ((Integer)(job[0])).intValue();
 		//parameters.set(new ec.util.Parameter("pop.subpop.0.size"), "" + (TAMANO_POBLACION[jobNum % TAMANO_POBLACION.length]));
 		//jobNum /= TAMANO_POBLACION.length; 

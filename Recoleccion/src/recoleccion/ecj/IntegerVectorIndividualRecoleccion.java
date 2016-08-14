@@ -126,7 +126,7 @@ public class IntegerVectorIndividualRecoleccion extends IntegerVectorIndividual{
    
 	private static Domicilio domicilioMasCerca(Vehiculo v,List<Domicilio> domiciliosARecorrer){
 		double distanciaMenor=Double.MAX_VALUE;
-		Domicilio domCerca=null;
+		Domicilio domCerca=domiciliosARecorrer.get(0);
 		for (int i=0;i<domiciliosARecorrer.size();i++){		
 			double distancia=v.distance(domiciliosARecorrer.get(i).getCoordenadas());
 			if (distancia<=distanciaMenor){
